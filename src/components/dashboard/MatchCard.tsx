@@ -72,66 +72,61 @@ export default function MatchCard({ m, tz }: MatchCardProps) {
         {/* Center Column: Teams & Stage */}
         <div className="flex flex-col gap-2 min-w-0">
           {homeTeam ? (
-            /* Stacked Teams Scoreboard Layout */
-            <div className="flex flex-col gap-1.5 max-w-[400px]">
-              {/* Home Team Row */}
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="text-xl sm:text-2xl leading-none select-none saturate-110 flex-shrink-0">
-                    {FLAGS[homeTeam] || "⚽"}
+            /* One-Row Scoreboard Layout */
+            <div className="flex items-center justify-between w-full gap-3 sm:gap-4 max-w-[500px]">
+              {/* Home Team (Left side, right-aligned) */}
+              <div className="flex items-center justify-end gap-2 sm:gap-2.5 flex-1 min-w-0">
+                <span className={`text-[13px] sm:text-[14px] tracking-wide uppercase truncate text-right ${
+                  hasScore 
+                    ? homeWon 
+                      ? 'font-bold text-foreground' 
+                      : 'text-muted-foreground/50 font-medium' 
+                    : 'font-semibold text-foreground/80'
+                }`}>
+                  {homeTeam}
+                </span>
+                <span className="text-xl sm:text-2xl leading-none select-none saturate-110 flex-shrink-0">
+                  {FLAGS[homeTeam] || "⚽"}
+                </span>
+              </div>
+
+              {/* Score or VS in the middle */}
+              <div className="flex-shrink-0 flex items-center justify-center min-w-[64px] sm:min-w-[72px]">
+                {hasScore ? (
+                  <span className="font-mono text-xs sm:text-sm font-bold bg-white/5 border border-white/10 px-2 py-0.5 rounded flex items-center gap-1.5 select-none">
+                    <span className={homeWon ? 'text-foreground' : 'text-muted-foreground/50'}>{homeScore}</span>
+                    <span className="text-white/20">—</span>
+                    <span className={awayWon ? 'text-foreground' : 'text-muted-foreground/50'}>{awayScore}</span>
                   </span>
-                  <span className={`text-[13px] sm:text-[14px] tracking-wide uppercase truncate ${
-                    hasScore 
-                      ? homeWon 
-                        ? 'font-bold text-foreground' 
-                        : 'text-muted-foreground/50 font-medium' 
-                      : 'font-semibold text-foreground/80'
-                  }`}>
-                    {homeTeam}
-                  </span>
-                </div>
-                {hasScore && (
-                  <span className={`font-mono text-xs sm:text-sm font-bold px-1.5 py-0.5 rounded min-w-[24px] text-center ${
-                    homeWon 
-                      ? 'text-foreground bg-white/5 border border-white/10' 
-                      : 'text-muted-foreground/30 bg-white/3'
-                  }`}>
-                    {homeScore}
+                ) : (
+                  <span className="font-mono text-[9px] tracking-widest text-muted-foreground/40 font-bold bg-white/3 border border-white/5 px-2 py-0.5 rounded uppercase">
+                    VS
                   </span>
                 )}
               </div>
 
-              {/* Away Team Row */}
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="text-xl sm:text-2xl leading-none select-none saturate-110 flex-shrink-0">
-                    {FLAGS[awayTeam || ""] || "⚽"}
-                  </span>
-                  <span className={`text-[13px] sm:text-[14px] tracking-wide uppercase truncate ${
-                    hasScore 
-                      ? awayWon 
-                        ? 'font-bold text-foreground' 
-                        : 'text-muted-foreground/50 font-medium' 
-                      : 'font-semibold text-foreground/80'
-                  }`}>
-                    {awayTeam}
-                  </span>
-                </div>
-                {hasScore && (
-                  <span className={`font-mono text-xs sm:text-sm font-bold px-1.5 py-0.5 rounded min-w-[24px] text-center ${
-                    awayWon 
-                      ? 'text-foreground bg-white/5 border border-white/10' 
-                      : 'text-muted-foreground/30 bg-white/3'
-                  }`}>
-                    {awayScore}
-                  </span>
-                )}
+              {/* Away Team (Right side, left-aligned) */}
+              <div className="flex items-center justify-start gap-2 sm:gap-2.5 flex-1 min-w-0">
+                <span className="text-xl sm:text-2xl leading-none select-none saturate-110 flex-shrink-0">
+                  {FLAGS[awayTeam || ""] || "⚽"}
+                </span>
+                <span className={`text-[13px] sm:text-[14px] tracking-wide uppercase truncate text-left ${
+                  hasScore 
+                    ? awayWon 
+                      ? 'font-bold text-foreground' 
+                      : 'text-muted-foreground/50 font-medium' 
+                    : 'font-semibold text-foreground/80'
+                }`}>
+                  {awayTeam}
+                </span>
               </div>
             </div>
           ) : (
             /* Knockout Placeholder */
-            <div className="font-bold text-xs sm:text-sm tracking-wider uppercase text-foreground/70 py-0.5 bg-white/3 border border-white/5 px-2 rounded-md w-fit">
-              {m.desc}
+            <div className="flex justify-center sm:justify-start w-full">
+              <div className="font-bold text-xs sm:text-sm tracking-wider uppercase text-foreground/70 py-0.5 bg-white/3 border border-white/5 px-2 rounded-md">
+                {m.desc}
+              </div>
             </div>
           )}
 
