@@ -14,7 +14,7 @@ export default function Header({
   isFresh
 }: HeaderProps) {
   return (
-    <header className="relative py-16 px-6 min-h-[460px] flex items-end border-b border-white/5 overflow-hidden bg-[#0f0f0f]">
+    <header className="relative py-16 px-6 min-h-[100dvh] md:pb-24 flex items-end border-b border-white/5 overflow-hidden bg-[#0f0f0f]">
       {/* Background Image Container - Full Image without Backdrop/Overlay */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none">
         <img 
