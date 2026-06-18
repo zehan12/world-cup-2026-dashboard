@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, User, Trophy, Activity, Calendar, BarChart } from "lucide-react";
+import { MapPin, Trophy, Activity, Calendar, BarChart } from "lucide-react";
 import type { Match } from "@/data/matches";
 import { FLAGS } from "@/data/matches";
 import { fmtTime, fmtDay } from "@/lib/date-helpers";
@@ -21,70 +22,100 @@ const INSIGHTS_MAP: Record<string, TeamInsight> = {
   "USA": {
     players: [
       { name: "Christian Pulisic", pos: "FW", club: "AC Milan", keyStat: "Captain • 15 Qualifiers Goals" },
-      { name: "Weston McKennie", pos: "MF", club: "Juventus", keyStat: "Box-to-Box • 87% Pass Accuracy" }
+      { name: "Weston McKennie", pos: "MF", club: "Juventus", keyStat: "Box-to-Box • 87% Pass Accuracy" },
+      { name: "Tyler Adams", pos: "MF", club: "Bournemouth", keyStat: "Ball Winner • 4.1 Interceptions/G" },
+      { name: "Antonee Robinson", pos: "DF", club: "Fulham", keyStat: "Left Back • 5 Assists in PL" },
+      { name: "Matt Turner", pos: "GK", club: "Crystal Palace", keyStat: "Shot Stopper • 74% Save Rate" }
     ],
     tactics: "4-3-3 High Pressing"
   },
   "Mexico": {
     players: [
       { name: "Santiago Giménez", pos: "FW", club: "Feyenoord", keyStat: "Clinical • 23 Goals in Eredivisie" },
-      { name: "Edson Álvarez", pos: "MF", club: "West Ham", keyStat: "Defensive Anchor • 4.2 Tackles/Game" }
+      { name: "Edson Álvarez", pos: "MF", club: "West Ham", keyStat: "Defensive Anchor • 4.2 Tackles/G" },
+      { name: "Luis Chávez", pos: "MF", club: "Dynamo Moscow", keyStat: "Free Kick Specialist • 3 G/A" },
+      { name: "Johan Vásquez", pos: "DF", club: "Genoa", keyStat: "Solid Centerback • 88% Tackle Rate" },
+      { name: "Luis Malagón", pos: "GK", club: "Club América", keyStat: "Clean Sheets • 12 Matches Unbeaten" }
     ],
     tactics: "4-2-3-1 Attacking"
   },
   "Canada": {
     players: [
       { name: "Alphonso Davies", pos: "DF", club: "Bayern Munich", keyStat: "Speedster • 35.8 km/h Top Speed" },
-      { name: "Jonathan David", pos: "FW", club: "Lille", keyStat: "Poacher • 19 Ligue 1 Goals" }
+      { name: "Jonathan David", pos: "FW", club: "Lille", keyStat: "Poacher • 19 Ligue 1 Goals" },
+      { name: "Stephen Eustáquio", pos: "MF", club: "Porto", keyStat: "Tempo Controller • 91% Passing" },
+      { name: "Tajon Buchanan", pos: "MF", club: "Inter Milan", keyStat: "Winger • 5.3 Dribbles/Game" },
+      { name: "Alistair Johnston", pos: "DF", club: "Celtic", keyStat: "Tough Tackler • 3.8 Clearances/G" }
     ],
     tactics: "5-3-2 Defensive Transition"
   },
   "England": {
     players: [
+      { name: "Harry Kane", pos: "FW", club: "Bayern Munich", keyStat: "Golden Boot • 44 Goals in all comps" },
       { name: "Jude Bellingham", pos: "MF", club: "Real Madrid", keyStat: "Playmaker • 22 G/A this season" },
-      { name: "Harry Kane", pos: "FW", club: "Bayern Munich", keyStat: "Golden Boot • 44 Goals in all comps" }
+      { name: "Bukayo Saka", pos: "FW", club: "Arsenal", keyStat: "Winger • 16 Goals, 9 Assists" },
+      { name: "Declan Rice", pos: "MF", club: "Arsenal", keyStat: "Ball Winner • 2.8 Interceptions/G" },
+      { name: "John Stones", pos: "DF", club: "Man City", keyStat: "Ball Playing CB • 94% Pass Accuracy" }
     ],
     tactics: "4-3-3 Possession Control"
   },
   "France": {
     players: [
       { name: "Kylian Mbappé", pos: "FW", club: "Real Madrid", keyStat: "Galáctico • 8 WC Finals Goals" },
-      { name: "Antoine Griezmann", pos: "MF", club: "Atlético Madrid", keyStat: "Engine • 89 Key Passes" }
+      { name: "Antoine Griezmann", pos: "MF", club: "Atlético Madrid", keyStat: "Engine • 89 Key Passes" },
+      { name: "Aurélien Tchouaméni", pos: "MF", club: "Real Madrid", keyStat: "Intercepter • 4.2 Duels Won" },
+      { name: "William Saliba", pos: "DF", club: "Arsenal", keyStat: "Elite Defender • 91% Clean Sheets" },
+      { name: "Mike Maignan", pos: "GK", club: "AC Milan", keyStat: "Reflexes • 8 Pen Saves" }
     ],
     tactics: "4-2-3-1 Counter-Attacking"
   },
   "Argentina": {
     players: [
       { name: "Lionel Messi", pos: "FW", club: "Inter Miami", keyStat: "GOAT • 8 Ballon d'Ors" },
-      { name: "Lautaro Martínez", pos: "FW", club: "Inter Milan", keyStat: "Serie A MVP • 24 Goals" }
+      { name: "Lautaro Martínez", pos: "FW", club: "Inter Milan", keyStat: "Serie A MVP • 24 Goals" },
+      { name: "Alexis Mac Allister", pos: "MF", club: "Liverpool", keyStat: "Playmaker • 88% Pass Rate" },
+      { name: "Cristian Romero", pos: "DF", club: "Tottenham", keyStat: "Rock • 92% Tackle Success" },
+      { name: "Emiliano Martínez", pos: "GK", club: "Aston Villa", keyStat: "Golden Glove • Clutch Saves" }
     ],
     tactics: "4-3-3 Fluid Possession"
   },
   "Brazil": {
     players: [
       { name: "Vinícius Júnior", pos: "FW", club: "Real Madrid", keyStat: "Dribbler • 18 assists" },
-      { name: "Rodrygo", pos: "FW", club: "Real Madrid", keyStat: "Versatile • 17 UCL Goals" }
+      { name: "Rodrygo", pos: "FW", club: "Real Madrid", keyStat: "Versatile • 17 UCL Goals" },
+      { name: "Bruno Guimarães", pos: "MF", club: "Newcastle", keyStat: "Anchor • 4.5 Tackles/G" },
+      { name: "Marquinhos", pos: "DF", club: "PSG", keyStat: "Captain • 90% Pass Success" },
+      { name: "Alisson Becker", pos: "GK", club: "Liverpool", keyStat: "Wall • 14 Clean Sheets" }
     ],
     tactics: "4-2-3-1 Jogo Bonito"
   },
   "Germany": {
     players: [
       { name: "Jamal Musiala", pos: "MF", club: "Bayern Munich", keyStat: "Maestro • 92% Dribble Success" },
-      { name: "Florian Wirtz", pos: "MF", club: "Bayer Leverkusen", keyStat: "Creator • 20 Assists in Bundesliga" }
+      { name: "Florian Wirtz", pos: "MF", club: "Bayer Leverkusen", keyStat: "Creator • 20 Assists in BL" },
+      { name: "Kai Havertz", pos: "FW", club: "Arsenal", keyStat: "False 9 • 13 PL Goals" },
+      { name: "Antonio Rüdiger", pos: "DF", club: "Real Madrid", keyStat: "Warrior • 4.8 Aerial Duels Won" },
+      { name: "Marc-André ter Stegen", pos: "GK", club: "Barcelona", keyStat: "Modern GK • 82% Pass Accuracy" }
     ],
     tactics: "3-4-2-1 Attacking Midfield"
   },
   "Spain": {
     players: [
       { name: "Lamine Yamal", pos: "FW", club: "Barcelona", keyStat: "Prodigy • Youngest Euro Scorer" },
-      { name: "Rodri", pos: "MF", club: "Manchester City", keyStat: "Unbeaten Streak • Ballon d'Or Nominee" }
+      { name: "Rodri", pos: "MF", club: "Manchester City", keyStat: "Unbeaten Streak • Ballon d'Or" },
+      { name: "Pedri", pos: "MF", club: "Barcelona", keyStat: "Visionary • 93% Final Third Passes" },
+      { name: "Dani Carvajal", pos: "DF", club: "Real Madrid", keyStat: "Experienced • 6 Champions Leagues" },
+      { name: "Unai Simón", pos: "GK", club: "Athletic Bilbao", keyStat: "La Liga Zamora • 15 Clean Sheets" }
     ],
     tactics: "4-3-3 Tiki-Taka"
   },
   "Portugal": {
     players: [
-      { name: "Cristiano Ronaldo", pos: "FW", club: "Al Nassr", keyStat: "Record Breaker • 130 International Goals" },
-      { name: "Bruno Fernandes", pos: "MF", club: "Manchester United", keyStat: "Chance Creator • 112 Key Passes" }
+      { name: "Cristiano Ronaldo", pos: "FW", club: "Al Nassr", keyStat: "Record Breaker • 130 Intl Goals" },
+      { name: "Bruno Fernandes", pos: "MF", club: "Manchester United", keyStat: "Chance Creator • 112 Key Passes" },
+      { name: "Bernardo Silva", pos: "MF", club: "Man City", keyStat: "Controller • 90% Pass Rate" },
+      { name: "Rúben Dias", pos: "DF", club: "Man City", keyStat: "Leader • 91% Tackles Won" },
+      { name: "Diogo Costa", pos: "GK", club: "Porto", keyStat: "Pen Saver • 3 UCL Pen Saves" }
     ],
     tactics: "4-3-3 Direct Attack"
   }
@@ -94,9 +125,13 @@ function getTeamInsights(teamName: string): TeamInsight {
   if (!teamName) {
     return {
       players: [
-        { name: "TBD Key Player", pos: "FW", club: "TBD Club", keyStat: "Stats loading..." }
+        { name: "TBD Goalkeeper", pos: "GK", club: "TBD Club", keyStat: "Reflexes" },
+        { name: "TBD Defender", pos: "DF", club: "TBD Club", keyStat: "Solid Centerback" },
+        { name: "TBD Midfielder", pos: "MF", club: "TBD Club", keyStat: "Tempo Controller" },
+        { name: "TBD Midfielder", pos: "MF", club: "TBD Club", keyStat: "Playmaker" },
+        { name: "TBD Forward", pos: "FW", club: "TBD Club", keyStat: "Clinical Finisher" }
       ],
-      tactics: "T tactics"
+      tactics: "4-3-3 Balanced"
     };
   }
   if (INSIGHTS_MAP[teamName]) {
@@ -104,24 +139,33 @@ function getTeamInsights(teamName: string): TeamInsight {
   }
   // Fallback generator
   const hash = teamName.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const playerFirsts = ["Luka", "Marco", "David", "Ivan", "Luis", "Mateo", "Alex", "Kevin", "Tomas", "Stefan"];
-  const playerLasts = ["Silva", "García", "Kovačić", "Santos", "Jansen", "Smith", "Modrić", "Vidal", "Müller", "Jones"];
-  const clubs = ["Man City", "Real Madrid", "PSG", "Barcelona", "Liverpool", "Inter", "Arsenal", "Bayern"];
-  const stats = ["Defensive Core", "Wing threat", "Playmaker", "Speedster", "Tactical leader", "Penalty Specialist"];
+  const playerFirsts = ["Luka", "Marco", "David", "Ivan", "Luis", "Mateo", "Alex", "Kevin", "Tomas", "Stefan", "Lucas", "Gabriel", "Samuel", "Nicolas"];
+  const playerLasts = ["Silva", "García", "Kovačić", "Santos", "Jansen", "Smith", "Modrić", "Vidal", "Müller", "Jones", "Fernandez", "Rodriguez", "Lopes"];
+  const clubs = ["Man City", "Real Madrid", "PSG", "Barcelona", "Liverpool", "Inter", "Arsenal", "Bayern", "Juventus", "Chelsea"];
+  const stats = ["Defensive Core", "Wing threat", "Playmaker", "Speedster", "Tactical leader", "Penalty Specialist", "Shot Stopper", "Clinical Finisher"];
 
-  const p1Name = `${playerFirsts[hash % playerFirsts.length]} ${playerLasts[(hash + 3) % playerLasts.length]}`;
-  const p2Name = `${playerFirsts[(hash + 5) % playerFirsts.length]} ${playerLasts[(hash + 7) % playerLasts.length]}`;
+  const buildPlayer = (offset: number, pos: string) => {
+    const f = playerFirsts[(hash + offset) % playerFirsts.length];
+    const l = playerLasts[(hash + offset + 3) % playerLasts.length];
+    const c = clubs[(hash + offset + 7) % clubs.length];
+    const s = stats[(hash + offset + 2) % stats.length];
+    return { name: `${f} ${l}`, pos, club: c, keyStat: `${s} • key` };
+  };
 
   return {
     players: [
-      { name: p1Name, pos: "FW", club: clubs[hash % clubs.length], keyStat: `${stats[hash % stats.length]} • Key Player` },
-      { name: p2Name, pos: "MF", club: clubs[(hash + 4) % clubs.length], keyStat: `${stats[(hash + 2) % stats.length]} • 85% Rating` }
+      buildPlayer(0, "GK"),
+      buildPlayer(3, "DF"),
+      buildPlayer(6, "MF"),
+      buildPlayer(9, "MF"),
+      buildPlayer(12, "FW")
     ],
     tactics: hash % 2 === 0 ? "4-3-3 Balanced" : "4-2-3-1 Controlled"
   };
 }
 
 export default function MatchDetailsModal({ isOpen, onClose, m, tz }: MatchDetailsModalProps) {
+  const [activeTab, setActiveTab] = useState<'h' | 'a'>('h');
   const homeTeam = m.h || m._th;
   const awayTeam = m.a || m._ta;
   const st = m._st || "up";
@@ -274,53 +318,71 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz }: MatchDetai
           </div>
         </div>
 
-        {/* Matchup Insights & Players */}
+        {/* Matchup Insights & Players Roster Tabs */}
         <div className="mt-4 flex flex-col gap-3">
-          <div className="text-xs font-bold font-mono tracking-wider text-muted-foreground/70 uppercase flex items-center gap-1.5">
-            <Activity className="size-4 text-muted-foreground/50" />
-            Key Players &amp; Insights
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold font-mono tracking-wider text-muted-foreground/70 uppercase flex items-center gap-1.5">
+              <Activity className="size-4 text-muted-foreground/50" />
+              SQUADS &amp; ROSTERS
+            </span>
+            <div className="flex gap-1.5 p-0.5 bg-white/5 border border-white/10 rounded-lg select-none">
+              <button
+                type="button"
+                onClick={() => setActiveTab('h')}
+                className={`px-3 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase transition-all duration-200 flex items-center gap-1.5 ${
+                  activeTab === 'h'
+                    ? "bg-white/10 text-white shadow-sm ring-1 ring-white/15"
+                    : "text-muted-foreground/60 hover:text-white"
+                }`}
+              >
+                <span>{FLAGS[homeTeam || ""] || "⚽"}</span>
+                <span className="max-w-[70px] sm:max-w-none truncate">{homeTeam || "Home"}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('a')}
+                className={`px-3 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase transition-all duration-200 flex items-center gap-1.5 ${
+                  activeTab === 'a'
+                    ? "bg-white/10 text-white shadow-sm ring-1 ring-white/15"
+                    : "text-muted-foreground/60 hover:text-white"
+                }`}
+              >
+                <span>{FLAGS[awayTeam || ""] || "⚽"}</span>
+                <span className="max-w-[70px] sm:max-w-none truncate">{awayTeam || "Away"}</span>
+              </button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {/* Home Key Players */}
-            <div className="p-3 rounded-xl bg-white/3 border border-white/5 flex flex-col gap-2 min-w-0">
-              <span className="text-[10px] font-bold text-foreground/80 tracking-wide uppercase border-b border-white/5 pb-1 flex items-center gap-1">
-                <span className="size-1.5 rounded-full bg-blue-400"></span>
-                {homeTeam || "Home Team"} Key Player
-              </span>
-              {homeInsights.players.slice(0, 1).map((p, idx) => (
-                <div key={idx} className="flex flex-col gap-0.5 min-w-0">
-                  <span className="text-xs font-semibold text-foreground/90 truncate flex items-center gap-1">
-                    <User className="size-3 text-muted-foreground/50" />
-                    {p.name}
-                  </span>
-                  <span className="text-[9px] text-muted-foreground/60">{p.club} · {p.pos}</span>
-                  <span className="text-[9px] text-[#2DE89A] font-semibold font-mono bg-[#2DE89A]/5 px-1.5 py-0.5 rounded-md mt-1 border border-[#2DE89A]/10 w-fit">
+          <div className="flex flex-col gap-2 animate-in fade-in-30 duration-200">
+            {(activeTab === 'h' ? homeInsights : awayInsights).players.map((p, idx) => {
+              const isGK = p.pos === "GK";
+              const isDF = p.pos === "DF";
+              const isMF = p.pos === "MF";
+              const posColor = isGK 
+                ? "bg-amber-500/10 text-amber-400 border-amber-500/20" 
+                : isDF 
+                ? "bg-blue-500/10 text-blue-400 border-blue-500/20" 
+                : isMF 
+                ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" 
+                : "bg-rose-500/10 text-rose-400 border-rose-500/20";
+              
+              return (
+                <div key={idx} className="flex items-center justify-between gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:border-white/10 hover:bg-white/5 transition-all duration-200">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <span className={`w-8 text-center font-mono text-[9px] font-bold uppercase py-0.5 rounded border select-none ${posColor}`}>
+                      {p.pos}
+                    </span>
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-xs font-semibold text-foreground/90 truncate">{p.name}</span>
+                      <span className="text-[10px] text-muted-foreground/50 truncate">{p.club}</span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-mono text-[#2DE89A] font-semibold bg-[#2DE89A]/5 border border-[#2DE89A]/15 px-2 py-0.5 rounded-lg truncate max-w-[200px] text-right">
                     {p.keyStat}
                   </span>
                 </div>
-              ))}
-            </div>
-
-            {/* Away Key Players */}
-            <div className="p-3 rounded-xl bg-white/3 border border-white/5 flex flex-col gap-2 min-w-0">
-              <span className="text-[10px] font-bold text-foreground/80 tracking-wide uppercase border-b border-white/5 pb-1 flex items-center gap-1">
-                <span className="size-1.5 rounded-full bg-red-400"></span>
-                {awayTeam || "Away Team"} Key Player
-              </span>
-              {awayInsights.players.slice(0, 1).map((p, idx) => (
-                <div key={idx} className="flex flex-col gap-0.5 min-w-0">
-                  <span className="text-xs font-semibold text-foreground/90 truncate flex items-center gap-1">
-                    <User className="size-3 text-muted-foreground/50" />
-                    {p.name}
-                  </span>
-                  <span className="text-[9px] text-muted-foreground/60">{p.club} · {p.pos}</span>
-                  <span className="text-[9px] text-[#2DE89A] font-semibold font-mono bg-[#2DE89A]/5 px-1.5 py-0.5 rounded-md mt-1 border border-[#2DE89A]/10 w-fit">
-                    {p.keyStat}
-                  </span>
-                </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
         </div>
 
