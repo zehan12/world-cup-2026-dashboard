@@ -15,7 +15,7 @@ export default function Header({
 }: HeaderProps) {
   return (
     <header 
-      className="relative py-12 px-6 min-h-[340px] flex items-center border-b border-white/5 overflow-hidden"
+      className="relative py-16 px-6 min-h-[100dvh] md:pb-24 flex items-center border-b border-white/5 overflow-hidden"
       style={{
         background: `
           linear-gradient(90deg, rgba(15,15,15,0.96) 0%, rgba(15,15,15,0.85) 34%, rgba(15,15,15,0.45) 66%, rgba(15,15,15,0.55) 100%),
