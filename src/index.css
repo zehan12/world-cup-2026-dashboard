@@ -6,15 +6,15 @@
 @theme inline {
   --font-sans: 'Geist Variable', sans-serif;
   --font-mono: 'Geist Mono', 'Roboto Mono', monospace;
-  --color-fox: #2DE89A;
-  --color-fs1: #5AA9FF;
-  --color-telemundo: #9A82FF;
-  --color-universo: #F2A65A;
-  --color-gold: #F0B33A;
-  --color-red: #F0524B;
-  --color-panel: #111A2B;
-  --color-panel-dark: #0E1525;
-  --color-line: rgba(255, 255, 255, 0.08);
+  --color-fox: #05FF9B;
+  --color-fs1: #00D2FF;
+  --color-telemundo: #B388FF;
+  --color-universo: #FF9100;
+  --color-gold: #FFD700;
+  --color-red: #FF1744;
+  --color-panel: #0F1423;
+  --color-panel-dark: #0B0E1A;
+  --color-line: rgba(255, 255, 255, 0.05);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -38,34 +38,34 @@
 }
 
 :root {
-  /* Default to the beautiful dark sports dashboard theme */
-  --background: #0A0F1C;
-  --foreground: #EAF0FA;
+  /* Ultra-Premium Cyber Emerald & Obsidian Carbon theme */
+  --background: #070B13;
+  --foreground: #F1F5F9;
   
-  --card: #111A2B;
-  --card-foreground: #EAF0FA;
+  --card: #0F1423;
+  --card-foreground: #F1F5F9;
   
-  --popover: #0E1525;
-  --popover-foreground: #EAF0FA;
+  --popover: #0B0E1A;
+  --popover-foreground: #F1F5F9;
   
-  --primary: #F0B33A;
-  --primary-foreground: #0A0F1C;
+  --primary: #05FF9B;
+  --primary-foreground: #070B13;
   
-  --secondary: #0E1525;
-  --secondary-foreground: #EAF0FA;
+  --secondary: #161C30;
+  --secondary-foreground: #F1F5F9;
   
-  --muted: #0E1525;
-  --muted-foreground: #8493AD;
+  --muted: #161C30;
+  --muted-foreground: #7D8CA3;
   
-  --accent: rgba(45, 232, 154, 0.15);
-  --accent-foreground: #2DE89A;
+  --accent: rgba(5, 255, 155, 0.12);
+  --accent-foreground: #05FF9B;
   
-  --destructive: #F0524B;
-  --destructive-foreground: #EAF0FA;
+  --destructive: #FF1744;
+  --destructive-foreground: #F1F5F9;
   
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.14);
-  --ring: #2DE89A;
+  --border: rgba(255, 255, 255, 0.05);
+  --input: rgba(255, 255, 255, 0.07);
+  --ring: #05FF9B;
   
   --radius: 0.75rem;
   

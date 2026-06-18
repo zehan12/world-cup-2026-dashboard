@@ -22,19 +22,19 @@ export default function BroadcastKey({
     <section className="w-full max-w-[1180px] mx-auto mt-6 px-6 flex flex-wrap gap-4 items-center justify-between text-xs text-[#8493AD]">
       <div className="flex flex-wrap gap-3 items-center">
         <div className="flex items-center gap-2 bg-white/3 border border-white/5 py-1.5 px-3 rounded-lg">
-          <span className="w-2.5 h-2.5 rounded-sm bg-[#2DE89A]"></span>
+          <span className="w-2.5 h-2.5 rounded-sm bg-fox"></span>
           <span className="font-semibold text-white font-mono">FOX</span>
-          <span className="w-2.5 h-2.5 rounded-sm bg-[#5AA9FF]"></span>
+          <span className="w-2.5 h-2.5 rounded-sm bg-fs1"></span>
           <span className="font-semibold text-white font-mono">FS1</span>
-          <span className="text-[11px] text-[#5E6C84]">— English TV</span>
+          <span className="text-[11px] text-muted-foreground/60">— English TV</span>
         </div>
 
         <div className="flex items-center gap-2 bg-white/3 border border-white/5 py-1.5 px-3 rounded-lg">
-          <span className="w-2.5 h-2.5 rounded-sm bg-[#9A82FF]"></span>
+          <span className="w-2.5 h-2.5 rounded-sm bg-telemundo"></span>
           <span className="font-semibold text-white font-mono">Telemundo</span>
-          <span className="w-2.5 h-2.5 rounded-sm bg-[#F2A65A]"></span>
+          <span className="w-2.5 h-2.5 rounded-sm bg-universo"></span>
           <span className="font-semibold text-white font-mono">Universo</span>
-          <span className="text-[11px] text-[#5E6C84]">— Spanish TV</span>
+          <span className="text-[11px] text-muted-foreground/60">— Spanish TV</span>
         </div>
 
       </div>
