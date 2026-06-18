@@ -14,18 +14,21 @@ export default function Header({
   isFresh
 }: HeaderProps) {
   return (
-    <header 
-      className="relative py-12 px-6 min-h-[340px] flex items-center border-b border-white/5 overflow-hidden"
-      style={{
-        background: `
-          linear-gradient(90deg, rgba(15,15,15,0.96) 0%, rgba(15,15,15,0.85) 34%, rgba(15,15,15,0.45) 66%, rgba(15,15,15,0.55) 100%),
-          linear-gradient(180deg, transparent 42%, rgba(15,15,15,0.65) 100%),
-          radial-gradient(900px 240px at 12% -40%, rgba(5,255,155,0.15), transparent 70%),
-          url('/hero.jpg') center right / cover no-repeat,
-          #0f0f0f
-        `
-      }}
-    >
+    <header className="relative py-12 px-6 min-h-[340px] flex items-center border-b border-white/5 overflow-hidden bg-[#0f0f0f]">
+      {/* Background Image Container for Perfect Fitting & Blending */}
+      <div className="absolute inset-0 z-0 select-none pointer-events-none">
+        <img 
+          src="/hero.jpg" 
+          alt="World Cup 2026 Hero" 
+          className="w-full h-full object-cover object-center md:object-right opacity-35 mix-blend-luminosity"
+        />
+        {/* Responsive Gradients to Blend image into #0f0f0f */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] via-[#0f0f0f]/92 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-[#0f0f0f]/30" />
+        {/* Accent Radial Glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(900px_240px_at_12%_-40%,rgba(5,255,155,0.15),transparent_70%)]" />
+      </div>
+
       <div className="w-full max-w-[1180px] mx-auto z-10">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <div className="font-mono text-xs tracking-[0.25em] text-[#2DE89A] uppercase flex items-center gap-2.5">
