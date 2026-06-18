@@ -39,22 +39,22 @@
 
 :root {
   /* Ultra-Premium Cyber Emerald & Obsidian Carbon theme */
-  --background: #070B13;
+  --background: #030508;
   --foreground: #F1F5F9;
   
-  --card: #0F1423;
+  --card: #090C12;
   --card-foreground: #F1F5F9;
   
-  --popover: #0B0E1A;
+  --popover: #06080C;
   --popover-foreground: #F1F5F9;
   
   --primary: #05FF9B;
-  --primary-foreground: #070B13;
+  --primary-foreground: #030508;
   
-  --secondary: #161C30;
+  --secondary: #0E121C;
   --secondary-foreground: #F1F5F9;
   
-  --muted: #161C30;
+  --muted: #0E121C;
   --muted-foreground: #7D8CA3;
   
   --accent: rgba(5, 255, 155, 0.12);
