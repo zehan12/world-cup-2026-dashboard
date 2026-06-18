@@ -15,19 +15,13 @@ export default function Header({
 }: HeaderProps) {
   return (
     <header className="relative py-16 px-6 min-h-[460px] flex items-end border-b border-white/5 overflow-hidden bg-[#0f0f0f]">
-      {/* Background Image Container for Perfect Fitting & Blending */}
+      {/* Background Image Container - Full Image without Backdrop/Overlay */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none">
         <img 
           src="/hero.jpg" 
           alt="World Cup 2026 Hero" 
-          className="w-full h-full object-cover object-center opacity-70"
+          className="w-full h-full object-cover object-center"
         />
-        {/* Cinematic dark tint and gradients matching premium football theme */}
-        <div className="absolute inset-0 bg-[#0f0f0f]/45" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] via-[#0f0f0f]/80 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-[#0f0f0f]/20" />
-        {/* Accent Radial Glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(1000px_300px_at_15%_-30%,rgba(5,255,155,0.12),transparent_70%)]" />
       </div>
 
       <div className="w-full max-w-[1180px] mx-auto z-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
@@ -43,19 +37,19 @@ export default function Header({
             </span>
           </div>
           
-          <h1 className="font-bold text-[clamp(36px,5.5vw,68px)] leading-[0.95] tracking-wide uppercase select-none">
+          <h1 className="font-bold text-[clamp(36px,5.5vw,68px)] leading-[0.95] tracking-wide uppercase select-none text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
             Every Match. <br />
             <span className="text-[#F0B33A]">One Screen.</span>
           </h1>
           
-          <p className="text-muted-foreground text-[14px] md:text-[15px] max-w-[580px] leading-relaxed">
+          <p className="text-muted-foreground text-[14px] md:text-[15px] max-w-[580px] leading-relaxed drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
             All 104 matches — kickoff times in your local timezone, live scores, and match details. June 11 – July 19, 2026.
           </p>
         </div>
 
-        {/* Right Column: Floating Stats Card mimicking Subscription Card style */}
+        {/* Right Column: Floating Stats Card */}
         <div className="md:col-span-5 flex justify-end w-full">
-          <div className="backdrop-blur-md bg-black/45 border border-white/10 rounded-2xl overflow-hidden max-w-[340px] w-full shadow-2xl">
+          <div className="backdrop-blur-md bg-black/60 border border-white/10 rounded-2xl overflow-hidden max-w-[340px] w-full shadow-2xl">
             {/* Solid White Banner Header */}
             <div className="bg-white text-black px-5 py-3 font-mono text-[10px] tracking-wider uppercase font-bold">
               Tournament Status
