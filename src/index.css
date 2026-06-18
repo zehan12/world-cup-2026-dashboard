@@ -42,19 +42,19 @@
   --background: #1e1e1e;
   --foreground: #F1F5F9;
   
-  --card: #252526;
+  --card: #121212;
   --card-foreground: #F1F5F9;
   
-  --popover: #2d2d30;
+  --popover: #151515;
   --popover-foreground: #F1F5F9;
   
   --primary: #05FF9B;
-  --primary-foreground: #1e1e1e;
+  --primary-foreground: #121212;
   
-  --secondary: #2d2d30;
+  --secondary: #161616;
   --secondary-foreground: #F1F5F9;
   
-  --muted: #2d2d30;
+  --muted: #161616;
   --muted-foreground: #7D8CA3;
   
   --accent: rgba(5, 255, 155, 0.12);
