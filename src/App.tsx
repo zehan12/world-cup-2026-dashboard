@@ -104,7 +104,7 @@ export default function App() {
   const filteredUnplayedCount = filteredMatches.filter(m => m._st !== "ft").length;
 
   return (
-    <div className="min-h-screen bg-[#0A0F1C] text-[#EAF0FA] flex flex-col antialiased">
+    <div className="min-h-screen bg-background text-foreground flex flex-col antialiased">
       <Header
         totalMatches={totalMatches}
         matchesTodayCount={matchesTodayCount}

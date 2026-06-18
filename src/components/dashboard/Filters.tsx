@@ -64,18 +64,18 @@ export default function Filters({
   const totalActiveFilters = [q, stage, team, tv, today, up, party].filter(Boolean).length;
 
   return (
-    <section className="sticky top-0 z-30 bg-[#0A0F1C]/90 backdrop-blur-md border-b border-white/5 py-4 px-6 mt-6">
+    <section className="sticky top-0 z-30 bg-background/95 backdrop-blur-md border-b border-white/5 py-4 px-6 mt-6">
       <div className="max-w-[1180px] mx-auto flex flex-col gap-4">
         <div className="flex gap-3 flex-wrap items-center">
           {/* Search Input */}
           <div className="relative flex-1 min-w-[200px] sm:min-w-[280px]">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-[#8493AD] opacity-50" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground/50" />
             <Input
               type="text"
               placeholder="Search team, venue, or city..."
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              className="w-full bg-white/3 border-white/5 pl-11 pr-4 py-2.5 rounded-xl text-white placeholder-[#5E6C84] focus-visible:ring-[#2DE89A] focus-visible:border-[#2DE89A]/40 transition-all duration-300 hover:border-white/10"
+              className="w-full bg-white/3 border-white/5 pl-11 pr-4 py-2.5 rounded-xl text-white placeholder-muted-foreground/60 focus-visible:ring-fox focus-visible:border-fox/40 transition-all duration-300 hover:border-white/10"
             />
           </div>
 
@@ -83,12 +83,12 @@ export default function Filters({
           <Button
             variant="outline"
             onClick={() => setFilterBodyOpen(!filterBodyOpen)}
-            className={`md:hidden flex items-center gap-2 border-white/5 text-[#EAF0FA] bg-white/3 rounded-xl px-4 py-2.5 hover:bg-white/5 transition-all duration-300 ${filterBodyOpen ? "border-[#2DE89A]/40 text-[#2DE89A]" : ""}`}
+            className={`md:hidden flex items-center gap-2 border-white/5 text-foreground bg-white/3 rounded-xl px-4 py-2.5 hover:bg-white/5 transition-all duration-300 ${filterBodyOpen ? "border-fox/40 text-fox" : ""}`}
           >
             <SlidersHorizontal className="size-4" />
             <span>Filters</span>
             {totalActiveFilters > 0 && (
-              <Badge variant="destructive" className="ml-1 px-1.5 py-0.5 text-[10px] bg-[#F0B33A] text-[#231803] hover:bg-[#F0B33A]">
+              <Badge variant="destructive" className="ml-1 px-1.5 py-0.5 text-[10px] bg-gold text-primary-foreground hover:bg-gold">
                 {totalActiveFilters}
               </Badge>
             )}
@@ -100,10 +100,10 @@ export default function Filters({
             
             {/* Rounds Dropdown */}
             <Select value={stage || "_all"} onValueChange={v => setStage(v === "_all" ? "" : v)}>
-              <SelectTrigger className="w-full md:w-[150px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-[#2DE89A]">
+              <SelectTrigger className="w-full md:w-[150px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-fox">
                 <SelectValue placeholder="All rounds" />
               </SelectTrigger>
-              <SelectContent className="bg-[#0E1525] border-white/10 text-white">
+              <SelectContent className="bg-popover border-white/10 text-white">
                 <SelectItem value="_all">All rounds</SelectItem>
                 <SelectItem value="group">Group stage</SelectItem>
                 <SelectItem value="Round of 32">Round of 32</SelectItem>
@@ -116,10 +116,10 @@ export default function Filters({
 
             {/* Teams Dropdown */}
             <Select value={team || "_all"} onValueChange={v => setTeam(v === "_all" ? "" : v)}>
-              <SelectTrigger className="w-full md:w-[155px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-[#2DE89A]">
+              <SelectTrigger className="w-full md:w-[155px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-fox">
                 <SelectValue placeholder="All teams" />
               </SelectTrigger>
-              <SelectContent className="bg-[#0E1525] border-white/10 text-white max-h-[300px]">
+              <SelectContent className="bg-popover border-white/10 text-white max-h-[300px]">
                 <SelectItem value="_all">All teams</SelectItem>
                 {teamList.map(t => (
                   <SelectItem key={t} value={t}>
@@ -132,10 +132,10 @@ export default function Filters({
 
             {/* TV Dropdown */}
             <Select value={tv || "_all"} onValueChange={v => setTv(v === "_all" ? "" : v)}>
-              <SelectTrigger className="w-full md:w-[145px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-[#2DE89A]">
+              <SelectTrigger className="w-full md:w-[145px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-fox">
                 <SelectValue placeholder="FOX &amp; FS1" />
               </SelectTrigger>
-              <SelectContent className="bg-[#0E1525] border-white/10 text-white">
+              <SelectContent className="bg-popover border-white/10 text-white">
                 <SelectItem value="_all">FOX &amp; FS1</SelectItem>
                 <SelectItem value="FOX">FOX only</SelectItem>
                 <SelectItem value="FS1">FS1 only</SelectItem>
@@ -144,10 +144,10 @@ export default function Filters({
 
             {/* Timezone Dropdown */}
             <Select value={tz} onValueChange={setTz}>
-              <SelectTrigger className="w-full md:w-[185px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-[#2DE89A]">
+              <SelectTrigger className="w-full md:w-[185px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-fox">
                 <SelectValue placeholder="Times: Eastern (ET)" />
               </SelectTrigger>
-              <SelectContent className="bg-[#0E1525] border-white/10 text-white">
+              <SelectContent className="bg-popover border-white/10 text-white">
                 <SelectItem value="Eastern">Times: Eastern (ET)</SelectItem>
                 <SelectItem value="Auto">Times: My timezone</SelectItem>
                 <SelectItem value="Pacific">Times: Pacific</SelectItem>
@@ -161,22 +161,22 @@ export default function Filters({
             {/* Switches */}
             <div className="flex flex-wrap gap-4 items-center bg-white/3 border border-white/5 py-1.5 px-4 rounded-xl text-xs md:text-sm">
               <label className="flex items-center gap-2.5 cursor-pointer select-none">
-                <Switch checked={today} onCheckedChange={setToday} className="data-[state=checked]:bg-[#F0B33A] data-[state=unchecked]:bg-[#0E1525]" />
-                <span className={today ? "text-[#F0B33A]" : "text-[#8493AD]"}>Today</span>
+                <Switch checked={today} onCheckedChange={setToday} className="data-[state=checked]:bg-gold data-[state=unchecked]:bg-popover" />
+                <span className={today ? "text-gold" : "text-muted-foreground"}>Today</span>
               </label>
 
               <div className="w-[1px] h-4 bg-white/10 hidden sm:block"></div>
 
               <label className="flex items-center gap-2.5 cursor-pointer select-none">
-                <Switch checked={up} onCheckedChange={setUp} className="data-[state=checked]:bg-[#F0B33A] data-[state=unchecked]:bg-[#0E1525]" />
-                <span className={up ? "text-[#F0B33A]" : "text-[#8493AD]"}>Upcoming</span>
+                <Switch checked={up} onCheckedChange={setUp} className="data-[state=checked]:bg-gold data-[state=unchecked]:bg-popover" />
+                <span className={up ? "text-gold" : "text-muted-foreground"}>Upcoming</span>
               </label>
 
               <div className="w-[1px] h-4 bg-white/10 hidden sm:block"></div>
 
               <label className="flex items-center gap-2.5 cursor-pointer select-none">
-                <Switch checked={party} onCheckedChange={setParty} className="data-[state=checked]:bg-[#F0B33A] data-[state=unchecked]:bg-[#0E1525]" />
-                <span className={party ? "text-[#F0B33A]" : "text-[#8493AD]"}>Watch party</span>
+                <Switch checked={party} onCheckedChange={setParty} className="data-[state=checked]:bg-gold data-[state=unchecked]:bg-popover" />
+                <span className={party ? "text-gold" : "text-muted-foreground"}>Watch party</span>
               </label>
             </div>
 
@@ -187,7 +187,7 @@ export default function Filters({
                 size="icon"
                 onClick={() => undo()}
                 disabled={pastStates.length === 0}
-                className="size-8 text-[#8493AD] hover:text-white disabled:opacity-30 disabled:hover:text-[#8493AD] rounded-lg cursor-pointer"
+                className="size-8 text-muted-foreground hover:text-white disabled:opacity-30 disabled:hover:text-muted-foreground rounded-lg cursor-pointer"
                 title="Undo"
               >
                 <Undo className="size-4" />
@@ -197,7 +197,7 @@ export default function Filters({
                 size="icon"
                 onClick={() => redo()}
                 disabled={futureStates.length === 0}
-                className="size-8 text-[#8493AD] hover:text-white disabled:opacity-30 disabled:hover:text-[#8493AD] rounded-lg cursor-pointer"
+                className="size-8 text-muted-foreground hover:text-white disabled:opacity-30 disabled:hover:text-muted-foreground rounded-lg cursor-pointer"
                 title="Redo"
               >
                 <Redo className="size-4" />
@@ -208,7 +208,7 @@ export default function Filters({
             <Button
               variant="ghost"
               onClick={resetFilters}
-              className="w-full md:w-auto text-[#8493AD] hover:text-white border border-white/5 md:border-none hover:bg-white/5 py-2.5 rounded-xl cursor-pointer transition-colors duration-300"
+              className="w-full md:w-auto text-muted-foreground hover:text-white border border-white/5 md:border-none hover:bg-white/5 py-2.5 rounded-xl cursor-pointer transition-colors duration-300"
             >
               Reset
             </Button>
@@ -216,7 +216,7 @@ export default function Filters({
             {/* Add to Calendar Button */}
             <Button
               onClick={handleCalendarExport}
-              className="w-full md:w-auto bg-[#F0B33A] text-[#231803] hover:bg-[#F0B33A]/90 hover:scale-[1.02] shadow-[0_4px_12px_rgba(240,179,58,0.15)] font-bold py-2.5 rounded-xl cursor-pointer transition-all duration-300"
+              className="w-full md:w-auto bg-gold text-primary-foreground hover:bg-gold/90 hover:scale-[1.02] shadow-[0_4px_12px_rgba(255,215,0,0.15)] font-bold py-2.5 rounded-xl cursor-pointer transition-all duration-300"
             >
               <Calendar className="size-4 mr-2" />
               {party ? (
