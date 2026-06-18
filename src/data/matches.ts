@@ -1,0 +1,174 @@
+export interface Match {
+  d: string;       // Date YYYY-MM-DD
+  t: string;       // display time string, e.g. "3:00 PM", or "FT"/"TBD"
+  sk: number;      // sort key: kickoff hour 0–24. 24 = post-midnight game listed under prior day
+  h?: string;      // home team
+  a?: string;      // away team
+  res?: string;    // static score (present => played)
+  grp: string;     // group/round label, e.g. "Group A", "Round of 32", "Final"
+  v: string;       // venue
+  tv: string;      // English channel "FOX"/"FS1"/"TBD"
+  desc?: string;   // knockout matchup text like "1C vs 2F" when teams aren't known
+  
+  // Dynamic fields populated on load or via ESPN hydration
+  _st?: "live" | "ft" | "up";
+  _detail?: string;
+  _scoreH?: number | string;
+  _scoreA?: number | string;
+  _th?: string;
+  _ta?: string;
+  es?: "Telemundo" | "Universo";
+}
+
+export const FLAGS: Record<string, string> = {
+  "Mexico": "🇲🇽", "South Africa": "🇿🇦", "South Korea": "🇰🇷", "Czechia": "🇨🇿", "Canada": "🇨🇦",
+  "Bosnia and Herzegovina": "🇧🇦", "USA": "🇺🇸", "Paraguay": "🇵🇾", "Qatar": "🇶🇦", "Switzerland": "🇨🇭",
+  "Brazil": "🇧🇷", "Morocco": "🇲🇦", "Haiti": "🇭🇹", "Scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "Australia": "🇦🇺", "Türkiye": "🇹🇷",
+  "Germany": "🇩🇪", "Curaçao": "🇨🇼", "Netherlands": "🇳🇱", "Japan": "🇯🇵", "Ivory Coast": "🇨🇮", "Ecuador": "🇪🇨",
+  "Tunisia": "🇹🇳", "Sweden": "🇸🇪", "Spain": "🇪🇸", "Cape Verde": "🇨🇻", "Belgium": "🇧🇪", "Egypt": "🇪🇬",
+  "Saudi Arabia": "🇸🇦", "Uruguay": "🇺🇾", "Iran": "🇮🇷", "New Zealand": "🇳🇿", "France": "🇫🇷", "Senegal": "🇸🇳",
+  "Iraq": "🇮🇶", "Norway": "🇳🇴", "Argentina": "🇦🇷", "Algeria": "🇩🇿", "Austria": "🇦🇹", "Jordan": "🇯🇴",
+  "Portugal": "🇵🇹", "DR Congo": "🇨🇩", "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Croatia": "🇭🇷", "Ghana": "🇬🇭", "Panama": "🇵🇦",
+  "Uzbekistan": "🇺🇿", "Colombia": "🇨🇴"
+};
+
+export const UNIVERSO = new Set<string>([
+  "Bosnia and Herzegovina|Qatar", "Morocco|Haiti", "South Korea|South Africa",
+  "Curaçao|Ivory Coast", "Japan|Sweden", "Paraguay|Australia",
+  "Senegal|Iraq", "Cape Verde|Saudi Arabia", "Egypt|Iran",
+  "Croatia|Ghana", "DR Congo|Uzbekistan", "Algeria|Austria"
+]);
+
+export const INITIAL_MATCHES: Match[] = [
+  // June 11
+  { d: "2026-06-11", t: "FT", sk: 12, h: "Mexico", a: "South Africa", res: "2-0", grp: "Group A", v: "Mexico City Stadium", tv: "FOX" },
+  { d: "2026-06-11", t: "FT", sk: 15, h: "South Korea", a: "Czechia", res: "2-1", grp: "Group A", v: "Guadalajara Stadium", tv: "FOX" },
+  // June 12
+  { d: "2026-06-12", t: "FT", sk: 12, h: "Canada", a: "Bosnia and Herzegovina", res: "1-1", grp: "Group B", v: "Toronto Stadium", tv: "FOX" },
+  { d: "2026-06-12", t: "FT", sk: 18, h: "USA", a: "Paraguay", res: "4-1", grp: "Group D", v: "Los Angeles Stadium", tv: "FOX" },
+  // June 13
+  { d: "2026-06-13", t: "3:00 PM", sk: 15, h: "Qatar", a: "Switzerland", grp: "Group B", v: "San Francisco Bay Stadium", tv: "FOX" },
+  { d: "2026-06-13", t: "6:00 PM", sk: 18, h: "Brazil", a: "Morocco", grp: "Group C", v: "New York New Jersey Stadium", tv: "FOX" },
+  { d: "2026-06-13", t: "9:00 PM", sk: 21, h: "Haiti", a: "Scotland", grp: "Group C", v: "Boston Stadium", tv: "FOX" },
+  { d: "2026-06-13", t: "12:00 AM", sk: 24, h: "Australia", a: "Türkiye", grp: "Group D", v: "BC Place Vancouver", tv: "FS1" },
+  // June 14
+  { d: "2026-06-14", t: "1:00 PM", sk: 13, h: "Germany", a: "Curaçao", grp: "Group E", v: "Houston Stadium", tv: "FOX" },
+  { d: "2026-06-14", t: "4:00 PM", sk: 16, h: "Netherlands", a: "Japan", grp: "Group F", v: "Dallas Stadium", tv: "FOX" },
+  { d: "2026-06-14", t: "7:00 PM", sk: 19, h: "Ivory Coast", a: "Ecuador", grp: "Group E", v: "Philadelphia Stadium", tv: "FS1" },
+  { d: "2026-06-14", t: "10:00 PM", sk: 22, h: "Tunisia", a: "Sweden", grp: "Group F", v: "Monterrey Stadium", tv: "FS1" },
+  // June 15
+  { d: "2026-06-15", t: "12:00 PM", sk: 12, h: "Spain", a: "Cape Verde", grp: "Group H", v: "Atlanta Stadium", tv: "FOX" },
+  { d: "2026-06-15", t: "3:00 PM", sk: 15, h: "Belgium", a: "Egypt", grp: "Group G", v: "Seattle Stadium", tv: "FOX" },
+  { d: "2026-06-15", t: "6:00 PM", sk: 18, h: "Saudi Arabia", a: "Uruguay", grp: "Group H", v: "Miami Stadium", tv: "FS1" },
+  { d: "2026-06-15", t: "9:00 PM", sk: 21, h: "Iran", a: "New Zealand", grp: "Group G", v: "Los Angeles Stadium", tv: "FS1" },
+  // June 16
+  { d: "2026-06-16", t: "3:00 PM", sk: 15, h: "France", a: "Senegal", grp: "Group I", v: "New York New Jersey Stadium", tv: "FOX" },
+  { d: "2026-06-16", t: "6:00 PM", sk: 18, h: "Iraq", a: "Norway", grp: "Group I", v: "Boston Stadium", tv: "FOX" },
+  { d: "2026-06-16", t: "9:00 PM", sk: 21, h: "Argentina", a: "Algeria", grp: "Group J", v: "Kansas City Stadium", tv: "FOX" },
+  { d: "2026-06-16", t: "12:00 AM", sk: 24, h: "Austria", a: "Jordan", grp: "Group J", v: "San Francisco Bay Stadium", tv: "FS1" },
+  // June 17
+  { d: "2026-06-17", t: "1:00 PM", sk: 13, h: "Portugal", a: "DR Congo", grp: "Group K", v: "Houston Stadium", tv: "FOX" },
+  { d: "2026-06-17", t: "4:00 PM", sk: 16, h: "England", a: "Croatia", grp: "Group L", v: "Dallas Stadium", tv: "FOX" },
+  { d: "2026-06-17", t: "7:00 PM", sk: 19, h: "Ghana", a: "Panama", grp: "Group L", v: "Toronto Stadium", tv: "FS1" },
+  { d: "2026-06-17", t: "10:00 PM", sk: 22, h: "Uzbekistan", a: "Colombia", grp: "Group K", v: "Mexico City Stadium", tv: "FS1" },
+  // June 18
+  { d: "2026-06-18", t: "12:00 PM", sk: 12, h: "Czechia", a: "South Africa", grp: "Group A", v: "Atlanta Stadium", tv: "FOX" },
+  { d: "2026-06-18", t: "3:00 PM", sk: 15, h: "Switzerland", a: "Bosnia and Herzegovina", grp: "Group B", v: "Los Angeles Stadium", tv: "FOX" },
+  { d: "2026-06-18", t: "6:00 PM", sk: 18, h: "Canada", a: "Qatar", grp: "Group B", v: "BC Place Vancouver", tv: "FS1" },
+  { d: "2026-06-18", t: "9:00 PM", sk: 21, h: "Mexico", a: "South Korea", grp: "Group A", v: "Guadalajara Stadium", tv: "FOX" },
+  // June 19
+  { d: "2026-06-19", t: "3:00 PM", sk: 15, h: "USA", a: "Australia", grp: "Group D", v: "Seattle Stadium", tv: "FOX" },
+  { d: "2026-06-19", t: "3:00 PM", sk: 15.1, h: "Scotland", a: "Morocco", grp: "Group C", v: "Boston Stadium", tv: "FOX" },
+  { d: "2026-06-19", t: "9:00 PM", sk: 21, h: "Brazil", a: "Haiti", grp: "Group C", v: "Philadelphia Stadium", tv: "FOX" },
+  { d: "2026-06-19", t: "12:00 AM", sk: 24, h: "Türkiye", a: "Paraguay", grp: "Group D", v: "San Francisco Bay Stadium", tv: "FS1" },
+  // June 20
+  { d: "2026-06-20", t: "1:00 PM", sk: 13, h: "Netherlands", a: "Sweden", grp: "Group F", v: "Houston Stadium", tv: "FOX" },
+  { d: "2026-06-20", t: "4:00 PM", sk: 16, h: "Germany", a: "Ivory Coast", grp: "Group E", v: "Toronto Stadium", tv: "FOX" },
+  { d: "2026-06-20", t: "8:00 PM", sk: 20, h: "Ecuador", a: "Curaçao", grp: "Group E", v: "Kansas City Stadium", tv: "FS1" },
+  { d: "2026-06-20", t: "12:00 AM", sk: 24, h: "Tunisia", a: "Japan", grp: "Group F", v: "Monterrey Stadium", tv: "FS1" },
+  // June 21
+  { d: "2026-06-21", t: "12:00 PM", sk: 12, h: "Spain", a: "Saudi Arabia", grp: "Group H", v: "Atlanta Stadium", tv: "FOX" },
+  { d: "2026-06-21", t: "3:00 PM", sk: 15, h: "Belgium", a: "Iran", grp: "Group G", v: "Los Angeles Stadium", tv: "FS1" },
+  { d: "2026-06-21", t: "6:00 PM", sk: 18, h: "Uruguay", a: "Cape Verde", grp: "Group H", v: "Miami Stadium", tv: "FS1" },
+  { d: "2026-06-21", t: "9:00 PM", sk: 21, h: "New Zealand", a: "Egypt", grp: "Group G", v: "BC Place Vancouver", tv: "FS1" },
+  // June 22
+  { d: "2026-06-22", t: "1:00 PM", sk: 13, h: "Argentina", a: "Austria", grp: "Group J", v: "Dallas Stadium", tv: "FOX" },
+  { d: "2026-06-22", t: "5:00 PM", sk: 17, h: "France", a: "Iraq", grp: "Group I", v: "Philadelphia Stadium", tv: "FOX" },
+  { d: "2026-06-22", t: "8:00 PM", sk: 20, h: "Norway", a: "Senegal", grp: "Group I", v: "New York New Jersey Stadium", tv: "FOX" },
+  { d: "2026-06-22", t: "11:00 PM", sk: 23, h: "Jordan", a: "Algeria", grp: "Group J", v: "San Francisco Bay Stadium", tv: "FS1" },
+  // June 23
+  { d: "2026-06-23", t: "1:00 PM", sk: 13, h: "Portugal", a: "Uzbekistan", grp: "Group K", v: "Houston Stadium", tv: "FOX" },
+  { d: "2026-06-23", t: "4:00 PM", sk: 16, h: "England", a: "Ghana", grp: "Group L", v: "Boston Stadium", tv: "FOX" },
+  { d: "2026-06-23", t: "7:00 PM", sk: 19, h: "Panama", a: "Croatia", grp: "Group L", v: "Toronto Stadium", tv: "FOX" },
+  { d: "2026-06-23", t: "10:00 PM", sk: 22, h: "Colombia", a: "DR Congo", grp: "Group K", v: "Guadalajara Stadium", tv: "FS1" },
+  // June 24
+  { d: "2026-06-24", t: "3:00 PM", sk: 15, h: "Switzerland", a: "Canada", grp: "Group B", v: "BC Place Vancouver", tv: "FOX" },
+  { d: "2026-06-24", t: "3:00 PM", sk: 15.1, h: "Bosnia and Herzegovina", a: "Qatar", grp: "Group B", v: "Seattle Stadium", tv: "FS1" },
+  { d: "2026-06-24", t: "6:00 PM", sk: 18, h: "Brazil", a: "Scotland", grp: "Group C", v: "Miami Stadium", tv: "FOX" },
+  { d: "2026-06-24", t: "6:00 PM", sk: 18.1, h: "Morocco", a: "Haiti", grp: "Group C", v: "Atlanta Stadium", tv: "FS1" },
+  { d: "2026-06-24", t: "9:00 PM", sk: 21, h: "Mexico", a: "Czechia", grp: "Group A", v: "Mexico City Stadium", tv: "FOX" },
+  { d: "2026-06-24", t: "9:00 PM", sk: 21.1, h: "South Korea", a: "South Africa", grp: "Group A", v: "Monterrey Stadium", tv: "FS1" },
+  // June 25
+  { d: "2026-06-25", t: "4:00 PM", sk: 16, h: "Ecuador", a: "Germany", grp: "Group E", v: "New York New Jersey Stadium", tv: "FOX" },
+  { d: "2026-06-25", t: "4:00 PM", sk: 16.1, h: "Curaçao", a: "Ivory Coast", grp: "Group E", v: "Philadelphia Stadium", tv: "FS1" },
+  { d: "2026-06-25", t: "7:00 PM", sk: 19, h: "Tunisia", a: "Netherlands", grp: "Group F", v: "Kansas City Stadium", tv: "FOX" },
+  { d: "2026-06-25", t: "7:00 PM", sk: 19.1, h: "Japan", a: "Sweden", grp: "Group F", v: "Dallas Stadium", tv: "FS1" },
+  { d: "2026-06-25", t: "10:00 PM", sk: 22, h: "USA", a: "Türkiye", grp: "Group D", v: "Los Angeles Stadium", tv: "FOX" },
+  { d: "2026-06-25", t: "10:00 PM", sk: 22.1, h: "Paraguay", a: "Australia", grp: "Group D", v: "San Francisco Bay Stadium", tv: "FS1" },
+  // June 26
+  { d: "2026-06-26", t: "3:00 PM", sk: 15, h: "Norway", a: "France", grp: "Group I", v: "Boston Stadium", tv: "FOX" },
+  { d: "2026-06-26", t: "3:00 PM", sk: 15.1, h: "Senegal", a: "Iraq", grp: "Group I", v: "Toronto Stadium", tv: "FS1" },
+  { d: "2026-06-26", t: "8:00 PM", sk: 20, h: "Uruguay", a: "Spain", grp: "Group H", v: "Guadalajara Stadium", tv: "FOX" },
+  { d: "2026-06-26", t: "8:00 PM", sk: 20.1, h: "Cape Verde", a: "Saudi Arabia", grp: "Group H", v: "Houston Stadium", tv: "FS1" },
+  { d: "2026-06-26", t: "11:00 PM", sk: 23, h: "New Zealand", a: "Belgium", grp: "Group G", v: "BC Place Vancouver", tv: "FOX" },
+  { d: "2026-06-26", t: "11:00 PM", sk: 23.1, h: "Egypt", a: "Iran", grp: "Group G", v: "Seattle Stadium", tv: "FS1" },
+  // June 27
+  { d: "2026-06-27", t: "5:00 PM", sk: 17, h: "Panama", a: "England", grp: "Group L", v: "New York New Jersey Stadium", tv: "FOX" },
+  { d: "2026-06-27", t: "5:00 PM", sk: 17.1, h: "Croatia", a: "Ghana", grp: "Group L", v: "Philadelphia Stadium", tv: "FS1" },
+  { d: "2026-06-27", t: "7:30 PM", sk: 19.5, h: "Colombia", a: "Portugal", grp: "Group K", v: "Miami Stadium", tv: "FOX" },
+  { d: "2026-06-27", t: "7:30 PM", sk: 19.6, h: "DR Congo", a: "Uzbekistan", grp: "Group K", v: "Atlanta Stadium", tv: "FS1" },
+  { d: "2026-06-27", t: "10:00 PM", sk: 22, h: "Argentina", a: "Jordan", grp: "Group J", v: "Dallas Stadium", tv: "FOX" },
+  { d: "2026-06-27", t: "10:00 PM", sk: 22.1, h: "Algeria", a: "Austria", grp: "Group J", v: "Kansas City Stadium", tv: "FS1" },
+
+  // Round of 32
+  { d: "2026-06-28", t: "3:00 PM", sk: 15, desc: "2A vs 2B", grp: "Round of 32", v: "Los Angeles Stadium", tv: "FOX" },
+  { d: "2026-06-29", t: "1:00 PM", sk: 13, desc: "1C vs 2F", grp: "Round of 32", v: "Houston Stadium", tv: "FOX" },
+  { d: "2026-06-29", t: "4:30 PM", sk: 16.5, desc: "1E vs 3rd (A/B/C/D/F)", grp: "Round of 32", v: "Boston Stadium", tv: "FOX" },
+  { d: "2026-06-29", t: "9:00 PM", sk: 21, desc: "1F vs 2C", grp: "Round of 32", v: "Monterrey Stadium", tv: "FOX" },
+  { d: "2026-06-30", t: "1:00 PM", sk: 13, desc: "2E vs 2I", grp: "Round of 32", v: "Dallas Stadium", tv: "FOX" },
+  { d: "2026-06-30", t: "5:00 PM", sk: 17, desc: "1I vs 3rd (C/D/F/G/H)", grp: "Round of 32", v: "New York New Jersey Stadium", tv: "FOX" },
+  { d: "2026-06-30", t: "9:00 PM", sk: 21, desc: "1A vs 3rd (C/E/F/H/I)", grp: "Round of 32", v: "Mexico City Stadium", tv: "FOX" },
+  { d: "2026-07-01", t: "12:00 PM", sk: 12, desc: "1L vs 3rd (E/H/I/J/K)", grp: "Round of 32", v: "Atlanta Stadium", tv: "FOX" },
+  { d: "2026-07-01", t: "4:00 PM", sk: 16, desc: "1G vs 3rd (A/E/H/I/J)", grp: "Round of 32", v: "Seattle Stadium", tv: "FS1" },
+  { d: "2026-07-01", t: "8:00 PM", sk: 20, desc: "1D vs 3rd (B/E/F/I/J)", grp: "Round of 32", v: "San Francisco Bay Stadium", tv: "FOX" },
+  { d: "2026-07-02", t: "3:00 PM", sk: 15, desc: "1H vs 2J", grp: "Round of 32", v: "Los Angeles Stadium", tv: "FOX" },
+  { d: "2026-07-02", t: "7:00 PM", sk: 19, desc: "2K vs 2L", grp: "Round of 32", v: "Toronto Stadium", tv: "FOX" },
+  { d: "2026-07-02", t: "11:00 PM", sk: 23, desc: "1B vs 3rd (D/E/I/J/L)", grp: "Round of 32", v: "BC Place Vancouver", tv: "FS1" },
+  { d: "2026-07-03", t: "2:00 PM", sk: 14, desc: "2D vs 2G", grp: "Round of 32", v: "Dallas Stadium", tv: "FOX" },
+  { d: "2026-07-03", t: "6:00 PM", sk: 18, desc: "1J vs 2H", grp: "Round of 32", v: "Miami Stadium", tv: "FOX" },
+  { d: "2026-07-03", t: "9:30 PM", sk: 21.5, desc: "1K vs 3rd (D/E/I/J/L)", grp: "Round of 32", v: "Kansas City Stadium", tv: "FOX" },
+
+  // Round of 16
+  { d: "2026-07-04", t: "1:00 PM", sk: 13, desc: "Round of 16", grp: "Round of 16", v: "Houston Stadium", tv: "FOX" },
+  { d: "2026-07-04", t: "5:00 PM", sk: 17, desc: "Round of 16", grp: "Round of 16", v: "Philadelphia Stadium", tv: "FOX" },
+  { d: "2026-07-05", t: "4:00 PM", sk: 16, desc: "Round of 16", grp: "Round of 16", v: "New York New Jersey Stadium", tv: "FOX" },
+  { d: "2026-07-05", t: "8:00 PM", sk: 20, desc: "Round of 16", grp: "Round of 16", v: "Mexico City Stadium", tv: "FOX" },
+  { d: "2026-07-06", t: "3:00 PM", sk: 15, desc: "Round of 16", grp: "Round of 16", v: "Dallas Stadium", tv: "FOX" },
+  { d: "2026-07-06", t: "8:00 PM", sk: 20, desc: "Round of 16", grp: "Round of 16", v: "Seattle Stadium", tv: "FOX" },
+  { d: "2026-07-07", t: "12:00 PM", sk: 12, desc: "Round of 16", grp: "Round of 16", v: "Atlanta Stadium", tv: "FOX" },
+  { d: "2026-07-07", t: "4:00 PM", sk: 16, desc: "Round of 16", grp: "Round of 16", v: "BC Place Vancouver", tv: "FOX" },
+
+  // Quarterfinals
+  { d: "2026-07-09", t: "4:00 PM", sk: 16, desc: "Quarterfinal", grp: "Quarterfinal", v: "Boston Stadium", tv: "FOX" },
+  { d: "2026-07-10", t: "3:00 PM", sk: 15, desc: "Quarterfinal", grp: "Quarterfinal", v: "Los Angeles Stadium", tv: "FOX" },
+  { d: "2026-07-11", t: "5:00 PM", sk: 17, desc: "Quarterfinal", grp: "Quarterfinal", v: "Miami Stadium", tv: "FOX" },
+  { d: "2026-07-11", t: "9:00 PM", sk: 21, desc: "Quarterfinal", grp: "Quarterfinal", v: "Kansas City Stadium", tv: "FOX" },
+
+  // Semifinals
+  { d: "2026-07-14", t: "3:00 PM", sk: 15, desc: "Semifinal", grp: "Semifinal", v: "Dallas Stadium", tv: "FOX" },
+  { d: "2026-07-15", t: "3:00 PM", sk: 15, desc: "Semifinal", grp: "Semifinal", v: "Atlanta Stadium", tv: "FOX" },
+
+  // Third place + Final
+  { d: "2026-07-18", t: "5:00 PM", sk: 17, desc: "Third-Place Play-off", grp: "Third place", v: "Miami Stadium", tv: "FOX" },
+  { d: "2026-07-19", t: "3:00 PM", sk: 15, desc: "FINAL", grp: "Final", v: "New York New Jersey Stadium", tv: "FOX" },
+];
