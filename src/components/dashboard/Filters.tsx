@@ -50,7 +50,6 @@ export default function Filters({
   const setQ = useFilterStore((s) => s.setQ);
   const setStage = useFilterStore((s) => s.setStage);
   const setTeam = useFilterStore((s) => s.setTeam);
-  const setTv = useFilterStore((s) => s.setTv);
   const setTz = useFilterStore((s) => s.setTz);
   const setToday = useFilterStore((s) => s.setToday);
   const setUp = useFilterStore((s) => s.setUp);
@@ -130,17 +129,6 @@ export default function Filters({
               </SelectContent>
             </Select>
 
-            {/* TV Dropdown */}
-            <Select value={tv || "_all"} onValueChange={v => setTv(v === "_all" ? "" : v)}>
-              <SelectTrigger className="w-full md:w-[145px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-fox">
-                <SelectValue placeholder="FOX &amp; FS1" />
-              </SelectTrigger>
-              <SelectContent className="bg-popover border-white/10 text-white">
-                <SelectItem value="_all">FOX &amp; FS1</SelectItem>
-                <SelectItem value="FOX">FOX only</SelectItem>
-                <SelectItem value="FS1">FS1 only</SelectItem>
-              </SelectContent>
-            </Select>
 
             {/* Timezone Dropdown */}
             <Select value={tz} onValueChange={setTz}>

@@ -16,16 +16,6 @@ export default function MatchCard({ m, tz }: MatchCardProps) {
   const isLive = st === "live";
   const isCompleted = st === "ft";
 
-  const tvClass = m.tv === "FOX" 
-    ? "bg-fox/10 text-fox border-fox/30" 
-    : m.tv === "FS1" 
-      ? "bg-fs1/10 text-fs1 border-fs1/30" 
-      : "border border-white/10 text-muted-foreground bg-white/5";
-
-  const esClass = m.es === "Universo" 
-    ? "text-universo border-universo/30 bg-universo/5" 
-    : "text-telemundo border-telemundo/30 bg-telemundo/5";
-
   const homeTeam = m.h || m._th;
   const awayTeam = m.a || m._ta;
 
@@ -54,57 +44,57 @@ export default function MatchCard({ m, tz }: MatchCardProps) {
 
   return (
     <Card 
-      className={`border transition-all duration-300 relative overflow-hidden bg-gradient-to-br from-card to-background ${
+      className={`border transition-all duration-300 relative overflow-hidden bg-[#121212]/40 backdrop-blur-md ${
         isLive 
-          ? 'border-red/40 shadow-[0_0_15px_rgba(255,23,68,0.05)]' 
-          : 'border-white/5 hover:border-white/15 hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:from-card/110 hover:to-background'
-      } ${isCompleted ? 'opacity-75' : ''}`}
+          ? 'border-red/40 shadow-[0_0_12px_rgba(255,23,68,0.04)]' 
+          : 'border-white/5 hover:border-white/10 hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)] hover:bg-[#161616]/50'
+      } ${isCompleted ? 'opacity-70' : ''}`}
     >
       {/* Top ambient glow line for live matches */}
       {isLive && (
         <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red to-transparent animate-pulse" />
       )}
       
-      <CardContent className="p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-[100px_1fr_auto] gap-4 sm:gap-6 items-center">
+      <CardContent className="p-3 sm:py-3 sm:px-4 grid grid-cols-1 sm:grid-cols-[80px_1fr_auto] gap-3 sm:gap-5 items-center">
         
         {/* Left Column: Kickoff Time */}
-        <div className="flex flex-col gap-1 sm:items-center sm:justify-center border-b sm:border-b-0 sm:border-r border-white/5 pb-3 sm:pb-0 sm:pr-6 min-w-[100px]">
-          <span className={`font-mono font-bold text-lg sm:text-xl tracking-tight ${isLive ? 'text-red' : 'text-foreground'}`}>
+        <div className="flex flex-col gap-0.5 sm:items-center sm:justify-center border-b sm:border-b-0 sm:border-r border-white/5 pb-2 sm:pb-0 sm:pr-4 min-w-[80px]">
+          <span className={`font-mono font-bold text-base sm:text-[17px] tracking-tight ${isLive ? 'text-red' : 'text-foreground/90'}`}>
             {timeDetail.time}
           </span>
           {timeDetail.zone && (
-            <span className="font-mono text-[9px] tracking-widest text-muted-foreground/60 uppercase">
+            <span className="font-mono text-[8px] tracking-widest text-muted-foreground/45 uppercase">
               {timeDetail.zone}
             </span>
           )}
         </div>
 
         {/* Center Column: Teams & Stage */}
-        <div className="flex flex-col gap-3 min-w-0">
+        <div className="flex flex-col gap-2 min-w-0">
           {homeTeam ? (
             /* Stacked Teams Scoreboard Layout */
-            <div className="flex flex-col gap-2.5 max-w-[400px]">
+            <div className="flex flex-col gap-1.5 max-w-[400px]">
               {/* Home Team Row */}
               <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="text-2xl sm:text-3xl leading-none select-none saturate-110 flex-shrink-0">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="text-xl sm:text-2xl leading-none select-none saturate-110 flex-shrink-0">
                     {FLAGS[homeTeam] || "⚽"}
                   </span>
-                  <span className={`text-base sm:text-[17px] tracking-wide uppercase truncate ${
+                  <span className={`text-[13px] sm:text-[14px] tracking-wide uppercase truncate ${
                     hasScore 
                       ? homeWon 
                         ? 'font-bold text-foreground' 
-                        : 'text-muted-foreground/60 font-medium' 
-                      : 'font-semibold text-foreground/90'
+                        : 'text-muted-foreground/50 font-medium' 
+                      : 'font-semibold text-foreground/80'
                   }`}>
                     {homeTeam}
                   </span>
                 </div>
                 {hasScore && (
-                  <span className={`font-mono text-base sm:text-lg font-bold px-2 py-0.5 rounded min-w-[28px] text-center ${
+                  <span className={`font-mono text-xs sm:text-sm font-bold px-1.5 py-0.5 rounded min-w-[24px] text-center ${
                     homeWon 
-                      ? 'text-fox bg-fox/10 border border-fox/20' 
-                      : 'text-muted-foreground/40 bg-white/3'
+                      ? 'text-foreground bg-white/5 border border-white/10' 
+                      : 'text-muted-foreground/30 bg-white/3'
                   }`}>
                     {homeScore}
                   </span>
@@ -113,25 +103,25 @@ export default function MatchCard({ m, tz }: MatchCardProps) {
 
               {/* Away Team Row */}
               <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="text-2xl sm:text-3xl leading-none select-none saturate-110 flex-shrink-0">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="text-xl sm:text-2xl leading-none select-none saturate-110 flex-shrink-0">
                     {FLAGS[awayTeam || ""] || "⚽"}
                   </span>
-                  <span className={`text-base sm:text-[17px] tracking-wide uppercase truncate ${
+                  <span className={`text-[13px] sm:text-[14px] tracking-wide uppercase truncate ${
                     hasScore 
                       ? awayWon 
                         ? 'font-bold text-foreground' 
-                        : 'text-muted-foreground/60 font-medium' 
-                      : 'font-semibold text-foreground/90'
+                        : 'text-muted-foreground/50 font-medium' 
+                      : 'font-semibold text-foreground/80'
                   }`}>
                     {awayTeam}
                   </span>
                 </div>
                 {hasScore && (
-                  <span className={`font-mono text-base sm:text-lg font-bold px-2 py-0.5 rounded min-w-[28px] text-center ${
+                  <span className={`font-mono text-xs sm:text-sm font-bold px-1.5 py-0.5 rounded min-w-[24px] text-center ${
                     awayWon 
-                      ? 'text-fox bg-fox/10 border border-fox/20' 
-                      : 'text-muted-foreground/40 bg-white/3'
+                      ? 'text-foreground bg-white/5 border border-white/10' 
+                      : 'text-muted-foreground/30 bg-white/3'
                   }`}>
                     {awayScore}
                   </span>
@@ -140,52 +130,41 @@ export default function MatchCard({ m, tz }: MatchCardProps) {
             </div>
           ) : (
             /* Knockout Placeholder */
-            <div className="font-bold text-base sm:text-lg tracking-widest uppercase text-foreground/80 py-1 bg-white/3 border border-white/5 px-3 rounded-lg w-fit">
+            <div className="font-bold text-xs sm:text-sm tracking-wider uppercase text-foreground/70 py-0.5 bg-white/3 border border-white/5 px-2 rounded-md w-fit">
               {m.desc}
             </div>
           )}
 
-          {/* stage and Venue details */}
-          <div className="flex flex-wrap items-center gap-3 mt-1 text-xs">
-            <Badge variant="outline" className={`font-mono text-[9px] tracking-widest uppercase px-2 py-0.5 rounded-md ${
+          {/* Stage and Venue details */}
+          <div className="flex flex-wrap items-center gap-2.5 mt-0.5 text-[10px]">
+            <Badge variant="outline" className={`font-mono text-[8px] tracking-wider uppercase px-1.5 py-0 rounded ${
               m.grp.startsWith("Group") 
-                ? 'text-fox border-fox/20 bg-fox/5' 
+                ? 'text-[#2DE89A] border-[#2DE89A]/20 bg-[#2DE89A]/5' 
                 : 'text-gold border-gold/20 bg-gold/5'
             }`}>
               {m.grp}
             </Badge>
-            <span className="text-muted-foreground flex items-center gap-1.5 select-none text-[11px] truncate">
-              <MapPin className="size-3.5 flex-shrink-0 text-muted-foreground/60" />
+            <span className="text-muted-foreground/75 flex items-center gap-1 select-none text-[10px] truncate">
+              <MapPin className="size-3 flex-shrink-0 text-muted-foreground/50" />
               {m.v}
             </span>
           </div>
         </div>
 
-        {/* Right Column: Status & Channels */}
-        <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3.5 border-t sm:border-t-0 border-white/5 pt-3.5 sm:pt-0 sm:pl-6">
-          {/* TV Badges */}
-          <div className="flex items-center gap-2">
-            <span className={`font-bold text-[10px] tracking-wider uppercase px-2.5 py-0.5 rounded font-sans select-none border ${tvClass}`}>
-              {m.tv}
-            </span>
-            <span className={`font-mono text-[9px] tracking-wide px-2 py-0.5 rounded select-none border ${esClass}`}>
-              {m.es}
-            </span>
-          </div>
-
-          {/* Match Status Pills */}
+        {/* Right Column: Status */}
+        <div className="flex items-center sm:items-end justify-end sm:justify-center border-t sm:border-t-0 border-white/5 pt-2 sm:pt-0 sm:pl-4">
           <div className="flex items-center gap-1.5">
             {isLive ? (
-              <span className="font-mono text-[9px] tracking-wider uppercase text-red flex items-center gap-1.5 font-bold bg-red/10 border border-red/20 px-2.5 py-0.5 rounded-full select-none">
-                <span className="size-1.5 rounded-full bg-red pulse-red"></span>
+              <span className="font-mono text-[8px] tracking-wider uppercase text-red flex items-center gap-1 font-bold bg-red/10 border border-red/20 px-2 py-0.5 rounded-full select-none">
+                <span className="size-1 rounded-full bg-red pulse-red"></span>
                 LIVE {m._detail ? `· ${m._detail}` : ""}
               </span>
             ) : isCompleted ? (
-              <span className="font-mono text-[9px] tracking-wider uppercase text-fox font-bold bg-fox/10 border border-fox/20 px-2.5 py-0.5 rounded-full select-none">
+              <span className="font-mono text-[8px] tracking-wider uppercase text-[#2DE89A] font-bold bg-[#2DE89A]/10 border border-[#2DE89A]/20 px-2 py-0.5 rounded-full select-none">
                 FT
               </span>
             ) : (
-              <span className="font-mono text-[9px] tracking-wider uppercase text-muted-foreground/70 bg-white/3 border border-white/5 px-2.5 py-0.5 rounded-full select-none">
+              <span className="font-mono text-[8px] tracking-wider uppercase text-muted-foreground/60 bg-white/3 border border-white/5 px-2 py-0.5 rounded-full select-none">
                 UPCOMING
               </span>
             )}
