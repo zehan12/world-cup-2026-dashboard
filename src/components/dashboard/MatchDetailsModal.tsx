@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Trophy, Activity, BarChart } from "lucide-react";
+import { Trophy, BarChart } from "lucide-react";
 import type { Match } from "@/data/matches";
 import { FLAGS } from "@/data/matches";
 import { fmtTime, fmtDay } from "@/lib/date-helpers";
 import { calculateStandings } from "@/lib/standings-helpers";
+import { useTeamRoster, type RosterPlayer } from "@/hooks/useTeamRoster";
 
 interface MatchDetailsModalProps {
   isOpen: boolean;
@@ -16,74 +17,88 @@ interface MatchDetailsModalProps {
   matches: Match[];
 }
 
-interface TeamInsight {
-  players: { name: string; pos: string; club: string; keyStat: string }[];
-  tactics: string;
+interface TacticalPlayer {
+  name: string;
+  number: number;
+  x: number;
+  y: number;
 }
 
-const INSIGHTS_MAP: Record<string, TeamInsight> = {
-  "USA": {
-    players: [
-      { name: "Christian Pulisic", pos: "FW", club: "AC Milan", keyStat: "Captain • 15 Qualifiers Goals" },
-      { name: "Weston McKennie", pos: "MF", club: "Juventus", keyStat: "Box-to-Box • 87% Pass Accuracy" },
-      { name: "Tyler Adams", pos: "MF", club: "Bournemouth", keyStat: "Ball Winner • 4.1 Interceptions/G" },
-      { name: "Antonee Robinson", pos: "DF", club: "Fulham", keyStat: "Left Back • 5 Assists in PL" },
-      { name: "Matt Turner", pos: "GK", club: "Crystal Palace", keyStat: "Shot Stopper • 74% Save Rate" }
-    ],
-    tactics: "4-3-3 High Pressing"
-  },
-  "Mexico": {
-    players: [
-      { name: "Santiago Giménez", pos: "FW", club: "Feyenoord", keyStat: "Clinical • 23 Goals in Eredivisie" },
-      { name: "Edson Álvarez", pos: "MF", club: "West Ham", keyStat: "Defensive Anchor • 4.2 Tackles/G" },
-      { name: "Luis Chávez", pos: "MF", club: "Dynamo Moscow", keyStat: "Free Kick Specialist • 3 G/A" },
-      { name: "Johan Vásquez", pos: "DF", club: "Genoa", keyStat: "Solid Centerback • 88% Tackle Rate" },
-      { name: "Luis Malagón", pos: "GK", club: "Club América", keyStat: "Clean Sheets • 12 Matches Unbeaten" }
-    ],
-    tactics: "4-2-3-1 Attacking"
-  },
-  "Canada": {
-    players: [
-      { name: "Alphonso Davies", pos: "DF", club: "Bayern Munich", keyStat: "Speedster • 35.8 km/h Top Speed" },
-      { name: "Jonathan David", pos: "FW", club: "Lille", keyStat: "Poacher • 19 Ligue 1 Goals" },
-      { name: "Stephen Eustáquio", pos: "MF", club: "Porto", keyStat: "Tempo Controller • 91% Passing" },
-      { name: "Tajon Buchanan", pos: "MF", club: "Inter Milan", keyStat: "Winger • 5.3 Dribbles/Game" },
-      { name: "Alistair Johnston", pos: "DF", club: "Celtic", keyStat: "Tough Tackler • 3.8 Clearances/G" }
-    ],
-    tactics: "4-3-3 Direct Counter"
-  }
-};
+const FORMATIONS = ["4-3-3", "4-2-3-1", "4-4-2", "3-5-2", "4-3-2-1", "4-1-4-1"];
 
-function getTeamInsights(teamName: string): TeamInsight {
-  const cleaned = teamName.trim();
-  if (INSIGHTS_MAP[cleaned]) {
-    return INSIGHTS_MAP[cleaned];
-  }
+function getFormation(teamName: string): string {
+  const hash = teamName.split("").reduce((a, b) => a + b.charCodeAt(0), 0);
+  return FORMATIONS[hash % FORMATIONS.length];
+}
 
-  const hash = cleaned.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const playerFirsts = ["Daniel", "Lucas", "Mateo", "Oliver", "Alexander", "Gabriel", "Thomas", "James", "Ben", "William", "Nicolas", "Leo"];
-  const playerLasts = ["Müller", "Silva", "Santos", "Dubois", "Jones", "Smith", "Johnson", "Williams", "Brown", "Davis", "Miller", "Wilson"];
-  const clubs = ["Real Madrid", "Man City", "Arsenal", "Barcelona", "Bayern Munich", "PSG", "Inter Milan", "Juventus", "Chelsea", "Liverpool"];
-  const stats = ["89% Pass Accuracy", "4.3 Tackles/G", "12 Clearance/G", "24 G/A this season", "81% Save Rate", "3.2 Interceptions/G"];
+function getTacticalPlayers(roster: RosterPlayer[], side: "home" | "away"): TacticalPlayer[] {
+  const gks = roster.filter(p => p.pos === "GK");
+  const dfs = roster.filter(p => p.pos === "DF");
+  const mfs = roster.filter(p => p.pos === "MF");
+  const fws = roster.filter(p => p.pos === "FW");
 
-  const buildPlayer = (offset: number, pos: string) => {
-    const f = playerFirsts[(hash + offset) % playerFirsts.length];
-    const l = playerLasts[(hash + offset + 3) % playerLasts.length];
-    const c = clubs[(hash + offset + 7) % clubs.length];
-    const s = stats[(hash + offset + 2) % stats.length];
-    return { name: `${f} ${l}`, pos, club: c, keyStat: `${s} • key` };
+  const pickOne = (players: RosterPlayer[]): RosterPlayer =>
+    players.length > 0 ? players[0] : { name: "?", number: 0, pos: "GK", age: 0, height: "", weight: "" };
+
+  const pickTopN = (players: RosterPlayer[], n: number): RosterPlayer[] => {
+    if (players.length <= n) return players;
+    const step = players.length / n;
+    const result: RosterPlayer[] = [];
+    for (let i = 0; i < n; i++) {
+      result.push(players[Math.floor(i * step)]);
+    }
+    return result;
   };
 
-  return {
-    players: [
-      buildPlayer(0, "GK"),
-      buildPlayer(3, "DF"),
-      buildPlayer(6, "MF"),
-      buildPlayer(9, "MF"),
-      buildPlayer(12, "FW")
-    ],
-    tactics: hash % 2 === 0 ? "4-3-3 Balanced" : "4-2-3-1 Controlled"
-  };
+  const dfCount = Math.min(dfs.length, 4);
+  const mfCount = Math.min(mfs.length, 4);
+  const fwCount = Math.min(fws.length, 3);
+
+  const pickedDF = pickTopN(dfs, dfCount || 4);
+  const pickedMF = pickTopN(mfs, mfCount || 3);
+  const pickedFW = pickTopN(fws, fwCount || 2);
+
+  const result: TacticalPlayer[] = [];
+
+  const gk = pickOne(gks);
+  result.push({
+    name: gk.name,
+    number: gk.number,
+    x: 50,
+    y: side === "home" ? 8 : 92,
+  });
+
+  pickedDF.forEach((p, idx) => {
+    const count = pickedDF.length;
+    result.push({
+      name: p.name,
+      number: p.number,
+      x: count === 1 ? 50 : 20 + (60 * idx) / (count - 1),
+      y: side === "home" ? 22 : 78,
+    });
+  });
+
+  pickedMF.forEach((p, idx) => {
+    const count = pickedMF.length;
+    result.push({
+      name: p.name,
+      number: p.number,
+      x: count === 1 ? 50 : 20 + (60 * idx) / (count - 1),
+      y: side === "home" ? 36 : 64,
+    });
+  });
+
+  pickedFW.forEach((p, idx) => {
+    const count = pickedFW.length;
+    result.push({
+      name: p.name,
+      number: p.number,
+      x: count === 1 ? 50 : 25 + (50 * idx) / (count - 1),
+      y: side === "home" ? 47 : 53,
+    });
+  });
+
+  return result;
 }
 
 function getLiveTickerEvents(m: Match, homeTeam: string, awayTeam: string, hScore: number, aScore: number) {
@@ -186,6 +201,7 @@ function getLiveTickerEvents(m: Match, homeTeam: string, awayTeam: string, hScor
 export default function MatchDetailsModal({ isOpen, onClose, m, tz, matches }: MatchDetailsModalProps) {
   const [activeTab, setActiveTab] = useState<'h' | 'a'>('h');
   const [detailTab, setDetailTab] = useState<'ticker' | 'lineup' | 'stats' | 'points'>('ticker');
+  const [lineupView, setLineupView] = useState<'field' | 'list'>('field');
   
   const homeTeam = m.h || m._th;
   const awayTeam = m.a || m._ta;
@@ -227,8 +243,10 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz, matches }: M
   const referee = referees[(homeSeed + awaySeed) % referees.length];
   const attendance = (60000 + ((homeSeed * awaySeed) % 25000)).toLocaleString();
 
-  const homeInsights = getTeamInsights(homeTeam || "");
-  const awayInsights = getTeamInsights(awayTeam || "");
+  const { players: homeRoster, loading: homeLoading } = useTeamRoster(homeTeam);
+  const { players: awayRoster, loading: awayLoading } = useTeamRoster(awayTeam);
+
+  const displayRoster = activeTab === "h" ? homeRoster : awayRoster;
 
   // Generate ticker events
   const tickerEvents = getLiveTickerEvents(m, homeTeam || "Home", awayTeam || "Away", hVal, aVal);
@@ -295,7 +313,7 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz, matches }: M
                   {homeTeam || "TBD"}
                 </span>
                 <span className="text-[10px] text-muted-foreground/60 font-mono italic truncate max-w-full">
-                  {homeInsights.tactics}
+                  {homeRoster.length > 0 ? `${homeRoster.length} players` : getFormation(homeTeam || "")}
                 </span>
               </div>
             </div>
@@ -328,7 +346,7 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz, matches }: M
                   {awayTeam || "TBD"}
                 </span>
                 <span className="text-[10px] text-muted-foreground/60 font-mono italic truncate max-w-full">
-                  {awayInsights.tactics}
+                  {awayRoster.length > 0 ? `${awayRoster.length} players` : getFormation(awayTeam || "")}
                 </span>
               </div>
             </div>
@@ -402,72 +420,191 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz, matches }: M
             {/* TAB 2: Line-up */}
             {detailTab === "lineup" && (
               <div className="flex flex-col gap-4">
-                {/* Home/Away Selection Sub-tabs */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-white/5 pb-3">
-                  <span className="text-xs font-bold font-mono tracking-wider text-muted-foreground/70 uppercase flex items-center gap-1.5">
-                    <Activity className="size-4 text-muted-foreground/50" />
-                    SQUADS &amp; ROSTERS
-                  </span>
+                {/* Home/Away Selection and View Selection */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/5 pb-3">
                   <div className="flex gap-1.5 p-0.5 bg-white/5 border border-white/10 rounded-lg select-none w-full sm:w-auto">
                     <button
                       type="button"
-                      onClick={() => setActiveTab('h')}
-                      className={`flex-1 sm:flex-initial px-3 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer ${
-                        activeTab === 'h'
-                          ? "bg-white/10 text-white shadow-sm ring-1 ring-white/15"
+                      onClick={() => setLineupView('field')}
+                      className={`flex-1 sm:flex-initial px-3.5 py-1.5 rounded-md text-[10px] font-bold tracking-wide uppercase transition-all duration-200 cursor-pointer ${
+                        lineupView === 'field'
+                          ? "bg-white text-black shadow-sm"
                           : "text-muted-foreground/60 hover:text-white"
                       }`}
                     >
-                      <span>{FLAGS[homeTeam || ""] || "⚽"}</span>
-                      <span className="max-w-[100px] sm:max-w-none truncate">{homeTeam || "Home"}</span>
+                      Field View
                     </button>
                     <button
                       type="button"
-                      onClick={() => setActiveTab('a')}
-                      className={`flex-1 sm:flex-initial px-3 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer ${
-                        activeTab === 'a'
-                          ? "bg-white/10 text-white shadow-sm ring-1 ring-white/15"
+                      onClick={() => setLineupView('list')}
+                      className={`flex-1 sm:flex-initial px-3.5 py-1.5 rounded-md text-[10px] font-bold tracking-wide uppercase transition-all duration-200 cursor-pointer ${
+                        lineupView === 'list'
+                          ? "bg-white text-black shadow-sm"
                           : "text-muted-foreground/60 hover:text-white"
                       }`}
                     >
-                      <span>{FLAGS[awayTeam || ""] || "⚽"}</span>
-                      <span className="max-w-[100px] sm:max-w-none truncate">{awayTeam || "Away"}</span>
+                      Roster List
                     </button>
                   </div>
+
+                  {lineupView === 'list' && (
+                    <div className="flex gap-1.5 p-0.5 bg-white/5 border border-white/10 rounded-lg select-none w-full sm:w-auto">
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab('h')}
+                        className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-md text-[10px] font-bold tracking-wide uppercase transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer ${
+                          activeTab === 'h'
+                            ? "bg-white/10 text-white shadow-sm ring-1 ring-white/15"
+                            : "text-muted-foreground/60 hover:text-white"
+                        }`}
+                      >
+                        <span>{FLAGS[homeTeam || ""] || "⚽"}</span>
+                        <span className="max-w-[100px] sm:max-w-none truncate">{homeTeam || "Home"}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab('a')}
+                        className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-md text-[10px] font-bold tracking-wide uppercase transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer ${
+                          activeTab === 'a'
+                            ? "bg-white/10 text-white shadow-sm ring-1 ring-white/15"
+                            : "text-muted-foreground/60 hover:text-white"
+                        }`}
+                      >
+                        <span>{FLAGS[awayTeam || ""] || "⚽"}</span>
+                        <span className="max-w-[100px] sm:max-w-none truncate">{awayTeam || "Away"}</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
 
-                {/* Roster Cards List */}
-                <div className="flex flex-col gap-2">
-                  {(activeTab === 'h' ? homeInsights : awayInsights).players.map((p, idx) => {
-                    const isGK = p.pos === "GK";
-                    const isDF = p.pos === "DF";
-                    const isMF = p.pos === "MF";
-                    const posColor = isGK 
-                      ? "bg-amber-500/10 text-amber-400 border-amber-500/20" 
-                      : isDF 
-                      ? "bg-blue-500/10 text-blue-400 border-blue-500/20" 
-                      : isMF 
-                      ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" 
-                      : "bg-rose-500/10 text-rose-400 border-rose-500/20";
-                    
-                    return (
-                      <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:border-white/10 hover:bg-white/5 transition-all duration-200">
-                        <div className="flex items-center gap-2.5 min-w-0 w-full sm:w-auto">
-                          <span className={`w-8 text-center font-mono text-[9px] font-bold uppercase py-0.5 rounded border select-none flex-shrink-0 ${posColor}`}>
-                            {p.pos}
+                {/* Content based on view */}
+                {lineupView === 'field' ? (
+                  <div className="py-2 flex justify-center">
+                    <div className="relative w-full aspect-[2/3] max-w-[420px] bg-[#1a552e] rounded-xl overflow-hidden shadow-2xl p-3 sm:p-4 border border-white/5 select-none"
+                         style={{
+                           background: 'repeating-linear-gradient(90deg, #184c2a, #184c2a 9.09%, #133f22 9.09%, #133f22 18.18%)'
+                         }}>
+                      {/* Field Markings Inner Box */}
+                      <div className="relative w-full h-full border border-white/20 rounded-md">
+                        {/* Halfway line */}
+                        <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-white/20 -translate-y-1/2" />
+                        
+                        {/* Center circle */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28%] aspect-square rounded-full border border-white/20" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/20" />
+
+                        {/* Penalty area top */}
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[54%] h-[16%] border-b border-x border-white/20" />
+                        {/* Goal area top */}
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[24%] h-[6%] border-b border-x border-white/20" />
+                        {/* Penalty spot top */}
+                        <div className="absolute top-[11%] left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-white/20" />
+                        {/* Penalty arc top */}
+                        <div className="absolute top-[11%] left-1/2 -translate-x-1/2 w-[20%] aspect-square rounded-full border border-white/20" style={{ clipPath: 'polygon(0% 50%, 100% 50%, 100% 100%, 0% 100%)' }} />
+
+                        {/* Penalty area bottom */}
+                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[54%] h-[16%] border-t border-x border-white/20" />
+                        {/* Goal area bottom */}
+                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[24%] h-[6%] border-t border-x border-white/20" />
+                        {/* Penalty spot bottom */}
+                        <div className="absolute bottom-[11%] left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-white/20" />
+                        {/* Penalty arc bottom */}
+                        <div className="absolute bottom-[11%] left-1/2 -translate-x-1/2 w-[20%] aspect-square rounded-full border border-white/20" style={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 50%, 0% 50%)' }} />
+
+                        {/* Team Labels */}
+                        <div className="absolute top-1 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20">
+                          <span className="text-[9px] sm:text-[10px] font-extrabold text-white/90 uppercase tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
+                            {FLAGS[homeTeam || ""] || "⚽"} {homeTeam || "Home"}
                           </span>
-                          <div className="flex flex-col min-w-0">
-                            <span className="text-xs font-semibold text-foreground/90 truncate">{p.name}</span>
-                            <span className="text-[10px] text-muted-foreground/50 truncate">{p.club}</span>
-                          </div>
                         </div>
-                        <span className="text-[10px] font-mono text-[#2DE89A] font-semibold bg-[#2DE89A]/5 border border-[#2DE89A]/15 px-2 py-0.5 rounded-lg truncate w-fit max-w-full sm:max-w-[200px] sm:text-right">
-                          {p.keyStat}
-                        </span>
+                        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20">
+                          <span className="text-[9px] sm:text-[10px] font-extrabold text-red-300/90 uppercase tracking-wider drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
+                            {FLAGS[awayTeam || ""] || "⚽"} {awayTeam || "Away"}
+                          </span>
+                        </div>
+
+
+                        {getTacticalPlayers(homeRoster, "home").map((p) => (
+                          <div
+                            key={`h-${p.name}-${p.number}`}
+                            className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center group z-10"
+                            style={{ left: `${p.x}%`, top: `${p.y}%` }}
+                          >
+                            <span className="text-[8px] sm:text-[10px] font-bold text-white tracking-wide drop-shadow-[0_1.5px_2px_rgba(0,0,0,0.95)] max-w-[75px] truncate text-center select-none mb-0.5">
+                              {p.name}
+                            </span>
+                            <div className="rounded-full bg-white border-2 border-neutral-200 text-black flex items-center justify-center font-extrabold text-[8px] sm:text-[10px] shadow-[0_2px_6px_rgba(0,0,0,0.4)] transition-transform duration-200 group-hover:scale-110 select-none"
+                              style={{ width: 24, height: 24 }}>
+                              {p.number}
+                            </div>
+                          </div>
+                        ))}
+
+                        {/* Render Away Players (Bottom Half) */}
+                        {getTacticalPlayers(awayRoster, "away").map((p) => (
+                          <div
+                            key={`a-${p.name}-${p.number}`}
+                            className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center group z-10"
+                            style={{ left: `${p.x}%`, top: `${p.y}%` }}
+                          >
+                            <div className="rounded-full bg-red-500 border-2 border-red-300 text-white flex items-center justify-center font-extrabold text-[8px] sm:text-[10px] shadow-[0_2px_6px_rgba(0,0,0,0.4)] transition-transform duration-200 group-hover:scale-110 select-none"
+                              style={{ width: 24, height: 24 }}>
+                              {p.number}
+                            </div>
+                            <span className="text-[8px] sm:text-[10px] font-bold text-white tracking-wide drop-shadow-[0_1.5px_2px_rgba(0,0,0,0.95)] max-w-[75px] truncate text-center select-none mt-0.5">
+                              {p.name}
+                            </span>
+                          </div>
+                        ))}
                       </div>
-                    );
-                  })}
-                </div>
+                    </div>
+                  </div>
+                ) : (
+                  /* Roster Cards List */
+                  <div className="flex flex-col gap-2">
+                    {displayRoster.length === 0 && (homeLoading || awayLoading) ? (
+                      <div className="text-center py-8 text-muted-foreground/60 text-xs">
+                        Loading roster data from ESPN...
+                      </div>
+                    ) : displayRoster.length === 0 ? (
+                      <div className="text-center py-8 text-muted-foreground/60 text-xs">
+                        No roster data available
+                      </div>
+                    ) : (
+                      displayRoster.map((p, idx) => {
+                        const isGK = p.pos === "GK";
+                        const isDF = p.pos === "DF";
+                        const isMF = p.pos === "MF";
+                        const posColor = isGK 
+                          ? "bg-amber-500/10 text-amber-400 border-amber-500/20" 
+                          : isDF 
+                          ? "bg-blue-500/10 text-blue-400 border-blue-500/20" 
+                          : isMF 
+                          ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" 
+                          : "bg-rose-500/10 text-rose-400 border-rose-500/20";
+                        
+                        return (
+                          <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:border-white/10 hover:bg-white/5 transition-all duration-200">
+                            <div className="flex items-center gap-2.5 min-w-0 w-full sm:w-auto">
+                              <span className={"w-8 text-center font-mono text-[9px] font-bold uppercase py-0.5 rounded border select-none flex-shrink-0 " + posColor}>
+                                {p.pos}
+                              </span>
+                              <div className="flex flex-col min-w-0">
+                                <span className="text-xs font-semibold text-foreground/90 truncate">{p.name}</span>
+                                <span className="text-[10px] text-muted-foreground/50 truncate">
+                                  #{p.number} · {p.age}y · {p.height}
+                                </span>
+                              </div>
+                            </div>
+                            <span className="text-[10px] font-mono text-[#2DE89A] font-semibold bg-[#2DE89A]/5 border border-[#2DE89A]/15 px-2 py-0.5 rounded-lg truncate w-fit max-w-full sm:max-w-[200px] sm:text-right">
+                              #{p.number} · {p.pos}
+                            </span>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
