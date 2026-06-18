@@ -234,13 +234,11 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz, matches }: M
   const tickerEvents = getLiveTickerEvents(m, homeTeam || "Home", awayTeam || "Away", hVal, aVal);
 
   // Generate deterministic comparison stats
-  const totalShots = 8 + (homeSeed % 12) + (awaySeed % 12);
-  const homeShots = 4 + (homeSeed % 8);
-  const awayShots = totalShots - homeShots;
+  const homeShots = 5 + (homeSeed % 8);
+  const awayShots = 5 + (awaySeed % 8);
 
-  const totalShotsOnTarget = 3 + (homeSeed % 5) + (awaySeed % 5);
-  const homeShotsOnTarget = 1 + (homeSeed % 4);
-  const awayShotsOnTarget = totalShotsOnTarget - homeShotsOnTarget;
+  const homeShotsOnTarget = Math.max(1, Math.min(homeShots - 1, 1 + (homeSeed % 5)));
+  const awayShotsOnTarget = Math.max(1, Math.min(awayShots - 1, 1 + (awaySeed % 5)));
 
   const homePossession = 40 + (homeSeed % 21);
   const awayPossession = 100 - homePossession;
