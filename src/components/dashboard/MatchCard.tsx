@@ -10,9 +10,10 @@ import MatchDetailsModal from "./MatchDetailsModal";
 interface MatchCardProps {
   m: Match;
   tz: string;
+  matches: Match[];
 }
 
-export default function MatchCard({ m, tz }: MatchCardProps) {
+export default function MatchCard({ m, tz, matches }: MatchCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const st = m._st || "up";
   const timeDetail = fmtTime(m, tz);
@@ -179,6 +180,7 @@ export default function MatchCard({ m, tz }: MatchCardProps) {
         onClose={() => setIsModalOpen(false)} 
         m={m} 
         tz={tz} 
+        matches={matches}
       />
     </>
   );

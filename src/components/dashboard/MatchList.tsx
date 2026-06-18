@@ -9,13 +9,15 @@ interface MatchListProps {
   groupedMatches: Record<string, Match[]>;
   todayStr: string;
   filteredMatchesCount: number;
+  matches: Match[];
 }
 
 export default function MatchList({
   days,
   groupedMatches,
   todayStr,
-  filteredMatchesCount
+  filteredMatchesCount,
+  matches
 }: MatchListProps) {
   const tz = useFilterStore((s) => s.tz);
 
@@ -71,6 +73,7 @@ export default function MatchList({
                       key={`${m.d}-${idx}`}
                       m={m}
                       tz={tz}
+                      matches={matches}
                     />
                   ))}
                 </div>

@@ -169,6 +169,7 @@ export default function App() {
             groupedMatches={groupedMatches}
             todayStr={todayStr}
             filteredMatchesCount={filteredMatches.length}
+            matches={matches}
           />
         </>
       ) : (
