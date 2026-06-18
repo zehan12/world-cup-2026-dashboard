@@ -14,67 +14,79 @@ export default function Header({
   isFresh
 }: HeaderProps) {
   return (
-    <header className="relative py-12 px-6 min-h-[340px] flex items-center border-b border-white/5 overflow-hidden bg-[#0f0f0f]">
+    <header className="relative py-16 px-6 min-h-[460px] flex items-end border-b border-white/5 overflow-hidden bg-[#0f0f0f]">
       {/* Background Image Container for Perfect Fitting & Blending */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none">
         <img 
           src="/hero.jpg" 
           alt="World Cup 2026 Hero" 
-          className="w-full h-full object-cover object-right opacity-80"
+          className="w-full h-full object-cover object-center opacity-70"
         />
-        {/* High-Precision Gradient to Keep Left Side Solid & Right Side Completely Clear */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(to right, #0f0f0f 0%, #0f0f0f 25%, rgba(15,15,15,0.65) 55%, rgba(15,15,15,0) 85%)'
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-transparent" />
+        {/* Cinematic dark tint and gradients matching premium football theme */}
+        <div className="absolute inset-0 bg-[#0f0f0f]/45" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] via-[#0f0f0f]/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-[#0f0f0f]/20" />
         {/* Accent Radial Glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(900px_240px_at_12%_-40%,rgba(5,255,155,0.12),transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(1000px_300px_at_15%_-30%,rgba(5,255,155,0.12),transparent_70%)]" />
       </div>
 
-      <div className="w-full max-w-[1180px] mx-auto z-10">
-        {/* Constrain text & badges to left side to prevent overlap with the hero image */}
-        <div className="max-w-[720px] lg:max-w-[58%]">
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-            <div className="font-mono text-xs tracking-[0.25em] text-[#2DE89A] uppercase flex items-center gap-2.5">
-              <span className="w-2 h-2 rounded-full bg-[#2DE89A] pulse-ring"></span>
-              FIFA World Cup 26 · USA · Canada · Mexico
-            </div>
-            
-            {/* Live Data Badge */}
-            <div className={`font-mono text-[10px] tracking-widest uppercase flex items-center gap-1.5 transition-colors duration-300 ${isFresh ? 'text-[#2DE89A]' : 'text-[#5E6C84]'}`}>
-              <span className={`w-1.5 h-1.5 rounded-full ${isFresh ? 'bg-[#2DE89A]' : 'bg-[#5E6C84]'}`}></span>
-              {isFresh ? "Live Data Connected" : "Static Schedule Only"}
-            </div>
+      <div className="w-full max-w-[1180px] mx-auto z-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+        {/* Left Column: Title & Text content positioned at bottom-left */}
+        <div className="md:col-span-7 space-y-4 text-left">
+          <div className="font-mono text-xs tracking-[0.25em] text-[#2DE89A] uppercase flex flex-wrap items-center gap-2.5">
+            <span className="w-2 h-2 rounded-full bg-[#2DE89A] pulse-ring"></span>
+            <span>FIFA World Cup 26 · USA · Canada · Mexico</span>
+            <span className="text-white/20">|</span>
+            <span className={`flex items-center gap-1.5 transition-colors duration-300 ${isFresh ? 'text-[#2DE89A]' : 'text-muted-foreground/60'}`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${isFresh ? 'bg-[#2DE89A]' : 'bg-muted-foreground/60'}`}></span>
+              {isFresh ? "Live Connected" : "Offline Schedule"}
+            </span>
           </div>
           
-          <h1 className="font-bold text-[clamp(40px,7.5vw,96px)] leading-[0.92] tracking-wide uppercase my-4 select-none">
-            Every Match. <span className="text-[#F0B33A]">One Screen.</span>
+          <h1 className="font-bold text-[clamp(36px,5.5vw,68px)] leading-[0.95] tracking-wide uppercase select-none">
+            Every Match. <br />
+            <span className="text-[#F0B33A]">One Screen.</span>
           </h1>
           
-          <p className="text-muted-foreground text-[15px] max-w-[640px] leading-relaxed">
+          <p className="text-muted-foreground text-[14px] md:text-[15px] max-w-[580px] leading-relaxed">
             All 104 matches — kickoff times in your local timezone, live scores, and match details. June 11 – July 19, 2026.
           </p>
-          
-          {/* Stats Badges */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 w-full">
-            <div className="bg-white/3 backdrop-blur-sm border border-white/5 rounded-xl p-3.5 flex flex-col justify-between hover:border-white/10 transition-colors duration-300">
-              <span className="text-[10px] tracking-wider text-muted-foreground uppercase font-mono">Total Matches</span>
-              <span className="text-3xl font-extrabold text-foreground leading-tight mt-1.5">{totalMatches}</span>
+        </div>
+
+        {/* Right Column: Floating Stats Card mimicking Subscription Card style */}
+        <div className="md:col-span-5 flex justify-end w-full">
+          <div className="backdrop-blur-md bg-black/45 border border-white/10 rounded-2xl overflow-hidden max-w-[340px] w-full shadow-2xl">
+            {/* Solid White Banner Header */}
+            <div className="bg-white text-black px-5 py-3 font-mono text-[10px] tracking-wider uppercase font-bold">
+              Tournament Status
             </div>
-            <div className="bg-gold/5 backdrop-blur-sm border border-gold/10 rounded-xl p-3.5 flex flex-col justify-between hover:border-gold/20 transition-colors duration-300">
-              <span className="text-[10px] tracking-wider text-gold/80 uppercase font-mono">Today</span>
-              <span className="text-3xl font-extrabold text-gold leading-tight mt-1.5">{matchesTodayCount}</span>
-            </div>
-            <div className="bg-white/3 backdrop-blur-sm border border-white/5 rounded-xl p-3.5 flex flex-col justify-between hover:border-white/10 transition-colors duration-300">
-              <span className="text-[10px] tracking-wider text-muted-foreground uppercase font-mono">Upcoming</span>
-              <span className="text-3xl font-extrabold text-foreground leading-tight mt-1.5">{upcomingMatchesCount}</span>
-            </div>
-            <div className="bg-fox/5 backdrop-blur-sm border border-fox/10 rounded-xl p-3.5 flex flex-col justify-between hover:border-fox/20 transition-colors duration-300">
-              <span className="text-[10px] tracking-wider text-fox/80 uppercase font-mono">Current Stage</span>
-              <span className="text-2xl font-extrabold text-fox leading-tight mt-1.5 truncate">{currentRound}</span>
+            
+            {/* Card Body */}
+            <div className="p-5 grid grid-cols-2 gap-4 items-center">
+              {/* Left Part: Today's Matches */}
+              <div className="border-r border-white/10 pr-4">
+                <span className="text-[9px] tracking-wider text-muted-foreground uppercase font-mono block">Today</span>
+                <div className="flex items-baseline gap-1 mt-1">
+                  <span className="text-4xl font-extrabold text-[#F0B33A] leading-none">{matchesTodayCount}</span>
+                  <span className="text-[9px] text-muted-foreground uppercase font-mono">Matches</span>
+                </div>
+              </div>
+              
+              {/* Right Part: List details */}
+              <div className="pl-2 space-y-2 font-mono text-[10px] text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                  <span>Total: <strong className="text-foreground">{totalMatches}</strong></span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                  <span>Upcoming: <strong className="text-foreground">{upcomingMatchesCount}</strong></span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#2DE89A]"></span>
+                  <span className="truncate">Stage: <strong className="text-[#2DE89A]">{currentRound}</strong></span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
