@@ -20,7 +20,7 @@ export default function Header({
         <img 
           src="/hero.jpg" 
           alt="World Cup 2026 Hero" 
-          className="w-full h-full object-cover object-right"
+          className="w-full h-full object-cover object-center"
         />
       </div>
 
