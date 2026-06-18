@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin, Trophy, Activity, Calendar, BarChart } from "lucide-react";
 import type { Match } from "@/data/matches";
 import { FLAGS } from "@/data/matches";
@@ -208,8 +209,9 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz }: MatchDetai
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="w-[calc(100%-2rem)] sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-[#0f0f0f]/95 border-white/10 text-white rounded-2xl backdrop-blur-xl p-6 shadow-2xl ring-1 ring-white/10 duration-200">
-        <DialogHeader className="gap-1.5">
+      <DialogContent className="w-[calc(100%-2rem)] sm:max-w-2xl bg-[#0f0f0f]/95 border-white/10 text-white rounded-2xl backdrop-blur-xl p-0 overflow-hidden shadow-2xl ring-1 ring-white/10 duration-200">
+        <ScrollArea className="max-h-[85vh] w-full p-6">
+          <DialogHeader className="gap-1.5">
           <div className="flex items-center gap-2">
             <Badge variant="outline" className={`font-mono text-[9px] tracking-wider uppercase px-2 py-0.5 rounded ${
               m.grp.startsWith("Group") 
@@ -396,6 +398,7 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz }: MatchDetai
             This fixture marks a crucial encounter in the 2026 World Cup campaign. Held at the state-of-the-art <strong className="text-white font-medium">{m.v}</strong> with an expected crowd of {attendance} fans, under the officiating of referee {referee}. Expect tactical adaptations as both managers field proactive systems.
           </p>
         </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
