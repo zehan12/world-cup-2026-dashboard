@@ -164,7 +164,7 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz }: MatchDetai
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-lg bg-[#0f0f0f]/95 border-white/10 text-white rounded-2xl backdrop-blur-xl p-6 shadow-2xl ring-1 ring-white/10 duration-200">
+      <DialogContent className="w-[calc(100%-2rem)] sm:max-w-2xl bg-[#0f0f0f]/95 border-white/10 text-white rounded-2xl backdrop-blur-xl p-6 shadow-2xl ring-1 ring-white/10 duration-200">
         <DialogHeader className="gap-1.5">
           <div className="flex items-center gap-2">
             <Badge variant="outline" className={`font-mono text-[9px] tracking-wider uppercase px-2 py-0.5 rounded ${
