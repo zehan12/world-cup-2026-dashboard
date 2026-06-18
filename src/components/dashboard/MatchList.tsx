@@ -42,7 +42,7 @@ export default function MatchList({
             return (
               <section 
                 key={d} 
-                className={`daygroup mt-6 ${isToday ? "daygroup-today" : ""}`}
+                className={`daygroup mt-6 scroll-mt-[190px] md:scroll-mt-[140px] ${isToday ? "daygroup-today" : ""}`}
               >
                 {/* Sticky Date Header */}
                 <div className="sticky top-[162px] md:top-[112px] z-10 py-3 mb-3 flex items-baseline gap-3 bg-gradient-to-b from-background via-background/90 to-transparent">
