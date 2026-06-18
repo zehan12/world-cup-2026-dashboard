@@ -20,13 +20,13 @@ export default function Header({
         <img 
           src="/hero.jpg" 
           alt="World Cup 2026 Hero" 
-          className="w-full h-full object-cover object-center md:object-right opacity-35 mix-blend-luminosity"
+          className="w-full h-full object-cover object-right opacity-65"
         />
-        {/* Responsive Gradients to Blend image into #0f0f0f */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] via-[#0f0f0f]/92 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-[#0f0f0f]/30" />
+        {/* Responsive Gradients to Blend image into #0f0f0f without washing it out */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] via-[#0f0f0f]/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-transparent" />
         {/* Accent Radial Glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(900px_240px_at_12%_-40%,rgba(5,255,155,0.15),transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(900px_240px_at_12%_-40%,rgba(5,255,155,0.12),transparent_70%)]" />
       </div>
 
       <div className="w-full max-w-[1180px] mx-auto z-10">
