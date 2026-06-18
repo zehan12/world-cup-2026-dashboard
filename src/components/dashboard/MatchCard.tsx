@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Match } from "@/data/matches";
 import { FLAGS } from "@/data/matches";
 import { fmtTime } from "@/lib/date-helpers";
+import MatchDetailsModal from "./MatchDetailsModal";
 
 interface MatchCardProps {
   m: Match;
@@ -11,6 +13,7 @@ interface MatchCardProps {
 }
 
 export default function MatchCard({ m, tz }: MatchCardProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const st = m._st || "up";
   const timeDetail = fmtTime(m, tz);
   const isLive = st === "live";
@@ -43,13 +46,15 @@ export default function MatchCard({ m, tz }: MatchCardProps) {
   const awayWon = hasScore && aVal > hVal;
 
   return (
-    <Card 
-      className={`border transition-all duration-300 relative overflow-hidden bg-[#121212]/40 backdrop-blur-md ${
-        isLive 
-          ? 'border-red/40 shadow-[0_0_12px_rgba(255,23,68,0.04)]' 
-          : 'border-white/5 hover:border-white/10 hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)] hover:bg-[#161616]/50'
-      } ${isCompleted ? 'opacity-70' : ''}`}
-    >
+    <>
+      <Card 
+        onClick={() => setIsModalOpen(true)}
+        className={`border transition-all duration-300 relative overflow-hidden cursor-pointer bg-[#121212]/40 backdrop-blur-md ${
+          isLive 
+            ? 'border-red/40 shadow-[0_0_12px_rgba(255,23,68,0.04)]' 
+            : 'border-white/5 hover:border-white/10 hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)] hover:bg-[#161616]/50'
+        } ${isCompleted ? 'opacity-70' : ''}`}
+      >
       {/* Top ambient glow line for live matches */}
       {isLive && (
         <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red to-transparent animate-pulse" />
@@ -167,6 +172,14 @@ export default function MatchCard({ m, tz }: MatchCardProps) {
         </div>
 
       </CardContent>
-    </Card>
+      </Card>
+      
+      <MatchDetailsModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        m={m} 
+        tz={tz} 
+      />
+    </>
   );
 }
