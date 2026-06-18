@@ -18,11 +18,11 @@ export default function Header({
       className="relative py-12 px-6 min-h-[340px] flex items-center border-b border-white/5 overflow-hidden"
       style={{
         background: `
-          linear-gradient(90deg, rgba(30,30,30,0.96) 0%, rgba(30,30,30,0.85) 34%, rgba(30,30,30,0.45) 66%, rgba(30,30,30,0.55) 100%),
-          linear-gradient(180deg, transparent 42%, rgba(30,30,30,0.65) 100%),
+          linear-gradient(90deg, rgba(15,15,15,0.96) 0%, rgba(15,15,15,0.85) 34%, rgba(15,15,15,0.45) 66%, rgba(15,15,15,0.55) 100%),
+          linear-gradient(180deg, transparent 42%, rgba(15,15,15,0.65) 100%),
           radial-gradient(900px 240px at 12% -40%, rgba(5,255,155,0.15), transparent 70%),
           url('/hero.jpg') center right / cover no-repeat,
-          #1e1e1e
+          #0f0f0f
         `
       }}
     >
