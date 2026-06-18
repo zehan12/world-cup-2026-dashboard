@@ -75,7 +75,7 @@ export default function Filters({
               placeholder="Search team, venue, or city..."
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              className="w-full bg-[#111A2B] border-white/10 pl-11 pr-4 py-2.5 rounded-xl text-white placeholder-[#5E6C84] focus-visible:ring-[#1FB87A] focus-visible:border-[#1FB87A]"
+              className="w-full bg-white/3 border-white/5 pl-11 pr-4 py-2.5 rounded-xl text-white placeholder-[#5E6C84] focus-visible:ring-[#2DE89A] focus-visible:border-[#2DE89A]/40 transition-all duration-300 hover:border-white/10"
             />
           </div>
 
@@ -83,7 +83,7 @@ export default function Filters({
           <Button
             variant="outline"
             onClick={() => setFilterBodyOpen(!filterBodyOpen)}
-            className={`md:hidden flex items-center gap-2 border-white/10 text-[#EAF0FA] bg-[#111A2B] rounded-xl px-4 py-2.5 ${filterBodyOpen ? "border-[#2DE89A] text-[#2DE89A]" : ""}`}
+            className={`md:hidden flex items-center gap-2 border-white/5 text-[#EAF0FA] bg-white/3 rounded-xl px-4 py-2.5 hover:bg-white/5 transition-all duration-300 ${filterBodyOpen ? "border-[#2DE89A]/40 text-[#2DE89A]" : ""}`}
           >
             <SlidersHorizontal className="size-4" />
             <span>Filters</span>
@@ -100,7 +100,7 @@ export default function Filters({
             
             {/* Rounds Dropdown */}
             <Select value={stage || "_all"} onValueChange={v => setStage(v === "_all" ? "" : v)}>
-              <SelectTrigger className="w-full md:w-[150px] bg-[#111A2B] border-white/10 rounded-xl text-white">
+              <SelectTrigger className="w-full md:w-[150px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-[#2DE89A]">
                 <SelectValue placeholder="All rounds" />
               </SelectTrigger>
               <SelectContent className="bg-[#0E1525] border-white/10 text-white">
@@ -116,7 +116,7 @@ export default function Filters({
 
             {/* Teams Dropdown */}
             <Select value={team || "_all"} onValueChange={v => setTeam(v === "_all" ? "" : v)}>
-              <SelectTrigger className="w-full md:w-[155px] bg-[#111A2B] border-white/10 rounded-xl text-white">
+              <SelectTrigger className="w-full md:w-[155px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-[#2DE89A]">
                 <SelectValue placeholder="All teams" />
               </SelectTrigger>
               <SelectContent className="bg-[#0E1525] border-white/10 text-white max-h-[300px]">
@@ -132,7 +132,7 @@ export default function Filters({
 
             {/* TV Dropdown */}
             <Select value={tv || "_all"} onValueChange={v => setTv(v === "_all" ? "" : v)}>
-              <SelectTrigger className="w-full md:w-[145px] bg-[#111A2B] border-white/10 rounded-xl text-white">
+              <SelectTrigger className="w-full md:w-[145px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-[#2DE89A]">
                 <SelectValue placeholder="FOX &amp; FS1" />
               </SelectTrigger>
               <SelectContent className="bg-[#0E1525] border-white/10 text-white">
@@ -144,7 +144,7 @@ export default function Filters({
 
             {/* Timezone Dropdown */}
             <Select value={tz} onValueChange={setTz}>
-              <SelectTrigger className="w-full md:w-[185px] bg-[#111A2B] border-white/10 rounded-xl text-white">
+              <SelectTrigger className="w-full md:w-[185px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-[#2DE89A]">
                 <SelectValue placeholder="Times: Eastern (ET)" />
               </SelectTrigger>
               <SelectContent className="bg-[#0E1525] border-white/10 text-white">
@@ -159,7 +159,7 @@ export default function Filters({
             </Select>
 
             {/* Switches */}
-            <div className="flex flex-wrap gap-4 items-center bg-[#111A2B] border border-white/10 py-1.5 px-4 rounded-xl text-xs md:text-sm">
+            <div className="flex flex-wrap gap-4 items-center bg-white/3 border border-white/5 py-1.5 px-4 rounded-xl text-xs md:text-sm">
               <label className="flex items-center gap-2.5 cursor-pointer select-none">
                 <Switch checked={today} onCheckedChange={setToday} className="data-[state=checked]:bg-[#F0B33A] data-[state=unchecked]:bg-[#0E1525]" />
                 <span className={today ? "text-[#F0B33A]" : "text-[#8493AD]"}>Today</span>
@@ -181,7 +181,7 @@ export default function Filters({
             </div>
 
             {/* Undo/Redo Buttons */}
-            <div className="flex items-center gap-1 bg-[#111A2B] border border-white/10 p-1 rounded-xl w-full md:w-auto justify-center">
+            <div className="flex items-center gap-1 bg-white/3 border border-white/5 p-1 rounded-xl w-full md:w-auto justify-center">
               <Button
                 variant="ghost"
                 size="icon"
@@ -208,7 +208,7 @@ export default function Filters({
             <Button
               variant="ghost"
               onClick={resetFilters}
-              className="w-full md:w-auto text-[#8493AD] hover:text-white border border-white/5 md:border-none hover:bg-white/5 py-2.5 rounded-xl cursor-pointer"
+              className="w-full md:w-auto text-[#8493AD] hover:text-white border border-white/5 md:border-none hover:bg-white/5 py-2.5 rounded-xl cursor-pointer transition-colors duration-300"
             >
               Reset
             </Button>
@@ -216,7 +216,7 @@ export default function Filters({
             {/* Add to Calendar Button */}
             <Button
               onClick={handleCalendarExport}
-              className="w-full md:w-auto bg-[#F0B33A] text-[#231803] hover:bg-[#F0B33A]/95 font-semibold py-2.5 rounded-xl cursor-pointer"
+              className="w-full md:w-auto bg-[#F0B33A] text-[#231803] hover:bg-[#F0B33A]/90 hover:scale-[1.02] shadow-[0_4px_12px_rgba(240,179,58,0.15)] font-bold py-2.5 rounded-xl cursor-pointer transition-all duration-300"
             >
               <Calendar className="size-4 mr-2" />
               {party ? (

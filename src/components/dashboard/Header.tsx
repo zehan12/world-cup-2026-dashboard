@@ -49,22 +49,22 @@ export default function Header({
         </p>
         
         {/* Stats Badges */}
-        <div className="flex flex-wrap gap-x-8 gap-y-4 mt-8 font-mono">
-          <div className="flex flex-col">
-            <span className="text-2xl font-bold text-white leading-tight">{totalMatches}</span>
-            <span className="text-[10px] tracking-wider text-[#5E6C84] uppercase">Total Matches</span>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-[800px]">
+          <div className="bg-white/3 backdrop-blur-sm border border-white/5 rounded-xl p-3.5 flex flex-col justify-between hover:border-white/10 transition-colors duration-300">
+            <span className="text-[10px] tracking-wider text-[#8493AD] uppercase font-mono">Total Matches</span>
+            <span className="text-3xl font-extrabold text-white leading-tight mt-1.5">{totalMatches}</span>
           </div>
-          <div className="flex flex-col">
-            <span className="text-2xl font-bold text-[#F0B33A] leading-tight">{matchesTodayCount}</span>
-            <span className="text-[10px] tracking-wider text-[#5E6C84] uppercase">Today</span>
+          <div className="bg-[#F0B33A]/5 backdrop-blur-sm border border-[#F0B33A]/10 rounded-xl p-3.5 flex flex-col justify-between hover:border-[#F0B33A]/20 transition-colors duration-300">
+            <span className="text-[10px] tracking-wider text-[#F0B33A]/80 uppercase font-mono">Today</span>
+            <span className="text-3xl font-extrabold text-[#F0B33A] leading-tight mt-1.5">{matchesTodayCount}</span>
           </div>
-          <div className="flex flex-col">
-            <span className="text-2xl font-bold text-white leading-tight">{upcomingMatchesCount}</span>
-            <span className="text-[10px] tracking-wider text-[#5E6C84] uppercase">Upcoming</span>
+          <div className="bg-white/3 backdrop-blur-sm border border-white/5 rounded-xl p-3.5 flex flex-col justify-between hover:border-white/10 transition-colors duration-300">
+            <span className="text-[10px] tracking-wider text-[#8493AD] uppercase font-mono">Upcoming</span>
+            <span className="text-3xl font-extrabold text-white leading-tight mt-1.5">{upcomingMatchesCount}</span>
           </div>
-          <div className="flex flex-col">
-            <span className="text-2xl font-bold text-[#2DE89A] leading-tight">{currentRound}</span>
-            <span className="text-[10px] tracking-wider text-[#5E6C84] uppercase">Current Round</span>
+          <div className="bg-[#2DE89A]/5 backdrop-blur-sm border border-[#2DE89A]/10 rounded-xl p-3.5 flex flex-col justify-between hover:border-[#2DE89A]/20 transition-colors duration-300">
+            <span className="text-[10px] tracking-wider text-[#2DE89A]/80 uppercase font-mono">Current Stage</span>
+            <span className="text-2xl font-extrabold text-[#2DE89A] leading-tight mt-1.5 truncate">{currentRound}</span>
           </div>
         </div>
       </div>
