@@ -1,9 +1,6 @@
 export default function Footer() {
   return (
     <footer className="w-full max-w-[1180px] mx-auto px-6 py-8 border-t border-white/5 mt-16 text-xs text-[#5E6C84] leading-relaxed">
-      <p>
-        <strong className="text-[#8493AD]">Watch Options.</strong> Every match airs in English on FOX or FS1 and streams on FOX One and the FOX Sports app. Spanish-language coverage runs on Telemundo and Universo and streams on Peacock. Fubo carries all 104 games. Per-match channels are the announced English-language assignments.
-      </p>
       <p className="mt-2.5">
         Times are resolved in your selected timezone. Late "12:00 AM ET" kickoffs are shown under the prior matchday (following tournament guidelines) but resolve to the correct next day locally when shifted. Knockout matchups list seeding (e.g. <strong>1C</strong> = Group C winner, <strong>2F</strong> = Group F runner-up, <strong>3rd</strong> = a qualifying third-place team) until teams are confirmed. Schedule subject to change.
       </p>

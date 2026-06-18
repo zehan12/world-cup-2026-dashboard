@@ -117,9 +117,6 @@ export default function MatchCard({ m, tz }: MatchCardProps) {
             </span>
           </div>
 
-          <span className="font-mono text-[10px] text-[#8493AD] tracking-wider">
-            Stream: <span className="text-[#B9C6DC] font-semibold">FOX One</span> · Peacock · Fubo
-          </span>
 
           {/* Match Status indicator */}
           <div className="flex items-center gap-1.5 mt-0.5">

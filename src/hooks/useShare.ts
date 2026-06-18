@@ -4,8 +4,8 @@ export function useShare(team: string) {
   const [copied, setCopied] = useState(false);
 
   const getShareText = () => {
-    if (team) return `⚽ Every ${team} match at the 2026 World Cup — kickoff times, the channel it's on, and where to stream, all on one screen 👇 #WorldCup2026`;
-    return `⚽ The whole 2026 World Cup on one screen — every kickoff time, the channel it's on, and where to stream all 104 matches. Don't miss a goal 👇 #WorldCup2026`;
+    if (team) return `⚽ Every ${team} match at the 2026 World Cup — kickoff times and TV channels, all on one screen 👇 #WorldCup2026`;
+    return `⚽ The whole 2026 World Cup on one screen — every kickoff time and TV channel for all 104 matches. Don't miss a goal 👇 #WorldCup2026`;
   };
 
   const getShareUrl = () => {
@@ -20,7 +20,7 @@ export function useShare(team: string) {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: "World Cup 2026 — Where & When to Watch",
+          title: "World Cup 2026 Schedule & TV Channels",
           text: getShareText(),
           url: getShareUrl(),
         });

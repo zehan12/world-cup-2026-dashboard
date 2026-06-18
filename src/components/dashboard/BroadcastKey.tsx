@@ -37,17 +37,6 @@ export default function BroadcastKey({
           <span className="text-[11px] text-[#5E6C84]">— Spanish TV</span>
         </div>
 
-        <div className="flex items-center gap-1.5 bg-[#111A2B] border border-white/5 py-1.5 px-3 rounded-lg">
-          <span>Stream:</span>
-          <span className="text-white font-semibold">FOX One</span>
-          <span className="text-[#5E6C84]">(EN)</span>
-          <span className="text-[#5E6C84]">·</span>
-          <span className="text-white font-semibold">Peacock</span>
-          <span className="text-[#5E6C84]">(ES)</span>
-          <span className="text-[#5E6C84]">·</span>
-          <span className="text-white font-semibold">Fubo</span>
-          <span className="text-[#5E6C84]">(All)</span>
-        </div>
       </div>
 
       {/* Share buttons */}

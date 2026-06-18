@@ -45,7 +45,7 @@ export default function Header({
         </h1>
         
         <p className="text-[#8493AD] text-[15px] max-w-[640px] leading-relaxed">
-          All 104 matches — kickoff times in your timezone, the channel they're on, and every place to stream them. June 11 – July 19, 2026.
+          All 104 matches — kickoff times in your timezone and TV channel listings. June 11 – July 19, 2026.
         </p>
         
         {/* Stats Badges */}
