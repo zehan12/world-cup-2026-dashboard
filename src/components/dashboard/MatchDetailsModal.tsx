@@ -231,22 +231,24 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz }: MatchDetai
         </DialogHeader>
 
         {/* Dynamic Scoreboard Row */}
-        <div className="mt-2 py-4 px-3 rounded-xl bg-white/3 border border-white/5 flex items-center justify-between gap-4">
+        <div className="mt-2 py-4 px-3 rounded-xl bg-white/3 border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Home team */}
-          <div className="flex flex-col items-center justify-center flex-1 min-w-0 text-center gap-1.5">
-            <span className="text-3xl sm:text-4xl leading-none select-none saturate-110">
+          <div className="flex flex-row sm:flex-col items-center justify-start sm:justify-center flex-1 min-w-0 w-full sm:text-center gap-3 sm:gap-1.5">
+            <span className="text-3xl sm:text-4xl leading-none select-none saturate-110 flex-shrink-0">
               {FLAGS[homeTeam || ""] || "⚽"}
             </span>
-            <span className="text-xs sm:text-sm font-bold tracking-wider uppercase truncate max-w-full text-foreground/90">
-              {homeTeam || "TBD"}
-            </span>
-            <span className="text-[10px] text-muted-foreground/60 font-mono italic">
-              {homeInsights.tactics}
-            </span>
+            <div className="flex flex-col min-w-0 sm:items-center">
+              <span className="text-xs sm:text-sm font-bold tracking-wider uppercase truncate max-w-full text-foreground/90">
+                {homeTeam || "TBD"}
+              </span>
+              <span className="text-[10px] text-muted-foreground/60 font-mono italic truncate max-w-full">
+                {homeInsights.tactics}
+              </span>
+            </div>
           </div>
 
           {/* Center score or kick-off time */}
-          <div className="flex flex-col items-center justify-center min-w-[100px] gap-1">
+          <div className="flex flex-col items-center justify-center min-w-full sm:min-w-[100px] py-2 sm:py-0 border-y border-white/5 sm:border-0 gap-1">
             {hasScore ? (
               <div className="font-mono text-2xl sm:text-3xl font-extrabold tracking-tight bg-white/5 border border-white/10 px-3.5 py-1 rounded-xl flex items-center gap-2 select-none shadow-sm">
                 <span className={homeScore! > awayScore! ? 'text-white' : 'text-muted-foreground/50'}>{homeScore}</span>
@@ -264,16 +266,18 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz }: MatchDetai
           </div>
 
           {/* Away team */}
-          <div className="flex flex-col items-center justify-center flex-1 min-w-0 text-center gap-1.5">
-            <span className="text-3xl sm:text-4xl leading-none select-none saturate-110">
+          <div className="flex flex-row-reverse sm:flex-col items-center justify-start sm:justify-center flex-1 min-w-0 w-full sm:text-center gap-3 sm:gap-1.5">
+            <span className="text-3xl sm:text-4xl leading-none select-none saturate-110 flex-shrink-0">
               {FLAGS[awayTeam || ""] || "⚽"}
             </span>
-            <span className="text-xs sm:text-sm font-bold tracking-wider uppercase truncate max-w-full text-foreground/90">
-              {awayTeam || "TBD"}
-            </span>
-            <span className="text-[10px] text-muted-foreground/60 font-mono italic">
-              {awayInsights.tactics}
-            </span>
+            <div className="flex flex-col min-w-0 items-end sm:items-center">
+              <span className="text-xs sm:text-sm font-bold tracking-wider uppercase truncate max-w-full text-foreground/90">
+                {awayTeam || "TBD"}
+              </span>
+              <span className="text-[10px] text-muted-foreground/60 font-mono italic truncate max-w-full">
+                {awayInsights.tactics}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -322,35 +326,35 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz }: MatchDetai
 
         {/* Matchup Insights & Players Roster Tabs */}
         <div className="mt-4 flex flex-col gap-3">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
             <span className="text-xs font-bold font-mono tracking-wider text-muted-foreground/70 uppercase flex items-center gap-1.5">
               <Activity className="size-4 text-muted-foreground/50" />
               SQUADS &amp; ROSTERS
             </span>
-            <div className="flex gap-1.5 p-0.5 bg-white/5 border border-white/10 rounded-lg select-none">
+            <div className="flex gap-1.5 p-0.5 bg-white/5 border border-white/10 rounded-lg select-none w-full sm:w-auto">
               <button
                 type="button"
                 onClick={() => setActiveTab('h')}
-                className={`px-3 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase transition-all duration-200 flex items-center gap-1.5 ${
+                className={`flex-1 sm:flex-initial px-3 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase transition-all duration-200 flex items-center justify-center gap-1.5 ${
                   activeTab === 'h'
                     ? "bg-white/10 text-white shadow-sm ring-1 ring-white/15"
                     : "text-muted-foreground/60 hover:text-white"
                 }`}
               >
                 <span>{FLAGS[homeTeam || ""] || "⚽"}</span>
-                <span className="max-w-[70px] sm:max-w-none truncate">{homeTeam || "Home"}</span>
+                <span className="max-w-[100px] sm:max-w-none truncate">{homeTeam || "Home"}</span>
               </button>
               <button
                 type="button"
                 onClick={() => setActiveTab('a')}
-                className={`px-3 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase transition-all duration-200 flex items-center gap-1.5 ${
+                className={`flex-1 sm:flex-initial px-3 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase transition-all duration-200 flex items-center justify-center gap-1.5 ${
                   activeTab === 'a'
                     ? "bg-white/10 text-white shadow-sm ring-1 ring-white/15"
                     : "text-muted-foreground/60 hover:text-white"
                 }`}
               >
                 <span>{FLAGS[awayTeam || ""] || "⚽"}</span>
-                <span className="max-w-[70px] sm:max-w-none truncate">{awayTeam || "Away"}</span>
+                <span className="max-w-[100px] sm:max-w-none truncate">{awayTeam || "Away"}</span>
               </button>
             </div>
           </div>
@@ -369,9 +373,9 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz }: MatchDetai
                 : "bg-rose-500/10 text-rose-400 border-rose-500/20";
               
               return (
-                <div key={idx} className="flex items-center justify-between gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:border-white/10 hover:bg-white/5 transition-all duration-200">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <span className={`w-8 text-center font-mono text-[9px] font-bold uppercase py-0.5 rounded border select-none ${posColor}`}>
+                <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:border-white/10 hover:bg-white/5 transition-all duration-200">
+                  <div className="flex items-center gap-2.5 min-w-0 w-full sm:w-auto">
+                    <span className={`w-8 text-center font-mono text-[9px] font-bold uppercase py-0.5 rounded border select-none flex-shrink-0 ${posColor}`}>
                       {p.pos}
                     </span>
                     <div className="flex flex-col min-w-0">
@@ -379,7 +383,7 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz }: MatchDetai
                       <span className="text-[10px] text-muted-foreground/50 truncate">{p.club}</span>
                     </div>
                   </div>
-                  <span className="text-[10px] font-mono text-[#2DE89A] font-semibold bg-[#2DE89A]/5 border border-[#2DE89A]/15 px-2 py-0.5 rounded-lg truncate max-w-[200px] text-right">
+                  <span className="text-[10px] font-mono text-[#2DE89A] font-semibold bg-[#2DE89A]/5 border border-[#2DE89A]/15 px-2 py-0.5 rounded-lg truncate w-fit max-w-full sm:max-w-[200px] sm:text-right">
                     {p.keyStat}
                   </span>
                 </div>
