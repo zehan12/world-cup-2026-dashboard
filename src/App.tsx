@@ -1,4 +1,5 @@
 import type { Match } from "@/data/matches";
+import { useState } from "react";
 import { 
   INITIAL_MATCHES, 
   UNIVERSO 
@@ -22,6 +23,7 @@ import BroadcastKey from "@/components/dashboard/BroadcastKey";
 import Filters from "@/components/dashboard/Filters";
 import QuickChips from "@/components/dashboard/QuickChips";
 import MatchList from "@/components/dashboard/MatchList";
+import Standings from "@/components/dashboard/Standings";
 import Footer from "@/components/dashboard/Footer";
 
 const initialMatchesWithStatus = INITIAL_MATCHES.map(m => {
@@ -39,6 +41,9 @@ export default function App() {
   const today = useFilterStore((s) => s.today);
   const up = useFilterStore((s) => s.up);
   const party = useFilterStore((s) => s.party);
+
+  // Local View state
+  const [activeView, setActiveView] = useState<"matches" | "standings">("matches");
 
   // Hooks
   const { matches, isFresh } = useEspnScores(initialMatchesWithStatus);
@@ -120,21 +125,63 @@ export default function App() {
         handleCopyLink={handleCopyLink}
       />
 
-      <Filters
-        teamList={teamList}
-        filteredUnplayedCount={filteredUnplayedCount}
-        daysCount={days.length}
-        handleCalendarExport={handleCalendarExport}
-      />
+      {/* View Selector Tabs */}
+      <div className="max-w-[1180px] mx-auto w-full px-6 mt-6 flex justify-center">
+        <div className="flex p-1 bg-white/3 border border-white/5 rounded-2xl select-none w-full sm:w-[320px] shadow-lg">
+          <button
+            type="button"
+            onClick={() => setActiveView("matches")}
+            className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold tracking-wide uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+              activeView === "matches"
+                ? "bg-white/10 text-white shadow-md ring-1 ring-white/15 scale-[1.02]"
+                : "text-muted-foreground/60 hover:text-white"
+            }`}
+          >
+            ⚽ Matches
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView("standings")}
+            className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold tracking-wide uppercase transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+              activeView === "standings"
+                ? "bg-white/10 text-white shadow-md ring-1 ring-white/15 scale-[1.02]"
+                : "text-muted-foreground/60 hover:text-white"
+            }`}
+          >
+            📊 Standings
+          </button>
+        </div>
+      </div>
 
-      <QuickChips />
+      {activeView === "matches" ? (
+        <>
+          <Filters
+            teamList={teamList}
+            filteredUnplayedCount={filteredUnplayedCount}
+            daysCount={days.length}
+            handleCalendarExport={handleCalendarExport}
+          />
 
-      <MatchList
-        days={days}
-        groupedMatches={groupedMatches}
-        todayStr={todayStr}
-        filteredMatchesCount={filteredMatches.length}
-      />
+          <QuickChips />
+
+          <MatchList
+            days={days}
+            groupedMatches={groupedMatches}
+            todayStr={todayStr}
+            filteredMatchesCount={filteredMatches.length}
+          />
+        </>
+      ) : (
+        <Standings 
+          matches={matches} 
+          onSelectTeam={(selectedTeam) => {
+            // Set the team filter globally
+            useFilterStore.getState().setTeam(selectedTeam);
+            // Switch back to matches view
+            setActiveView("matches");
+          }} 
+        />
+      )}
 
       <Footer />
     </div>
