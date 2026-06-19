@@ -1,13 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { getTeamId } from "@/data/teamIds";
 import type { RosterPlayer, EspnRosterResponse, EspnAthlete } from "@/types";
-
-const POS_MAP: Record<string, "GK" | "DF" | "MF" | "FW"> = {
-  G: "GK",
-  D: "DF",
-  M: "MF",
-  F: "FW",
-};
+import { API_CONFIG } from "@/config/api";
+import { POS_MAP } from "@/constants";
 
 const cache = new Map<string, RosterPlayer[]>();
 
@@ -43,10 +38,7 @@ export function useTeamRoster(teamName: string | null | undefined, enabled = tru
 
     setLoading(true);
     setError(null);
-    fetch(
-      `https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/teams/${teamId}/roster`,
-      { cache: "no-store" }
-    )
+    fetch(API_CONFIG.getEspnRosterUrl(String(teamId)), { cache: "no-store" })
       .then((r) => {
         if (!r.ok) throw new Error("Failed to fetch roster: " + r.status);
         return r.json();
@@ -64,7 +56,7 @@ export function useTeamRoster(teamName: string | null | undefined, enabled = tru
             weight: a.displayWeight || "",
             headshot: a.headshot?.href,
           }));
-        
+
         cache.set(teamName, mapped);
         setFetchedPlayers(mapped);
         setLoading(false);

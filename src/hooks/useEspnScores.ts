@@ -3,17 +3,12 @@ import type { Match } from "@/data/matches";
 import { INITIAL_MATCHES } from "@/data/matches";
 import { startUTC, etTodayStr } from "@/helpers/date-helpers";
 import type { EspnEventResponse, EspnEvent, ProcessedEvent } from "@/types";
-
-const ESPN_BASE = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard";
-const ESPN_NAME: Record<string, string> = {
-  "United States": "USA",
-  "Bosnia-Herzegovina": "Bosnia and Herzegovina",
-  "Congo DR": "DR Congo"
-};
+import { API_CONFIG } from "@/config/api";
+import { ESPN_NAME_MAP } from "@/constants";
 
 const normName = (name?: string) => {
   const trimmed = (name || "").trim();
-  return ESPN_NAME[trimmed] || trimmed;
+  return ESPN_NAME_MAP[trimmed] || trimmed;
 };
 
 const isPlaceholder = (name?: string) => {
@@ -29,7 +24,8 @@ export function useEspnScores(initialMatches: Match[]) {
 
   const fetchEvents = async (dates?: string): Promise<ProcessedEvent[]> => {
     try {
-      const r = await fetch(dates ? `${ESPN_BASE}?dates=${dates}` : ESPN_BASE, { cache: "no-store" });
+      const url = dates ? `${API_CONFIG.ESPN_SCOREBOARD_URL}?dates=${dates}` : API_CONFIG.ESPN_SCOREBOARD_URL;
+      const r = await fetch(url, { cache: "no-store" });
       if (!r.ok) throw new Error("ESPN fetch failed: " + r.status);
       const d: EspnEventResponse = await r.json();
 
