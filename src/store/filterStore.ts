@@ -63,7 +63,7 @@ export const useFilterStore = create<FilterStore>()(
       }),
       {
         partialize: (state) => {
-          // Exclude filterBodyOpen from undo/redo history
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { filterBodyOpen, ...rest } = state;
           return rest;
         }
