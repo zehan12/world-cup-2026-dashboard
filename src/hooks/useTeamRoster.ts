@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { getTeamId } from "@/data/teamIds";
 import type { RosterPlayer, EspnRosterResponse, EspnAthlete } from "@/types";
-import { API_CONFIG } from "@/config/api";
 import { POS_MAP } from "@/constants";
+import { espnService } from "@/services/espnService";
 
 const cache = new Map<string, RosterPlayer[]>();
 
@@ -38,11 +38,7 @@ export function useTeamRoster(teamName: string | null | undefined, enabled = tru
 
     setLoading(true);
     setError(null);
-    fetch(API_CONFIG.getEspnRosterUrl(String(teamId)), { cache: "no-store" })
-      .then((r) => {
-        if (!r.ok) throw new Error("Failed to fetch roster: " + r.status);
-        return r.json();
-      })
+    espnService.fetchRoster(String(teamId))
       .then((data: EspnRosterResponse) => {
         const athletes: EspnAthlete[] = data.athletes || [];
         const mapped: RosterPlayer[] = athletes

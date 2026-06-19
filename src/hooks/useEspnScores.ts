@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import type { Match } from "@/data/matches";
 import { INITIAL_MATCHES } from "@/data/matches";
 import { startUTC, etTodayStr } from "@/helpers/date-helpers";
-import type { EspnEventResponse, EspnEvent, ProcessedEvent } from "@/types";
-import { API_CONFIG } from "@/config/api";
+import type { EspnEvent, ProcessedEvent } from "@/types";
 import { ESPN_NAME_MAP } from "@/constants";
+import { espnService } from "@/services/espnService";
 
 const normName = (name?: string) => {
   const trimmed = (name || "").trim();
@@ -24,10 +24,7 @@ export function useEspnScores(initialMatches: Match[]) {
 
   const fetchEvents = async (dates?: string): Promise<ProcessedEvent[]> => {
     try {
-      const url = dates ? `${API_CONFIG.ESPN_SCOREBOARD_URL}?dates=${dates}` : API_CONFIG.ESPN_SCOREBOARD_URL;
-      const r = await fetch(url, { cache: "no-store" });
-      if (!r.ok) throw new Error("ESPN fetch failed: " + r.status);
-      const d: EspnEventResponse = await r.json();
+      const d = await espnService.fetchScores(dates);
 
       return (d.events || []).map((e: EspnEvent) => {
         const c = e.competitions?.[0];
@@ -157,7 +154,7 @@ export function useEspnScores(initialMatches: Match[]) {
         }, 600);
       }
     };
-    
+
     init();
 
     let pollInterval: ReturnType<typeof setTimeout>;

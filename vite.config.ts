@@ -11,4 +11,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      "/espn-api": {
+        target: "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world",
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/espn-api/, ""),
+      },
+    },
+  },
 })
