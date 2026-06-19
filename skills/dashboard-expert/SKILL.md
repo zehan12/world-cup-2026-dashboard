@@ -10,8 +10,7 @@ This is a zero-dependency, static React dashboard listing all 104 matches of the
 
 ## Core Directives for Agents
 1. **Do not introduce build steps or backends.** The application compiles to static HTML/JS via Vite.
-2. **Do not introduce local storage.** The app runs in sandboxed environments where storage might be blocked. Keep all filter state in Zustand (`src/store/filterStore.ts`).
-3. **Understand the Hydration Cycle**:
+2. **Understand the Hydration Cycle**:
    - `src/data/matches.ts` loads first with static FOX/TV assignments.
    - `src/hooks/useEspnScores.ts` fires on mount to fetch live ESPN data.
    - The ESPN data patches the `_scoreH`, `_scoreA`, and `_st` (status) fields onto the static matches.
