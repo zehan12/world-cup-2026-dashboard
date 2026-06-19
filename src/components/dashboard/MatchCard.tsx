@@ -50,11 +50,11 @@ export default function MatchCard({ m, tz, matches }: MatchCardProps) {
     <>
       <Card 
         onClick={() => setIsModalOpen(true)}
-        className={`border transition-all duration-300 relative overflow-hidden cursor-pointer bg-[#121212]/40 backdrop-blur-md ${
+        className={`group border relative overflow-hidden cursor-pointer bg-[#121212]/60 backdrop-blur-md transition-all duration-400 ease-out active:scale-[0.98] ${
           isLive 
-            ? 'border-red/40 shadow-[0_0_12px_rgba(255,23,68,0.04)]' 
-            : 'border-white/5 hover:border-white/10 hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)] hover:bg-[#161616]/50'
-        } ${isCompleted ? 'opacity-70' : ''}`}
+            ? 'border-red/40 shadow-[0_0_24px_-4px_rgba(255,23,68,0.15)] ring-1 ring-red/10' 
+            : 'border-white/5 hover:border-white/20 hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] hover:bg-gradient-to-br hover:from-white/[0.07] hover:to-transparent hover:-translate-y-[2px]'
+        } ${isCompleted ? 'opacity-60 hover:opacity-100' : ''}`}
       >
       {/* Top ambient glow line for live matches */}
       {isLive && (

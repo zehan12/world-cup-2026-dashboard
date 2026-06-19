@@ -74,7 +74,7 @@ export default function Filters({
               placeholder="Search team, venue, or city..."
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              className="w-full bg-white/3 border-white/5 pl-11 pr-4 py-2.5 rounded-xl text-white placeholder-muted-foreground/60 focus-visible:ring-fox focus-visible:border-fox/40 transition-all duration-300 hover:border-white/10"
+              className="w-full bg-[#121212]/80 border-white/5 pl-11 pr-4 py-2.5 rounded-xl text-white placeholder-muted-foreground/60 focus-visible:ring-2 focus-visible:ring-fox/30 focus-visible:border-fox/50 transition-all duration-400 ease-out hover:border-white/20 hover:bg-white/5 shadow-sm focus:shadow-[0_0_20px_-4px_rgba(5,255,155,0.2)]"
             />
           </div>
 
@@ -82,7 +82,7 @@ export default function Filters({
           <Button
             variant="outline"
             onClick={() => setFilterBodyOpen(!filterBodyOpen)}
-            className={`md:hidden flex items-center gap-2 border-white/5 text-foreground bg-white/3 rounded-xl px-4 py-2.5 hover:bg-white/5 transition-all duration-300 ${filterBodyOpen ? "border-fox/40 text-fox" : ""}`}
+            className={`md:hidden flex items-center gap-2 border-white/5 text-foreground bg-[#121212]/80 rounded-xl px-4 py-2.5 hover:bg-white/10 hover:border-white/20 hover:-translate-y-[1px] active:scale-95 transition-all duration-400 ease-out ${filterBodyOpen ? "border-fox/50 text-fox shadow-[0_0_16px_-4px_rgba(5,255,155,0.2)] ring-1 ring-fox/20" : ""}`}
           >
             <SlidersHorizontal className="size-4" />
             <span>Filters</span>
@@ -99,7 +99,7 @@ export default function Filters({
             
             {/* Rounds Dropdown */}
             <Select value={stage || "_all"} onValueChange={v => setStage(v === "_all" ? "" : v)}>
-              <SelectTrigger className="w-full md:w-[150px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-fox">
+              <SelectTrigger className="w-full md:w-[150px] bg-[#121212]/80 border-white/5 rounded-xl text-white hover:bg-white/10 hover:border-white/20 hover:-translate-y-[1px] transition-all duration-400 ease-out focus:ring-fox/30 focus:border-fox/50 shadow-sm data-[state=open]:border-fox/50 data-[state=open]:shadow-[0_0_16px_-4px_rgba(5,255,155,0.2)]">
                 <SelectValue placeholder="All rounds" />
               </SelectTrigger>
               <SelectContent className="bg-popover border-white/10 text-white">
@@ -115,7 +115,7 @@ export default function Filters({
 
             {/* Teams Dropdown */}
             <Select value={team || "_all"} onValueChange={v => setTeam(v === "_all" ? "" : v)}>
-              <SelectTrigger className="w-full md:w-[155px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-fox">
+              <SelectTrigger className="w-full md:w-[155px] bg-[#121212]/80 border-white/5 rounded-xl text-white hover:bg-white/10 hover:border-white/20 hover:-translate-y-[1px] transition-all duration-400 ease-out focus:ring-fox/30 focus:border-fox/50 shadow-sm data-[state=open]:border-fox/50 data-[state=open]:shadow-[0_0_16px_-4px_rgba(5,255,155,0.2)]">
                 <SelectValue placeholder="All teams" />
               </SelectTrigger>
               <SelectContent className="bg-popover border-white/10 text-white max-h-[300px]">
@@ -132,7 +132,7 @@ export default function Filters({
 
             {/* Timezone Dropdown */}
             <Select value={tz} onValueChange={setTz}>
-              <SelectTrigger className="w-full md:w-[185px] bg-white/3 border-white/5 rounded-xl text-white hover:bg-white/5 hover:border-white/10 transition-all duration-300 focus:ring-fox">
+              <SelectTrigger className="w-full md:w-[185px] bg-[#121212]/80 border-white/5 rounded-xl text-white hover:bg-white/10 hover:border-white/20 hover:-translate-y-[1px] transition-all duration-400 ease-out focus:ring-fox/30 focus:border-fox/50 shadow-sm data-[state=open]:border-fox/50 data-[state=open]:shadow-[0_0_16px_-4px_rgba(5,255,155,0.2)]">
                 <SelectValue placeholder="Times: Eastern (ET)" />
               </SelectTrigger>
               <SelectContent className="bg-popover border-white/10 text-white">

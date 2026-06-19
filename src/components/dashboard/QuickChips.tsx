@@ -17,10 +17,10 @@ export default function QuickChips() {
             <button
               key={h}
               onClick={() => setTeam(team === h ? "" : h)}
-              className={`flex items-center gap-1.5 border py-1.5 px-3.5 rounded-full transition-all duration-300 font-semibold cursor-pointer ${
+              className={`flex items-center gap-1.5 border py-1.5 px-3.5 rounded-full transition-all duration-300 ease-out active:scale-95 font-semibold cursor-pointer ${
                 team === h 
-                  ? 'bg-fox/15 border-fox/40 text-fox shadow-[0_0_12px_rgba(5,255,155,0.1)]' 
-                  : 'bg-white/3 border-white/5 hover:border-white/15 hover:bg-white/5 text-muted-foreground hover:text-white'
+                  ? 'bg-fox/15 border-fox/50 text-fox shadow-[0_0_20px_-4px_rgba(5,255,155,0.3)] ring-1 ring-fox/20' 
+                  : 'bg-white/5 border-white/10 hover:border-white/25 hover:bg-white/10 text-muted-foreground hover:text-white hover:-translate-y-[1px]'
               }`}
             >
               <span className="text-base leading-none select-none">{FLAGS[h]}</span>
@@ -35,10 +35,10 @@ export default function QuickChips() {
             <button
               key={c}
               onClick={() => setTeam(team === c ? "" : c)}
-              className={`flex items-center gap-1.5 border py-1.5 px-3.5 rounded-full transition-all duration-300 font-semibold cursor-pointer ${
+              className={`flex items-center gap-1.5 border py-1.5 px-3.5 rounded-full transition-all duration-300 ease-out active:scale-95 font-semibold cursor-pointer ${
                 team === c 
-                  ? 'bg-fox/15 border-fox/40 text-fox shadow-[0_0_12px_rgba(5,255,155,0.1)]' 
-                  : 'bg-white/3 border-white/5 hover:border-white/15 hover:bg-white/5 text-muted-foreground hover:text-white'
+                  ? 'bg-fox/15 border-fox/50 text-fox shadow-[0_0_20px_-4px_rgba(5,255,155,0.3)] ring-1 ring-fox/20' 
+                  : 'bg-white/5 border-white/10 hover:border-white/25 hover:bg-white/10 text-muted-foreground hover:text-white hover:-translate-y-[1px]'
               }`}
             >
               <span className="text-base leading-none select-none">{FLAGS[c]}</span>

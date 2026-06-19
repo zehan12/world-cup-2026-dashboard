@@ -281,7 +281,7 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz, matches }: M
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="w-[calc(100%-2rem)] sm:max-w-2xl bg-[#0f0f0f]/95 border-white/10 text-white rounded-2xl backdrop-blur-xl p-0 overflow-hidden shadow-2xl ring-1 ring-white/10 duration-200">
+      <DialogContent className="w-[calc(100%-2rem)] sm:max-w-2xl bg-[#0f0f0f]/95 border-white/10 text-white rounded-2xl backdrop-blur-xl p-0 overflow-hidden shadow-[0_24px_100px_rgba(0,0,0,0.9)] ring-1 ring-white/10 duration-400 ease-out">
         <ScrollArea className="max-h-[85vh] w-full p-6">
           <DialogHeader className="gap-1.5">
             <div className="flex items-center gap-2">
@@ -358,10 +358,10 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz, matches }: M
             <button
               type="button"
               onClick={() => setDetailTab("ticker")}
-              className={`px-4.5 py-2.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer flex-shrink-0 ${
+              className={`px-4.5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 ease-out active:scale-95 cursor-pointer flex-shrink-0 ${
                 detailTab === "ticker"
-                  ? "bg-white text-black shadow-md scale-[1.02]"
-                  : "bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:text-white"
+                  ? "bg-white text-black shadow-[0_0_16px_rgba(255,255,255,0.3)] scale-[1.02]"
+                  : "bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:-translate-y-[1px] hover:text-white"
               }`}
             >
               Live Ticker
@@ -369,10 +369,10 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz, matches }: M
             <button
               type="button"
               onClick={() => setDetailTab("lineup")}
-              className={`px-4.5 py-2.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer flex-shrink-0 ${
+              className={`px-4.5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 ease-out active:scale-95 cursor-pointer flex-shrink-0 ${
                 detailTab === "lineup"
-                  ? "bg-white text-black shadow-md scale-[1.02]"
-                  : "bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:text-white"
+                  ? "bg-white text-black shadow-[0_0_16px_rgba(255,255,255,0.3)] scale-[1.02]"
+                  : "bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:-translate-y-[1px] hover:text-white"
               }`}
             >
               Line-up
@@ -380,10 +380,10 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz, matches }: M
             <button
               type="button"
               onClick={() => setDetailTab("stats")}
-              className={`px-4.5 py-2.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer flex-shrink-0 ${
+              className={`px-4.5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 ease-out active:scale-95 cursor-pointer flex-shrink-0 ${
                 detailTab === "stats"
-                  ? "bg-white text-black shadow-md scale-[1.02]"
-                  : "bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:text-white"
+                  ? "bg-white text-black shadow-[0_0_16px_rgba(255,255,255,0.3)] scale-[1.02]"
+                  : "bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:-translate-y-[1px] hover:text-white"
               }`}
             >
               Stats
@@ -391,10 +391,10 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz, matches }: M
             <button
               type="button"
               onClick={() => setDetailTab("points")}
-              className={`px-4.5 py-2.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer flex-shrink-0 ${
+              className={`px-4.5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 ease-out active:scale-95 cursor-pointer flex-shrink-0 ${
                 detailTab === "points"
-                  ? "bg-white text-black shadow-md scale-[1.02]"
-                  : "bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:text-white"
+                  ? "bg-white text-black shadow-[0_0_16px_rgba(255,255,255,0.3)] scale-[1.02]"
+                  : "bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:-translate-y-[1px] hover:text-white"
               }`}
             >
               Points Table
