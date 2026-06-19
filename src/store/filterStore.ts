@@ -37,7 +37,7 @@ export const useFilterStore = create<FilterStore>()(
         stage: "",
         team: "",
         tv: "",
-        tz: "Eastern",
+        tz: "Auto",
         today: false,
         up: false,
         party: false,
