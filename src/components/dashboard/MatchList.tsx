@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import type { Match } from "@/data/matches";
-import { fmtDay } from "@/lib/date-helpers";
+import { fmtDay } from "@/helpers/date-helpers";
 import { useFilterStore } from "@/store";
 import MatchCard from "./MatchCard";
 

@@ -1,6 +1,6 @@
 import type { Match } from "@/data/matches";
 import { FLAGS } from "@/data/matches";
-import { calculateStandings } from "@/lib/standings-helpers";
+import { calculateStandings } from "@/helpers/standings-helpers";
 import { Trophy, Users } from "lucide-react";
 
 interface StandingsProps {

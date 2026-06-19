@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import type { Match } from "@/data/matches";
 import { INITIAL_MATCHES } from "@/data/matches";
-import { startUTC, etTodayStr } from "@/lib/date-helpers";
+import { startUTC, etTodayStr } from "@/helpers/date-helpers";
 
 const ESPN_BASE = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard";
 const ESPN_NAME: Record<string, string> = {

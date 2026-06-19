@@ -5,8 +5,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Trophy, BarChart } from "lucide-react";
 import type { Match } from "@/data/matches";
 import { FLAGS } from "@/data/matches";
-import { fmtTime, fmtDay } from "@/lib/date-helpers";
-import { calculateStandings } from "@/lib/standings-helpers";
+import { fmtTime, fmtDay } from "@/helpers/date-helpers";
+import { calculateStandings } from "@/helpers/standings-helpers";
 import { useTeamRoster, type RosterPlayer } from "@/hooks/useTeamRoster";
 
 interface MatchDetailsModalProps {
@@ -243,8 +243,8 @@ export default function MatchDetailsModal({ isOpen, onClose, m, tz, matches }: M
   const referee = referees[(homeSeed + awaySeed) % referees.length];
   const attendance = (60000 + ((homeSeed * awaySeed) % 25000)).toLocaleString();
 
-  const { players: homeRoster, loading: homeLoading } = useTeamRoster(homeTeam);
-  const { players: awayRoster, loading: awayLoading } = useTeamRoster(awayTeam);
+  const { players: homeRoster, loading: homeLoading } = useTeamRoster(homeTeam, isOpen);
+  const { players: awayRoster, loading: awayLoading } = useTeamRoster(awayTeam, isOpen);
 
   const displayRoster = activeTab === "h" ? homeRoster : awayRoster;
 

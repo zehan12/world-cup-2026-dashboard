@@ -7,8 +7,8 @@ import {
 import { 
   etTodayStr, 
   matchStatus, 
-} from "@/lib/date-helpers";
-import { downloadICS } from "@/lib/calendar-helpers";
+} from "@/helpers/date-helpers";
+import { downloadICS } from "@/helpers/calendar-helpers";
 
 // Custom Hooks
 import { useEspnScores } from "@/hooks/useEspnScores";

@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Match } from "@/data/matches";
 import { FLAGS } from "@/data/matches";
-import { fmtTime } from "@/lib/date-helpers";
+import { fmtTime } from "@/helpers/date-helpers";
 import MatchDetailsModal from "./MatchDetailsModal";
 
 interface MatchCardProps {
