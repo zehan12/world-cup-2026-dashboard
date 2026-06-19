@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import BroadcastKey from "@/components/dashboard/BroadcastKey";
 import Filters from "@/components/dashboard/Filters";
 import Footer from "@/components/dashboard/Footer";
@@ -22,6 +22,13 @@ const initialMatchesWithStatus = INITIAL_MATCHES.map((m) => {
 	const st = matchStatus(m);
 	return { ...m, _st: st };
 });
+
+// Unique sorted list of teams calculated once on load
+const teamList = Array.from(
+	new Set(
+		INITIAL_MATCHES.flatMap((m) => [m.h, m.a].filter(Boolean) as string[]),
+	),
+).sort();
 
 export default function App() {
 	useSyncNuqs();
@@ -57,63 +64,59 @@ export default function App() {
 			? "Group Stage"
 			: activeUnplayed[0].grp;
 
-	// Filter passing test
-	const passes = (m: Match) => {
-		if (stage) {
-			if (stage === "group" && !m.grp.startsWith("Group")) return false;
-			if (
-				stage === "ko-late" &&
-				!(m.grp === "Final" || m.grp === "Third place")
-			)
-				return false;
-			if (
-				["Round of 32", "Round of 16", "Quarterfinal", "Semifinal"].includes(
-					stage,
-				) &&
-				m.grp !== stage
-			)
-				return false;
-		}
-		if (team && ![m.h, m.a, m._th, m._ta].includes(team)) return false;
-		if (today && m.d !== todayStr) return false;
-		if (up && m._st !== "up") return false;
-		if (q) {
-			const s = q.toLowerCase();
-			const hay =
-				`${m.h || ""} ${m.a || ""} ${m._th || ""} ${m._ta || ""} ${m.desc || ""} ${m.v} ${m.grp}`.toLowerCase();
-
-			// Advanced matchup search if explicit separators are used
-			if (
-				s.includes(" vs ") ||
-				s.includes(" v ") ||
-				s.includes(" and ") ||
-				s.includes(" & ")
-			) {
-				const terms = s.split(/\s+(?:vs\.?|v\.?|and|&)\s+/).filter(Boolean);
-				if (!terms.every((term) => hay.includes(term))) return false;
-			} else {
-				// Strict substring search for normal queries (e.g. "Group C")
-				if (!hay.includes(s)) return false;
+	// Memoized filtered matches
+	const filteredMatches = useMemo(() => {
+		return matches.filter((m) => {
+			if (stage) {
+				if (stage === "group" && !m.grp.startsWith("Group")) return false;
+				if (
+					stage === "ko-late" &&
+					!(m.grp === "Final" || m.grp === "Third place")
+				)
+					return false;
+				if (
+					["Round of 32", "Round of 16", "Quarterfinal", "Semifinal"].includes(
+						stage,
+					) &&
+					m.grp !== stage
+				)
+					return false;
 			}
-		}
-		return true;
-	};
+			if (team && ![m.h, m.a, m._th, m._ta].includes(team)) return false;
+			if (today && m.d !== todayStr) return false;
+			if (up && m._st !== "up") return false;
+			if (q) {
+				const s = q.toLowerCase();
+				const hay =
+					`${m.h || ""} ${m.a || ""} ${m._th || ""} ${m._ta || ""} ${m.desc || ""} ${m.v} ${m.grp}`.toLowerCase();
 
-	const filteredMatches = matches.filter(passes);
+				// Advanced matchup search if explicit separators are used
+				if (
+					s.includes(" vs ") ||
+					s.includes(" v ") ||
+					s.includes(" and ") ||
+					s.includes(" & ")
+				) {
+					const terms = s.split(/\s+(?:vs\.?|v\.?|and|&)\s+/).filter(Boolean);
+					if (!terms.every((term) => hay.includes(term))) return false;
+				} else {
+					// Strict substring search for normal queries (e.g. "Group C")
+					if (!hay.includes(s)) return false;
+				}
+			}
+			return true;
+		});
+	}, [matches, stage, team, today, up, q, todayStr]);
 
-	// Sorting and Grouping
-	const groupedMatches: Record<string, Match[]> = {};
-	filteredMatches.forEach((m) => {
-		(groupedMatches[m.d] = groupedMatches[m.d] || []).push(m);
-	});
-	const days = Object.keys(groupedMatches).sort();
-
-	// Unique sorted list of teams for the filter dropdown
-	const teamList = Array.from(
-		new Set(
-			INITIAL_MATCHES.flatMap((m) => [m.h, m.a].filter(Boolean) as string[]),
-		),
-	).sort();
+	// Memoized grouping and day keys
+	const { groupedMatches, days } = useMemo(() => {
+		const grouped: Record<string, Match[]> = {};
+		filteredMatches.forEach((m) => {
+			(grouped[m.d] = grouped[m.d] || []).push(m);
+		});
+		const sortedDays = Object.keys(grouped).sort();
+		return { groupedMatches: grouped, days: sortedDays };
+	}, [filteredMatches]);
 
 	// Calendar export
 	const handleCalendarExport = () => {
@@ -127,9 +130,9 @@ export default function App() {
 		downloadICS(unplayedFiltered, party);
 	};
 
-	const filteredUnplayedCount = filteredMatches.filter(
-		(m) => m._st !== "ft",
-	).length;
+	const filteredUnplayedCount = useMemo(() => {
+		return filteredMatches.filter((m) => m._st !== "ft").length;
+	}, [filteredMatches]);
 
 	return (
 		<div className="min-h-screen bg-background text-foreground flex flex-col antialiased">

@@ -1,5 +1,5 @@
 import { MapPin } from "lucide-react";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Match } from "@/data/matches";
@@ -13,7 +13,7 @@ interface MatchCardProps {
 	matches: Match[];
 }
 
-export default function MatchCard({ m, tz, matches }: MatchCardProps) {
+function MatchCard({ m, tz, matches }: MatchCardProps) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const st = m._st || "up";
 	const timeDetail = fmtTime(m, tz);
@@ -198,13 +198,17 @@ export default function MatchCard({ m, tz, matches }: MatchCardProps) {
 				</CardContent>
 			</Card>
 
-			<MatchDetailsModal
-				isOpen={isModalOpen}
-				onClose={() => setIsModalOpen(false)}
-				m={m}
-				tz={tz}
-				matches={matches}
-			/>
+			{isModalOpen && (
+				<MatchDetailsModal
+					isOpen={isModalOpen}
+					onClose={() => setIsModalOpen(false)}
+					m={m}
+					tz={tz}
+					matches={matches}
+				/>
+			)}
 		</>
 	);
 }
+
+export default memo(MatchCard);
