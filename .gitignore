@@ -26,3 +26,6 @@ dist-ssr
 # Partytown library folder
 public/~partytown
 
+# Bundle analyzer stats
+dist/stats.html
+

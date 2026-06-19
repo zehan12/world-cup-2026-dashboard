@@ -4,19 +4,31 @@ import tailwindcss from "@tailwindcss/vite";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 import { partytownVite } from "@builder.io/partytown/utils";
+import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vite.dev/config/
-export default defineConfig({
-	plugins: [
-		react(),
-		babel({
-			presets: [reactCompilerPreset()],
-		}),
-		tailwindcss(),
-		partytownVite({
-			dest: path.resolve(__dirname, "public", "~partytown"),
-		}),
-	],
+export default defineConfig(({ mode }) => {
+	const isAnalyze = mode === "analyze";
+
+	return {
+		plugins: [
+			react(),
+			babel({
+				presets: [reactCompilerPreset()],
+			}),
+			tailwindcss(),
+			partytownVite({
+				dest: path.resolve(__dirname, "public", "~partytown"),
+			}),
+			isAnalyze &&
+				visualizer({
+					open: true,
+					filename: "dist/stats.html",
+					template: "treemap",
+					gzipSize: true,
+					brotliSize: true,
+				}),
+		].filter(Boolean),
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
@@ -54,4 +66,5 @@ export default defineConfig({
 		environment: "jsdom",
 		setupFiles: "./src/test/setup.ts",
 	},
+	};
 });
