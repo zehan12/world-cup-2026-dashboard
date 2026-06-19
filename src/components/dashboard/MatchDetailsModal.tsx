@@ -7,7 +7,8 @@ import type { Match } from "@/data/matches";
 import { FLAGS } from "@/data/matches";
 import { fmtTime, fmtDay } from "@/helpers/date-helpers";
 import { calculateStandings } from "@/helpers/standings-helpers";
-import { useTeamRoster, type RosterPlayer } from "@/hooks/useTeamRoster";
+import { useTeamRoster } from "@/hooks/useTeamRoster";
+import type { RosterPlayer } from "@/types";
 
 interface MatchDetailsModalProps {
   isOpen: boolean;

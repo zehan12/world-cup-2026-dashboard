@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import type { Match } from "@/data/matches";
 import { INITIAL_MATCHES } from "@/data/matches";
 import { startUTC, etTodayStr } from "@/helpers/date-helpers";
+import type { EspnEventResponse, EspnEvent, ProcessedEvent } from "@/types";
 
 const ESPN_BASE = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard";
 const ESPN_NAME: Record<string, string> = {
@@ -10,44 +11,53 @@ const ESPN_NAME: Record<string, string> = {
   "Congo DR": "DR Congo"
 };
 
-const normName = (name: string) => {
+const normName = (name?: string) => {
   const trimmed = (name || "").trim();
   return ESPN_NAME[trimmed] || trimmed;
 };
 
-const isPlaceholder = (name: string) => {
+const isPlaceholder = (name?: string) => {
   return /place|winner|runner|loser|tbd|group\s/i.test(name || "");
 };
 
 export function useEspnScores(initialMatches: Match[]) {
   const [matches, setMatches] = useState<Match[]>(initialMatches);
   const [isFresh, setIsFresh] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
   const todayStr = etTodayStr();
   const scrolledRef = useRef(false);
 
-  const fetchEvents = async (dates?: string) => {
-    const r = await fetch(dates ? `${ESPN_BASE}?dates=${dates}` : ESPN_BASE, { cache: "no-store" });
-    if (!r.ok) throw new Error("ESPN fetch failed: " + r.status);
-    const d = await r.json();
-    return (d.events || []).map((e: any) => {
-      const c = (e.competitions || [])[0] || {};
-      const cs = c.competitors || [];
-      const home = cs.find((x: any) => x.homeAway === "home") || cs[0] || {};
-      const away = cs.find((x: any) => x.homeAway === "away") || cs[1] || {};
-      const statusType = (e.status || {}).type || {};
-      return {
-        when: new Date(e.date).getTime(),
-        state: statusType.state,
-        detail: statusType.shortDetail || statusType.detail || "",
-        hName: (home.team || {}).displayName,
-        hScore: home.score,
-        aName: (away.team || {}).displayName,
-        aScore: away.score,
-      };
-    });
+  const fetchEvents = async (dates?: string): Promise<ProcessedEvent[]> => {
+    try {
+      const r = await fetch(dates ? `${ESPN_BASE}?dates=${dates}` : ESPN_BASE, { cache: "no-store" });
+      if (!r.ok) throw new Error("ESPN fetch failed: " + r.status);
+      const d: EspnEventResponse = await r.json();
+
+      return (d.events || []).map((e: EspnEvent) => {
+        const c = e.competitions?.[0];
+        const cs = c?.competitors || [];
+        const home = cs.find(x => x.homeAway === "home") || cs[0];
+        const away = cs.find(x => x.homeAway === "away") || cs[1];
+        const statusType = e.status?.type;
+
+        return {
+          when: new Date(e.date).getTime(),
+          state: statusType?.state,
+          detail: statusType?.shortDetail || statusType?.detail || "",
+          hName: home?.team?.displayName || "",
+          hScore: home?.score,
+          aName: away?.team?.displayName || "",
+          aScore: away?.score,
+        };
+      });
+    } catch (err) {
+      console.error("Failed to fetch ESPN events", err);
+      setError(err instanceof Error ? err : new Error("Unknown error"));
+      throw err;
+    }
   };
 
-  const applyEvents = (eventsList: any[]) => {
+  const applyEvents = (eventsList: ProcessedEvent[]) => {
     setMatches(prevMatches => {
       const nextMatches = [...prevMatches];
       eventsList.forEach(ev => {
@@ -55,7 +65,7 @@ export function useEspnScores(initialMatches: Match[]) {
         const ea = normName(ev.aName);
         let best: Match | null = null;
         let bestDiff = Infinity;
-        
+
         nextMatches.forEach(m => {
           const diff = Math.abs(startUTC(m).getTime() - ev.when);
           if (diff > 90 * 60 * 1000) return; // ±90 min window
@@ -68,15 +78,15 @@ export function useEspnScores(initialMatches: Match[]) {
             best = m;
           }
         });
-        
+
         if (!best) return;
         const m = best as Match;
-        
+
         if (ev.state) {
           m._st = ev.state === "in" ? "live" : ev.state === "post" ? "ft" : "up";
         }
         m._detail = ev.state === "in" ? ev.detail : "";
-        
+
         const hasScore = ev.hScore != null && ev.aScore != null && ev.state !== "pre";
         if (!m.h) {
           // knockout: resolve teams from feed
@@ -108,8 +118,10 @@ export function useEspnScores(initialMatches: Match[]) {
       const eventsList = await fetchEvents(dates);
       applyEvents(eventsList);
       setIsFresh(true);
-    } catch (e) {
-      setIsFresh(false); // keep static data silently
+      setError(null);
+    } catch (e: unknown) {
+      console.log(e)
+      setIsFresh(false);
     }
   };
 
@@ -123,7 +135,7 @@ export function useEspnScores(initialMatches: Match[]) {
   };
 
   const getPollDates = () => {
-    const f = (d: Date) => 
+    const f = (d: Date) =>
       `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
     const t = new Date(todayStr + "T12:00:00");
     const y = new Date(t);
@@ -136,8 +148,9 @@ export function useEspnScores(initialMatches: Match[]) {
   useEffect(() => {
     const firstDate = INITIAL_MATCHES[0].d.replace(/-/g, "");
     const lastDate = INITIAL_MATCHES[INITIAL_MATCHES.length - 1].d.replace(/-/g, "");
-    
-    hydrateScores(`${firstDate}-${lastDate}`).then(() => {
+
+    const init = async () => {
+      await hydrateScores(`${firstDate}-${lastDate}`);
       if (!scrolledRef.current) {
         setTimeout(() => {
           const el = document.querySelector(".daygroup-today");
@@ -147,10 +160,12 @@ export function useEspnScores(initialMatches: Match[]) {
           }
         }, 600);
       }
-    });
+    };
+    
+    init();
 
     let pollInterval: ReturnType<typeof setTimeout>;
-    
+
     const runPoll = async () => {
       if (document.visibilityState === "visible") {
         await hydrateScores(getPollDates());
@@ -179,5 +194,5 @@ export function useEspnScores(initialMatches: Match[]) {
     };
   }, []);
 
-  return { matches, isFresh };
+  return { matches, isFresh, error };
 }
