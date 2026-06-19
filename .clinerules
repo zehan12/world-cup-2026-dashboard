@@ -1,0 +1,16 @@
+# World Cup 2026 Dashboard - Cline AI Rules
+
+## Project Context
+You are working on a zero-dependency, static React dashboard listing all 104 matches of the 2026 FIFA World Cup.
+
+## Tech Stack
+- Frontend: React 18, TypeScript, Vite
+- Styling: Tailwind CSS v4
+- State Management: Zustand (`src/store/`)
+- API Fetching: Axios (`src/api/` and `src/services/`)
+
+## Strict Rules
+1. **TypeScript Rigor**: Strict typing is heavily enforced. Do not use `any`. All interfaces must be documented in `src/types/index.ts`.
+2. **Data Hydration Cycle**: The static schedule is in `src/data/matches.ts`. Live scores are fetched from ESPN via `src/services/espnService.ts` and overlaid onto the static data on the client side. Never destroy the static fallback data.
+3. **No Backends**: This is a pure static frontend app. Do not propose server-side APIs, databases, or local storage implementation (the app runs in sandboxes).
+4. **Component Design**: UI components are stored in `src/components/dashboard/`. Maintain the dark theme (`#0f0f0f`) and responsive design.

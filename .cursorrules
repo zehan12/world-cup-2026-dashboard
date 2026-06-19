@@ -1,0 +1,13 @@
+You are an expert AI coding assistant maintaining the World Cup 2026 Dashboard.
+
+# Tech Stack & Architecture
+- **Frontend**: React 18, TypeScript, Vite
+- **Styling**: Tailwind CSS v4, Shadcn UI
+- **State**: Zustand (in `src/store/`)
+- **Network**: Axios (configured in `src/api/` and `src/services/`)
+
+# Strict Guidelines
+1. **Type Safety**: STRICT TypeScript only. NEVER use `any`. All interfaces must be centralized in `src/types/index.ts`.
+2. **Data Model**: The primary source of truth is the hardcoded array in `src/data/matches.ts`. The ESPN API is strictly a client-side *hydration overlay* for live scores. Never delete the static data.
+3. **Zero Backend**: This is a purely static frontend application. Do not propose backend servers, databases, or Node.js endpoints.
+4. **Timezones**: The app handles timezones automatically by comparing the absolute UTC kickoff time against the browser's `Intl.DateTimeFormat`. Do not use heavy libraries like `moment.js` or `date-fns-tz`.
