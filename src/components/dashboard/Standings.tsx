@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Trophy, Users } from "lucide-react";
 import type { Match } from "@/data/matches";
 import { FLAGS } from "@/data/matches";
@@ -9,7 +10,7 @@ interface StandingsProps {
 }
 
 export default function Standings({ matches, onSelectTeam }: StandingsProps) {
-	const groups = calculateStandings(matches);
+	const groups = useMemo(() => calculateStandings(matches), [matches]);
 
 	return (
 		<section className="px-6 py-8 max-w-[1180px] mx-auto w-full flex-1 animate-in fade-in-30 duration-300">

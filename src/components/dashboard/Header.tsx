@@ -21,6 +21,8 @@ export default function Header({
 					src="/hero.jpg"
 					alt="World Cup 2026 Hero"
 					className="w-full h-full object-cover object-center"
+					fetchPriority="high"
+					decoding="async"
 				/>
 				{/* Bottom-up local gradient backdrop to make text readable at the bottom */}
 				<div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-[#0f0f0f] via-[#0f0f0f]/80 to-transparent" />
