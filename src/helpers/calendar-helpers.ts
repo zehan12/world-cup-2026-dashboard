@@ -47,7 +47,7 @@ export function buildICS(matches: Match[]): string {
 		const s = startUTC(m);
 		const e = new Date(s.getTime() + 2 * 3600 * 1000);
 		const title = m.h ? `${m.h} vs ${m.a}` : `${m.grp}: ${m.desc}`;
-		const desc = `English: ${m.tv} — stream FOX One / Fubo. Spanish: ${m.es} — stream Peacock. ${m.grp}.`;
+		const desc = `${m.grp}.`;
 
 		L.push(
 			"BEGIN:VEVENT",
@@ -94,7 +94,7 @@ export function buildPartyICS(matches: Match[]): string {
 
 			const lines = ms.map((m) => {
 				const who = m.h ? `${m.h} vs ${m.a}` : `${m.grp}: ${m.desc}`;
-				return `${m.t} ET · ${who} · ${m.tv}/${m.es} · ${m.v}`;
+				return `${m.t} ET · ${who} · ${m.v}`;
 			});
 
 			const dow = DOWa[new Date(`${d}T12:00:00`).getDay()];

@@ -7,7 +7,7 @@ export interface Match {
 	res?: string; // static score (present => played)
 	grp: string; // group/round label, e.g. "Group A", "Round of 32", "Final"
 	v: string; // venue
-	tv: string; // English channel "FOX"/"FS1"/"TBD"
+	tv?: string; // English channel "FOX"/"FS1"/"TBD"
 	desc?: string; // knockout matchup text like "1C vs 2F" when teams aren't known
 
 	// Dynamic fields populated on load or via ESPN hydration
@@ -70,21 +70,6 @@ export const FLAGS: Record<string, string> = {
 	Uzbekistan: "🇺🇿",
 	Colombia: "🇨🇴",
 };
-
-export const UNIVERSO = new Set<string>([
-	"Bosnia and Herzegovina|Qatar",
-	"Morocco|Haiti",
-	"South Korea|South Africa",
-	"Curaçao|Ivory Coast",
-	"Japan|Sweden",
-	"Paraguay|Australia",
-	"Senegal|Iraq",
-	"Cape Verde|Saudi Arabia",
-	"Egypt|Iran",
-	"Croatia|Ghana",
-	"DR Congo|Uzbekistan",
-	"Algeria|Austria",
-]);
 
 export const INITIAL_MATCHES: Match[] = [
 	// June 11

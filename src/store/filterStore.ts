@@ -6,7 +6,6 @@ export interface FilterState {
 	q: string;
 	stage: string;
 	team: string;
-	tv: string;
 	tz: string;
 	today: boolean;
 	up: boolean;
@@ -19,7 +18,6 @@ export interface FilterActions {
 	setQ: (q: string) => void;
 	setStage: (stage: string) => void;
 	setTeam: (team: string) => void;
-	setTv: (tv: string) => void;
 	setTz: (tz: string) => void;
 	setToday: (today: boolean) => void;
 	setUp: (up: boolean) => void;
@@ -38,7 +36,6 @@ export const useFilterStore = create<FilterStore>()(
 				q: "",
 				stage: "",
 				team: "",
-				tv: "",
 				tz: "Auto",
 				today: false,
 				up: false,
@@ -48,7 +45,6 @@ export const useFilterStore = create<FilterStore>()(
 				setQ: (q) => set({ q }),
 				setStage: (stage) => set({ stage }),
 				setTeam: (team) => set({ team }),
-				setTv: (tv) => set({ tv }),
 				setTz: (tz) => set({ tz }),
 				setToday: (today) => set({ today }),
 				setUp: (up) => set({ up }),
@@ -60,7 +56,6 @@ export const useFilterStore = create<FilterStore>()(
 						q: "",
 						stage: "",
 						team: "",
-						tv: "",
 						today: false,
 						up: false,
 						party: false,

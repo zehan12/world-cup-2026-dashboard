@@ -8,7 +8,7 @@ import MatchList from "@/components/dashboard/MatchList";
 import QuickChips from "@/components/dashboard/QuickChips";
 import Standings from "@/components/dashboard/Standings";
 import type { Match } from "@/data/matches";
-import { INITIAL_MATCHES, UNIVERSO } from "@/data/matches";
+import { INITIAL_MATCHES } from "@/data/matches";
 import { downloadICS } from "@/helpers/calendar-helpers";
 import { etTodayStr, matchStatus } from "@/helpers/date-helpers";
 // Custom Hooks
@@ -20,11 +20,7 @@ import { useFilterStore } from "@/store";
 
 const initialMatchesWithStatus = INITIAL_MATCHES.map((m) => {
 	const st = matchStatus(m);
-	const es =
-		m.h && UNIVERSO.has(`${m.h}|${m.a}`)
-			? ("Universo" as const)
-			: ("Telemundo" as const);
-	return { ...m, _st: st, es };
+	return { ...m, _st: st };
 });
 
 export default function App() {
@@ -34,7 +30,6 @@ export default function App() {
 	const q = useFilterStore((s) => s.q);
 	const stage = useFilterStore((s) => s.stage);
 	const team = useFilterStore((s) => s.team);
-	const tv = useFilterStore((s) => s.tv);
 	const today = useFilterStore((s) => s.today);
 	const up = useFilterStore((s) => s.up);
 	const party = useFilterStore((s) => s.party);
@@ -80,7 +75,6 @@ export default function App() {
 				return false;
 		}
 		if (team && ![m.h, m.a, m._th, m._ta].includes(team)) return false;
-		if (tv && m.tv !== tv) return false;
 		if (today && m.d !== todayStr) return false;
 		if (up && m._st !== "up") return false;
 		if (q) {

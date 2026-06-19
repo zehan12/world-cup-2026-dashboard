@@ -42,7 +42,6 @@ export default function Filters({
 	const q = useFilterStore((s) => s.q);
 	const stage = useFilterStore((s) => s.stage);
 	const team = useFilterStore((s) => s.team);
-	const tv = useFilterStore((s) => s.tv);
 	const tz = useFilterStore((s) => s.tz);
 	const today = useFilterStore((s) => s.today);
 	const up = useFilterStore((s) => s.up);
@@ -66,7 +65,7 @@ export default function Filters({
 		useFilterStore.temporal,
 	);
 
-	const totalActiveFilters = [q, stage, team, tv, today, up, party].filter(
+	const totalActiveFilters = [q, stage, team, today, up, party].filter(
 		Boolean,
 	).length;
 
