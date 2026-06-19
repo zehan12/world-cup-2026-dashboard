@@ -377,8 +377,8 @@ export const INITIAL_MATCHES: Match[] = [
 	},
 	{
 		d: "2026-06-19",
-		t: "3:00 PM",
-		sk: 15.1,
+		t: "6:00 PM",
+		sk: 18,
 		h: "Scotland",
 		a: "Morocco",
 		grp: "Group C",
@@ -387,8 +387,8 @@ export const INITIAL_MATCHES: Match[] = [
 	},
 	{
 		d: "2026-06-19",
-		t: "9:00 PM",
-		sk: 21,
+		t: "8:30 PM",
+		sk: 20.5,
 		h: "Brazil",
 		a: "Haiti",
 		grp: "Group C",
@@ -397,8 +397,8 @@ export const INITIAL_MATCHES: Match[] = [
 	},
 	{
 		d: "2026-06-19",
-		t: "12:00 AM",
-		sk: 24,
+		t: "11:00 PM",
+		sk: 23,
 		h: "Türkiye",
 		a: "Paraguay",
 		grp: "Group D",
