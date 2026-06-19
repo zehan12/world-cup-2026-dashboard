@@ -4,123 +4,123 @@
 @import "@fontsource-variable/geist";
 
 @theme inline {
-  --font-sans: 'Geist Variable', sans-serif;
-  --font-mono: 'Geist Mono', 'Roboto Mono', monospace;
-  --color-fox: #05FF9B;
-  --color-fs1: #00D2FF;
-  --color-telemundo: #B388FF;
-  --color-universo: #FF9100;
-  --color-gold: #FFD700;
-  --color-red: #FF1744;
-  --color-panel: #0F1423;
-  --color-panel-dark: #0B0E1A;
-  --color-line: rgba(255, 255, 255, 0.05);
+	--font-sans: "Geist Variable", sans-serif;
+	--font-mono: "Geist Mono", "Roboto Mono", monospace;
+	--color-fox: #05ff9b;
+	--color-fs1: #00d2ff;
+	--color-telemundo: #b388ff;
+	--color-universo: #ff9100;
+	--color-gold: #ffd700;
+	--color-red: #ff1744;
+	--color-panel: #0f1423;
+	--color-panel-dark: #0b0e1a;
+	--color-line: rgba(255, 255, 255, 0.05);
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
 }
 
 :root {
-  /* Ultra-Premium Cyber Emerald & Obsidian Carbon theme */
-  --background: #0f0f0f;
-  --foreground: #F1F5F9;
-  
-  --card: #161616;
-  --card-foreground: #F1F5F9;
-  
-  --popover: #1c1c1c;
-  --popover-foreground: #F1F5F9;
-  
-  --primary: #05FF9B;
-  --primary-foreground: #0f0f0f;
-  
-  --secondary: #1a1a1a;
-  --secondary-foreground: #F1F5F9;
-  
-  --muted: #1a1a1a;
-  --muted-foreground: #7D8CA3;
-  
-  --accent: rgba(5, 255, 155, 0.12);
-  --accent-foreground: #05FF9B;
-  
-  --destructive: #FF1744;
-  --destructive-foreground: #F1F5F9;
-  
-  --border: rgba(255, 255, 255, 0.05);
-  --input: rgba(255, 255, 255, 0.07);
-  --ring: #05FF9B;
-  
-  --radius: 0.75rem;
-  
-  scroll-behavior: smooth;
+	/* Ultra-Premium Cyber Emerald & Obsidian Carbon theme */
+	--background: #0f0f0f;
+	--foreground: #f1f5f9;
+
+	--card: #161616;
+	--card-foreground: #f1f5f9;
+
+	--popover: #1c1c1c;
+	--popover-foreground: #f1f5f9;
+
+	--primary: #05ff9b;
+	--primary-foreground: #0f0f0f;
+
+	--secondary: #1a1a1a;
+	--secondary-foreground: #f1f5f9;
+
+	--muted: #1a1a1a;
+	--muted-foreground: #7d8ca3;
+
+	--accent: rgba(5, 255, 155, 0.12);
+	--accent-foreground: #05ff9b;
+
+	--destructive: #ff1744;
+	--destructive-foreground: #f1f5f9;
+
+	--border: rgba(255, 255, 255, 0.05);
+	--input: rgba(255, 255, 255, 0.07);
+	--ring: #05ff9b;
+
+	--radius: 0.75rem;
+
+	scroll-behavior: smooth;
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
-    line-height: 1.45;
-  }
-  a {
-    color: inherit;
-  }
+	* {
+		@apply border-border outline-ring/50;
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+	body {
+		@apply bg-background text-foreground font-sans antialiased;
+		line-height: 1.45;
+	}
+	a {
+		color: inherit;
+	}
 }
 
 /* Custom styles for animations and layout */
 .pulse-ring {
-  box-shadow: 0 0 0 0 rgba(45, 232, 154, 0.6);
-  animation: pulse 2.4s infinite;
+	box-shadow: 0 0 0 0 rgba(45, 232, 154, 0.6);
+	animation: pulse 2.4s infinite;
 }
 
 @keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(45, 232, 154, 0.5);
-  }
-  70% {
-    box-shadow: 0 0 0 8px rgba(45, 232, 154, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(45, 232, 154, 0);
-  }
+	0% {
+		box-shadow: 0 0 0 0 rgba(45, 232, 154, 0.5);
+	}
+	70% {
+		box-shadow: 0 0 0 8px rgba(45, 232, 154, 0);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgba(45, 232, 154, 0);
+	}
 }
 
 .pulse-red {
-  animation: pulse-red-anim 1.3s infinite;
+	animation: pulse-red-anim 1.3s infinite;
 }
 
 @keyframes pulse-red-anim {
-  50% {
-    opacity: 0.3;
-  }
+	50% {
+		opacity: 0.3;
+	}
 }
 
 /* Hide scrollbars for clean UI but keep scroll functionality */
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 .no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
