@@ -8,17 +8,53 @@
     <title>World Cup 2026 Schedule & Live Scores — Every Match on One Screen</title>
     <meta name="description" content="All 104 FIFA World Cup 2026 matches on one screen. Get kickoff times in your local timezone, live scores, and match details." />
     
+    <!-- Link Tags & Resource Optimization -->
+    <link rel="canonical" href="https://worldcup2026.com/" />
+    <link rel="preload" as="image" href="/hero.jpg" fetchpriority="high" />
+    <link rel="preconnect" href="https://site.api.espn.com" crossorigin="anonymous" />
+    <!-- Advanced SEO -->
+    <meta name="keywords" content="World Cup 2026, FIFA World Cup, schedule, live scores, soccer, football, bracket, USA, Mexico, Canada" />
+    <meta name="author" content="World Cup Dashboard" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0f0f0f" />
+    
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="World Cup 2026 Schedule & Live Scores" />
     <meta property="og:description" content="All 104 FIFA World Cup 2026 matches on one screen. Kickoff times in your timezone, live scores, and match details." />
     <meta property="og:image" content="/hero.jpg" />
+    <meta property="og:url" content="https://worldcup2026.com/" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content="World Cup 2026 Schedule & Live Scores" />
     <meta property="twitter:description" content="All 104 FIFA World Cup 2026 matches on one screen. Kickoff times in your timezone, live scores, and match details." />
     <meta property="twitter:image" content="/hero.jpg" />
+
+    <!-- Structured Data (JSON-LD) for Google Rich Snippets -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SportsEvent",
+        "name": "FIFA World Cup 2026",
+        "description": "All 104 matches of the 2026 FIFA World Cup across the USA, Canada, and Mexico. Includes live scores and timezone-adjusted kickoff times.",
+        "startDate": "2026-06-11",
+        "endDate": "2026-07-19",
+        "sport": "Soccer",
+        "image": "https://worldcup2026.com/hero.jpg",
+        "location": [
+          { "@type": "Country", "name": "USA" },
+          { "@type": "Country", "name": "Canada" },
+          { "@type": "Country", "name": "Mexico" }
+        ],
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      }
+    </script>
   </head>
   <body style="background-color: #0f0f0f; color: #f1f5f9;">
     <div id="root"></div>
