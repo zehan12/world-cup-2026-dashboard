@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Partytown } from "@builder.io/partytown/react";
 import BroadcastKey from "@/components/dashboard/BroadcastKey";
 import Filters from "@/components/dashboard/Filters";
 import Footer from "@/components/dashboard/Footer";
@@ -136,6 +137,7 @@ export default function App() {
 
 	return (
 		<div className="min-h-screen bg-background text-foreground flex flex-col antialiased">
+			<Partytown debug={false} />
 			<Header
 				totalMatches={totalMatches}
 				matchesTodayCount={matchesTodayCount}
