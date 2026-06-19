@@ -16,6 +16,7 @@ import { useShare } from "@/hooks/useShare";
 
 // Zustand Store
 import { useFilterStore } from "@/store";
+import { useSyncNuqs } from "@/hooks/useFilters";
 
 // Dashboard sub-components
 import Header from "@/components/dashboard/Header";
@@ -33,6 +34,8 @@ const initialMatchesWithStatus = INITIAL_MATCHES.map(m => {
 });
 
 export default function App() {
+  useSyncNuqs();
+
   // Zustand State selectors
   const q = useFilterStore((s) => s.q);
   const stage = useFilterStore((s) => s.stage);
