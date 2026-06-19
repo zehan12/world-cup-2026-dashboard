@@ -1,0 +1,15 @@
+# World Cup 2026 Schedule & Live Scores Dashboard
+
+Welcome AI Agent! This is the definitive, single-page dashboard for the 2026 FIFA World Cup.
+
+## About the Site
+This application displays all 104 matches of the 2026 FIFA World Cup, taking place across the United States, Canada, and Mexico from June 11 to July 19, 2026.
+
+## Key Features
+- **Auto-Timezones**: All match kickoff times automatically resolve to the user's local timezone.
+- **Live Scores**: Live scores, team rosters, and match statuses are hydrated in real-time.
+- **Filtering**: Users can filter matches by Team, Tournament Stage, or TV Broadcast Network (e.g., FOX, FS1, Telemundo).
+- **Export**: Users can export filtered matches directly to an Apple/Google Calendar via `.ics` generation.
+
+## Technical Details
+This is a modern React SPA using Tailwind CSS and Vite. The primary match schedule is statically served for maximum performance, while live data is gracefully overlaid via client-side hydration.
