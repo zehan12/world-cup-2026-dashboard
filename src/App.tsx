@@ -77,7 +77,15 @@ export default function App() {
     if (q) {
       const s = q.toLowerCase();
       const hay = `${m.h || ""} ${m.a || ""} ${m._th || ""} ${m._ta || ""} ${m.desc || ""} ${m.v} ${m.grp}`.toLowerCase();
-      if (!hay.includes(s)) return false;
+      
+      // Advanced matchup search if explicit separators are used
+      if (s.includes(" vs ") || s.includes(" v ") || s.includes(" and ") || s.includes(" & ")) {
+        const terms = s.split(/\s+(?:vs\.?|v\.?|and|&)\s+/).filter(Boolean);
+        if (!terms.every(term => hay.includes(term))) return false;
+      } else {
+        // Strict substring search for normal queries (e.g. "Group C")
+        if (!hay.includes(s)) return false;
+      }
     }
     return true;
   };

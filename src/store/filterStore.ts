@@ -12,6 +12,7 @@ export interface FilterState {
   up: boolean;
   party: boolean;
   filterBodyOpen: boolean;
+  askAIOpen: boolean;
 }
 
 export interface FilterActions {
@@ -24,6 +25,7 @@ export interface FilterActions {
   setUp: (up: boolean) => void;
   setParty: (party: boolean) => void;
   setFilterBodyOpen: (open: boolean) => void;
+  setAskAIOpen: (open: boolean) => void;
   resetFilters: () => void;
 }
 
@@ -42,6 +44,7 @@ export const useFilterStore = create<FilterStore>()(
         up: false,
         party: false,
         filterBodyOpen: false,
+        askAIOpen: false,
         setQ: (q) => set({ q }),
         setStage: (stage) => set({ stage }),
         setTeam: (team) => set({ team }),
@@ -51,6 +54,7 @@ export const useFilterStore = create<FilterStore>()(
         setUp: (up) => set({ up }),
         setParty: (party) => set({ party }),
         setFilterBodyOpen: (filterBodyOpen) => set({ filterBodyOpen }),
+        setAskAIOpen: (askAIOpen) => set({ askAIOpen }),
         resetFilters: () => set({
           q: "",
           stage: "",
@@ -64,7 +68,7 @@ export const useFilterStore = create<FilterStore>()(
       {
         partialize: (state) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { filterBodyOpen, ...rest } = state;
+          const { filterBodyOpen, askAIOpen, ...rest } = state;
           return rest;
         }
       }
