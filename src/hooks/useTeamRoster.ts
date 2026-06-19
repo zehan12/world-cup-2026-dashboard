@@ -33,17 +33,26 @@ const POS_MAP: Record<string, "GK" | "DF" | "MF" | "FW"> = {
 
 const cache = new Map<string, RosterPlayer[]>();
 
-export function useTeamRoster(teamName: string | null | undefined) {
-  const [players, setPlayers] = useState<RosterPlayer[]>([]);
+export function useTeamRoster(teamName: string | null | undefined, enabled = true) {
+  const [fetchedPlayers, setFetchedPlayers] = useState<RosterPlayer[]>([]);
   const [loading, setLoading] = useState(false);
   const lastFetched = useRef<string>("");
 
-  useEffect(() => {
-    if (!teamName) return;
+  // Clear fetched players if the teamName changes to avoid flashing old data
+  const [prevTeam, setPrevTeam] = useState(teamName);
+  if (teamName !== prevTeam) {
+    setPrevTeam(teamName);
+    setFetchedPlayers([]);
+  }
 
-    const cached = cache.get(teamName);
-    if (cached) {
-      setPlayers(cached);
+  // If we have cached data for this team, use it immediately
+  const cachedPlayers = teamName ? cache.get(teamName) : undefined;
+  const players = cachedPlayers || fetchedPlayers;
+
+  useEffect(() => {
+    if (!teamName || !enabled) return;
+
+    if (cache.has(teamName)) {
       return;
     }
 
@@ -72,14 +81,15 @@ export function useTeamRoster(teamName: string | null | undefined) {
             weight: a.displayWeight || "",
             headshot: a.headshot?.href,
           }));
+        
         cache.set(teamName, mapped);
-        setPlayers(mapped);
+        setFetchedPlayers(mapped);
         setLoading(false);
       })
       .catch(() => {
         setLoading(false);
       });
-  }, [teamName]);
+  }, [teamName, enabled]);
 
   return { players, loading };
 }
