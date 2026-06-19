@@ -33,26 +33,27 @@ A modern, high-performance React web application that lists all 104 matches of t
 
 ## 🚀 Quick Start
 
-Ensure you have [Node.js](https://nodejs.org/) installed, then run:
+Ensure you have [Bun](https://bun.sh/) installed (or [Node.js](https://nodejs.org/) as fallback), then run:
 
 ```bash
 # Clone the repository
 cd world-cup-2026-dashboard
 
 # Install dependencies
-npm install
+bun install
 
 # Start the local development server
-npm run dev
+bun dev
 ```
 
 Open `http://localhost:5173` in your browser to view the dashboard.
 
 ### Commands
 
-*   `npm run dev` — Run development server with Hot Module Replacement (HMR).
-*   `npm run build` — Compile TypeScript and build production bundle into `dist/`.
-*   `npm run preview` — Locally preview the compiled production build.
+*   `bun dev` — Run development server with Hot Module Replacement (HMR).
+*   `bun run build` — Compile TypeScript and build production bundle into `dist/`.
+*   `bun run preview` — Locally preview the compiled production build.
+
 
 ---
 
