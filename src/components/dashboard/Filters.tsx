@@ -5,7 +5,6 @@ import {
 	Redo,
 	Search,
 	SlidersHorizontal,
-	Sparkles,
 	Undo,
 	X,
 } from "lucide-react";
@@ -23,7 +22,6 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { FLAGS } from "@/data/matches";
 import { useFilterStore } from "@/store";
-import AskAIModal from "./AskAIModal";
 
 interface FiltersProps {
 	teamList: string[];
@@ -57,7 +55,6 @@ export default function Filters({
 	const setUp = useFilterStore((s) => s.setUp);
 	const setParty = useFilterStore((s) => s.setParty);
 	const setFilterBodyOpen = useFilterStore((s) => s.setFilterBodyOpen);
-	const setAskAIOpen = useFilterStore((s) => s.setAskAIOpen);
 	const resetFilters = useFilterStore((s) => s.resetFilters);
 
 	// Zundo Temporal State
@@ -258,19 +255,9 @@ export default function Filters({
 								? `⤓ Add to Calendar (${daysCount} Day${daysCount !== 1 ? "s" : ""})`
 								: `⤓ Add to Calendar (${filteredUnplayedCount})`}
 						</Button>
-
-						{/* Ask AI Button */}
-						<Button
-							onClick={() => setAskAIOpen(true)}
-							className="w-full md:w-auto bg-fox text-black hover:bg-fox/90 hover:-translate-y-[1px] active:scale-95 shadow-[0_4px_12px_rgba(5,255,155,0.25)] font-bold py-2.5 rounded-xl cursor-pointer transition-all duration-300 border border-fox/20"
-						>
-							<Sparkles className="size-4 mr-2" />
-							Ask AI
-						</Button>
 					</div>
 				</div>
 			</div>
-			<AskAIModal />
 		</section>
 	);
 }
