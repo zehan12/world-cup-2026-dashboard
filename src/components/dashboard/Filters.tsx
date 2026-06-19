@@ -6,7 +6,8 @@ import {
   ChevronUp,
   Undo,
   Redo,
-  Sparkles
+  Sparkles,
+  X
 } from "lucide-react";
 import { useStore } from "zustand";
 import { Input } from "@/components/ui/input";
@@ -71,14 +72,23 @@ export default function Filters({
         <div className="flex gap-3 flex-wrap items-center">
           {/* Search Input */}
           <div className="relative flex-1 min-w-[200px] sm:min-w-[280px]">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground/50" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground/50 pointer-events-none" />
             <Input
               type="text"
               placeholder="Search team, venue, or city..."
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              className="w-full bg-[#121212]/80 border-white/5 pl-11 pr-4 py-2.5 rounded-xl text-white placeholder-muted-foreground/60 focus-visible:ring-2 focus-visible:ring-fox/30 focus-visible:border-fox/50 transition-all duration-400 ease-out hover:border-white/20 hover:bg-white/5 shadow-sm focus:shadow-[0_0_20px_-4px_rgba(5,255,155,0.2)]"
+              className="w-full bg-[#121212]/80 border-white/5 pl-11 pr-10 py-2.5 rounded-xl text-white placeholder-muted-foreground/60 focus-visible:ring-2 focus-visible:ring-fox/30 focus-visible:border-fox/50 transition-all duration-400 ease-out hover:border-white/20 hover:bg-white/5 shadow-sm focus:shadow-[0_0_20px_-4px_rgba(5,255,155,0.2)]"
             />
+            {q && (
+              <button
+                onClick={() => setQ("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white transition-colors focus:outline-none"
+                aria-label="Clear search"
+              >
+                <X className="size-4" />
+              </button>
+            )}
           </div>
 
           {/* Mobile Filters Toggle */}
