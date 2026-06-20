@@ -9,12 +9,14 @@
     "analyze": "partytown copylib public/~partytown && vite build --mode analyze",
     "size": "node scripts/check-size.js",
     "show-stats": "node scripts/open-stats.js",
-    "scan": "react-scan http://localhost:5173",
+    "scan": "react-scan",
+    "dev:watch": "concurrently \"bun run dev\" \"bun run scan\"",
     "lint": "biome check .",
     "test": "vitest run",
     "test:live": "vitest",
     "test:ui": "vitest --ui",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "doctor": "npx react-doctor@latest"
   },
   "dependencies": {
     "@builder.io/partytown": "^0.10.3",
@@ -50,8 +52,10 @@
     "@vitejs/plugin-react": "^6.0.1",
     "@vitest/ui": "^4.1.9",
     "babel-plugin-react-compiler": "^1.0.0",
+    "concurrently": "^10.0.3",
     "globals": "^17.6.0",
     "jsdom": "^29.1.1",
+    "react-doctor": "^0.5.7",
     "rollup-plugin-visualizer": "^7.0.1",
     "typescript": "~6.0.2",
     "vite": "^8.0.12",
