@@ -5,7 +5,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import type { Match } from "@/data/matches";
 import { FLAGS } from "@/data/matches";
 import { fmtTime } from "@/helpers/date-helpers";
-import MatchDetailsModal from "./MatchDetailsModal";
+import { lazy, Suspense } from "react";
+
+const MatchDetailsModal = lazy(() => import("./MatchDetailsModal"));
 
 interface MatchCardProps {
 	m: Match;
@@ -199,13 +201,15 @@ function MatchCard({ m, tz, matches }: MatchCardProps) {
 			</Card>
 
 			{isModalOpen && (
-				<MatchDetailsModal
-					isOpen={isModalOpen}
-					onClose={() => setIsModalOpen(false)}
-					m={m}
-					tz={tz}
-					matches={matches}
-				/>
+				<Suspense fallback={null}>
+					<MatchDetailsModal
+						isOpen={isModalOpen}
+						onClose={() => setIsModalOpen(false)}
+						m={m}
+						tz={tz}
+						matches={matches}
+					/>
+				</Suspense>
 			)}
 		</>
 	);
