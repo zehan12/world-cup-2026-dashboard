@@ -843,7 +843,7 @@ export const INITIAL_MATCHES: Match[] = [
 		tv: "FOX",
 	},
 	{
-		d: "2026-06-29",
+		d: "2026-06-30",
 		t: "9:00 PM",
 		sk: 21,
 		desc: "1F vs 2C",
@@ -870,7 +870,7 @@ export const INITIAL_MATCHES: Match[] = [
 		tv: "FOX",
 	},
 	{
-		d: "2026-06-30",
+		d: "2026-07-01",
 		t: "9:00 PM",
 		sk: 21,
 		desc: "1A vs 3rd (C/E/F/H/I)",
@@ -897,7 +897,7 @@ export const INITIAL_MATCHES: Match[] = [
 		tv: "FS1",
 	},
 	{
-		d: "2026-07-01",
+		d: "2026-07-02",
 		t: "8:00 PM",
 		sk: 20,
 		desc: "1D vs 3rd (B/E/F/I/J)",
@@ -924,7 +924,7 @@ export const INITIAL_MATCHES: Match[] = [
 		tv: "FOX",
 	},
 	{
-		d: "2026-07-02",
+		d: "2026-07-03",
 		t: "11:00 PM",
 		sk: 23,
 		desc: "1B vs 3rd (D/E/I/J/L)",
@@ -951,7 +951,7 @@ export const INITIAL_MATCHES: Match[] = [
 		tv: "FOX",
 	},
 	{
-		d: "2026-07-03",
+		d: "2026-07-04",
 		t: "9:30 PM",
 		sk: 21.5,
 		desc: "1K vs 3rd (D/E/I/J/L)",
@@ -989,7 +989,7 @@ export const INITIAL_MATCHES: Match[] = [
 		tv: "FOX",
 	},
 	{
-		d: "2026-07-05",
+		d: "2026-07-06",
 		t: "8:00 PM",
 		sk: 20,
 		desc: "Round of 16",
@@ -1007,7 +1007,7 @@ export const INITIAL_MATCHES: Match[] = [
 		tv: "FOX",
 	},
 	{
-		d: "2026-07-06",
+		d: "2026-07-07",
 		t: "8:00 PM",
 		sk: 20,
 		desc: "Round of 16",
@@ -1063,7 +1063,7 @@ export const INITIAL_MATCHES: Match[] = [
 		tv: "FOX",
 	},
 	{
-		d: "2026-07-11",
+		d: "2026-07-12",
 		t: "9:00 PM",
 		sk: 21,
 		desc: "Quarterfinal",
